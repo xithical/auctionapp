@@ -44,6 +44,9 @@ class ItemDonors_Methods:
             donor_phone: The phone number of the donor
             company_name: The company name of the donor (optional)
 
+        Returns:
+            int: The numeric ID of the donor
+
         Raises:
             PeeweeException: If the donor ID already exists
         """
