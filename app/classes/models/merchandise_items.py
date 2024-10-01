@@ -3,7 +3,6 @@ from peewee import (
     DecimalField,
     AutoField
 )
-from playhouse.shortcuts import model_to_dict
 
 # Models import
 from app.classes.models.base_model import BaseModel
