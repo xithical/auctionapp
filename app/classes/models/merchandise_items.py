@@ -1,7 +1,5 @@
 from peewee import (
-    DateTimeField,
     CharField,
-    IntegerField,
     DecimalField,
     AutoField
 )
