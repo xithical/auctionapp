@@ -17,6 +17,7 @@ class User_Types(BaseModel):
     class Meta:
         table_name = "User_Types"
 
+# User Types Class/Methods
 class UserTypes_Methods:
     def __init__(self, database):
         self.database = database

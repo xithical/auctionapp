@@ -22,6 +22,7 @@ class ItemDonors(BaseModel):
     class Meta:
         table_name = "ItemDonors"
 
+# Item Donors Class/Methods
 class ItemDonors_Methods:
     def __init__(self, database):
         self.database = database
