@@ -43,6 +43,9 @@ class ItemDonors_Methods:
             donor_email: The email address of the donor
             donor_phone: The phone number of the donor
             company_name: The company name of the donor (optional)
+
+        Raises:
+            PeeweeException: If the donor ID already exists
         """
         return ItemDonors.create(
             donor_firstname=donor_firstname,
