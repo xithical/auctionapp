@@ -19,7 +19,7 @@ class MerchandiseItems(BaseModel):
     merch_image = CharField(default = "", max_length = 1000)
 
 # Merchandise Items Class/Methods
-class MerchItems:
+class MerchandiseItems_Methods:
     def __init__(self, database):
         self.database = database
     
@@ -62,7 +62,7 @@ class MerchItems:
     
     @staticmethod
     def get_item_by_id(merch_id: int):
-        return MerchItems.select().Where(MerchItems.merch_id == merch_id)
+        return MerchandiseItems.select().Where(MerchandiseItems.merch_id == merch_id)
     
     @staticmethod
     def update_item(item_obj: object):
