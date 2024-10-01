@@ -62,7 +62,7 @@ class MerchandiseItems_Methods:
     
     @staticmethod
     def get_item_by_id(merch_id: int):
-        return MerchandiseItems.select().Where(MerchandiseItems.merch_id == merch_id)
+        return MerchandiseItems.select().where(MerchandiseItems.merch_id == merch_id)
     
     @staticmethod
     def update_item(item_obj: object):
