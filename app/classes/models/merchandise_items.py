@@ -18,13 +18,13 @@ class MerchandiseItems(BaseModel):
     merch_price = DecimalField(default = 0)
     merch_image = CharField(default = "", max_length = 1000)
 
+    class Meta:
+        table_name = "MerchandiseItems"
+
 # Merchandise Items Class/Methods
 class MerchandiseItems_Methods:
     def __init__(self, database):
         self.database = database
-    
-    class Meta:
-        table_name = "MerchandiseItems"
 
     @staticmethod
     def create_item(

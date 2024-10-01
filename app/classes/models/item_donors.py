@@ -19,12 +19,12 @@ class ItemDonors(BaseModel):
     donor_phone = CharField(max_length = 20)
     company_name = CharField(max_length = 50, null = True)
 
+    class Meta:
+        table_name = "ItemDonors"
+
 class ItemDonors_Methods:
     def __init__(self, database):
         self.database = database
-
-    class Meta:
-        table_name = "ItemDonors"
 
     @staticmethod
     def create_donor(
