@@ -28,7 +28,7 @@ class BidderDonation_Methods:
         self.database = database
 
     @staticmethod
-    def create_item(
+    def create_donation(
         donation_id: int,
         donation_amount: float,
         user_id: int,
@@ -54,18 +54,18 @@ class BidderDonation_Methods:
         ).donation_id
     
     @staticmethod
-    def get_all_items():
+    def get_all_donations():
         query = BidderDonations.select()
         return DatabaseHelpers.get_rows(query)
     
     @staticmethod
-    def get_item_by_id(donation_id: int):
+    def get_donations_by_id(donation_id: int):
         return BidderDonations.select().where(BidderDonations.donation_id_id == donation_id)
     
     @staticmethod
-    def update_item(item_obj: object):
+    def update_donations(item_obj: object):
         return item_obj.save()
     
-    def remove_item(self, donation_id):
+    def remove_donations(self, donation_id):
         BidderDonations.delete().where(BidderDonations.donation_id == donation_id).execute()
         return True
