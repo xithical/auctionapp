@@ -35,7 +35,6 @@ class Cart_AuctionItems_Methods:
          Creates a Cart specifically for Auction Items in the database
 
         Args:
-            entry_id: The ID for each entry into the auction item cart
             cart_id: The main cart ID; foreign key to the Cart table
             bid_id: The bid ID; foreign key to Bids table
         
