@@ -77,6 +77,16 @@ class Bids_Methods:
         return bid_obj.save()
     
     @staticmethod
-    def remove_bid(self, bid_id):
+    def remove_bid(bid_id: int):
         Bids.delete().where(Bids.bid_id == bid_id).execute()
         return True
+    
+    @staticmethod
+    def get_bid_by_item_id(item_id: int):
+        query = Bids.select().where(Bids.item_id == item_id)
+        return DatabaseHelpers.get_rows(query)
+    
+    @staticmethod
+    def get_bid_by_user_id(user_id: str):
+        query = Bids.select().where(Bids.user_id == user_id)
+        return DatabaseHelpers.get_rows(query)
