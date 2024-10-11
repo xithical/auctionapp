@@ -33,13 +33,11 @@ class CartMerchItems_Methods:
         Creates an merch item cart record in the database
 
         Args:
-            item_title: The name/title of the merch item
-            item_description: A brief description of the item
-            item_price: The price (in dollars) of the item
-            item_image: The path to the item image
+            cart_id: the numeric ID of the associated card
+            merch_id: the numeric ID of the merchandise item
         
         Returns:
-            int: The numeric ID of the new item
+            int: The numeric ID of the cart entry
 
         Raises:
             PeeweeException: If the entry ID already exists or if cart_id/merch_id fail foreign key constraints
