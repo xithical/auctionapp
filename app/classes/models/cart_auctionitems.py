@@ -48,7 +48,6 @@ class Cart_AuctionItems_Methods:
         return Cart_AuctionItems.create(
             cart_id=cart_id,
             bid_id=bid_id
-          
         ).entry_id
     
     @staticmethod
