@@ -76,6 +76,7 @@ class Bids_Methods:
     def update_bid(bid_obj: object):
         return bid_obj.save()
     
+    @staticmethod
     def remove_bid(self, bid_id):
         Bids.delete().where(Bids.bid_id == bid_id).execute()
         return True
