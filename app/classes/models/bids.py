@@ -69,7 +69,7 @@ class Bids_Methods:
         return DatabaseHelpers.get_rows(query)
     
     @staticmethod
-    def get_item_by_bid(bid_id: int):
+    def get_bid_by_id(bid_id: int):
         return Bids.select().where(Bids.bid_id == bid_id)
     
     @staticmethod
