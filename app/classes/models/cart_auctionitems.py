@@ -41,7 +41,7 @@ class Cart_AuctionItems_Methods:
         
            
         Returns:
-            int: The numeric ID of the new entry into the auction item cart ####Is this right??
+            int: The numeric ID of the new entry into the auction item cart
 
         Raises:
             PeeweeException: If the entry ID already exists or if cart_id or bid_id failed foreign key validation

@@ -43,7 +43,7 @@ class Events_Methods:
             end_time: The end time of the event
 
         Returns:
-            int: The event ID
+            int: The numeric event ID
 
         Raises:
             PeeweeException: If the event ID or event code already exist

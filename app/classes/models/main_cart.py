@@ -26,23 +26,21 @@ class MainCart_Methods:
 
     @staticmethod
     def create_cart(
-        user_id: int,
+        user_id: str,
         event_id: int
     ) -> int:
         """
-        Creates an auction item in the database
+        Creates an user cart in the database
 
         Args:
-            item_title: The name/title of the merch item
-            item_description: A brief description of the item
-            item_price: The price (in dollars) of the item
-            item_image: The path to the item image
+            user_id: The UUID of the user
+            event_id: The numeric ID of the event
         
         Returns:
-            int: The numeric ID of the new item
+            int: The numeric ID of the new cart
 
         Raises:
-            PeeweeException: If the item ID already exists
+            PeeweeException: If the cart ID already exists or if user_id/event_id fail foreign key constraints
         """
         return MainCart.create(
             user_id=user_id,

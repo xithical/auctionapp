@@ -42,13 +42,13 @@ class Bids_Methods:
         Creates a bid in the database
 
         Args:
-            bid_amount: The dollar amount the user bids
+            bid_amount: The dollar amount the user bids as a decimal
             bid_time: The date and time of the bid
             item_id: The auction item ID; foreign key to Auction_Items table
             user_id: The user ID; foreign key to Users table
            
         Returns:
-            int: The numeric ID of the new bid ####Is this right??
+            int: The numeric ID of the new bid
 
         Raises:
             PeeweeException: If the bid ID already exists or if user_id or item_id failed foreign key validation

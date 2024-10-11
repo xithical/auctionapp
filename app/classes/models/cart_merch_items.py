@@ -30,7 +30,7 @@ class CartMerchItems_Methods:
         merch_id: int
     ) -> int:
         """
-        Creates an auction item in the database
+        Creates an merch item cart record in the database
 
         Args:
             item_title: The name/title of the merch item
@@ -42,7 +42,7 @@ class CartMerchItems_Methods:
             int: The numeric ID of the new item
 
         Raises:
-            PeeweeException: If the item ID already exists
+            PeeweeException: If the entry ID already exists or if cart_id/merch_id fail foreign key constraints
         """
         return CartMerchItems.create(
             cart_id=cart_id,

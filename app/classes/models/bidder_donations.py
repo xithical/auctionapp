@@ -35,16 +35,16 @@ class BidderDonation_Methods:
         event_id: int
     ) -> int:
         """
-        Creates a donation item in the database
+        Creates a donation in the database
 
         Args:
-        donation_amount: amount of money that is to be donated
+            donation_amount: Amount of money that is to be donated as a decimal value
         
         Returns:
-            int: The numeric ID of the new item
+            int: The numeric ID of the bid
 
         Raises:
-            PeeweeException: If the item ID already exists
+            PeeweeException: If the bid ID already exists or if user_id/event_id fail foreign key constraints
         """
         return BidderDonations.create(
             donation_id=donation_id,
