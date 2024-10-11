@@ -12,11 +12,8 @@ from app.classes.models.base_model import BaseModel
 from app.classes.models.users import Users
 from app.classes.models.auction_items import AuctionItems
 
-
 # Helpers import
 from app.classes.helpers.db_helpers import DatabaseHelpers
-from app.classes.helpers.shared_helpers import Helpers
-
 
 # Bids Model
 class Bids (BaseModel):
@@ -60,7 +57,8 @@ class Bids_Methods:
         return Bids.create(
             bid_amount=bid_amount,
             bid_time=bid_time,
-          
+            item_id=item_id,
+            user_id=user_id
         ).bid_id
     
     @staticmethod
@@ -87,6 +85,6 @@ class Bids_Methods:
         return DatabaseHelpers.get_rows(query)
     
     @staticmethod
-    def get_bids_by_user_id(user_id: str):
-        query = Bids.select().where(Bids.user_id == user_id)
+    def get_bids_by_user_id(user_id: str, event_id: int):
+        query = Bids.select().join(AuctionItems).where((Bids.user_id == user_id) & (AuctionItems.event_id == event_id))
         return DatabaseHelpers.get_rows(query)
