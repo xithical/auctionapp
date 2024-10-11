@@ -84,3 +84,7 @@ class Users_Methods:
     def delete_user(user_id: str):
         Users.delete().where(Users.user_id == user_id).execute()
         return True
+    
+    @staticmethod
+    def get_user_by_email(user_email):
+        return Users.select().where(Users.user_email == user_email).get()
