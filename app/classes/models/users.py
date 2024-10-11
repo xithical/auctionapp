@@ -38,7 +38,6 @@ class Users_Methods:
         user_email: str,
         user_phone: str,
         user_password: str,
-        user_salt: str,
         type_id: int
     ) -> str:
         """
@@ -50,7 +49,6 @@ class Users_Methods:
             user_email: The email of the user
             user_phone: The phone number of the user
             user_password: The (hashed) password of the user
-            user_salt: The unique password salt of the user
             type_id: The type of the user; foreign key to User_Types table
 
         Returns:
@@ -66,7 +64,6 @@ class Users_Methods:
             user_email=user_email,
             user_phone=user_phone,
             user_password=user_password,
-            user_salt=user_salt,
             type_id=type_id
         ).user_id
     
