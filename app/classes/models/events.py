@@ -72,3 +72,7 @@ class Events_Methods:
     def delete_event(event_id):
         Events.delete().where(Events.event_id == event_id).execute()
         return True
+    
+    @staticmethod
+    def get_event_by_code(event_code: str):
+        return Events.select().where(Events.event_code == event_code).get()
