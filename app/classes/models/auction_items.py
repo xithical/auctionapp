@@ -72,6 +72,11 @@ class AuctionItems_Methods:
     def update_item(item_obj: object):
         return item_obj.save()
     
-    def remove_item(self, item_id):
+    @staticmethod
+    def remove_item(item_id):
         AuctionItems.delete().where(AuctionItems.item_id == item_id).execute()
         return True
+    
+    def get_items_by_event_id(event_id: int):
+        query = AuctionItems.select().where(AuctionItems.event_id == event_id)
+        return DatabaseHelpers.get_rows(query)
