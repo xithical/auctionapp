@@ -37,7 +37,6 @@ class Cart_AuctionItems_Methods:
         Args:
             cart_id: The main cart ID; foreign key to the Cart table
             bid_id: The bid ID; foreign key to Bids table
-        
            
         Returns:
             int: The numeric ID of the new entry into the auction item cart
