@@ -1,1 +1,2 @@
 peewee == 3.17.6
+argon2-cffi==23.1.0
