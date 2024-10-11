@@ -30,7 +30,7 @@ class Users_Helpers():
             return True
         
     @staticmethod
-    def check_valid_user_type(type_id)
+    def check_valid_user_type(type_id):
         try:
             UserTypes_Methods.get_type_by_id(type_id)
             return True
