@@ -71,7 +71,7 @@ class Config_Methods:
     
     @staticmethod
     def get_all_configs():
-        query = Config.select()
+        query = Config.select().order_by(Config.entry_id.desc())
         return DatabaseHelpers.get_rows(query)
     
     @staticmethod
