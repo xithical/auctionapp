@@ -36,6 +36,10 @@ class Config_Helpers:
         return Config_Helpers.get_latest_config().secondary_color
     
     @staticmethod
+    def get_stripe_api_key():
+        return Config_Helpers.get_latest_config().stripe_api_key
+    
+    @staticmethod
     def update_secret():
         latest_config = Config_Helpers.get_latest_config()
         latest_config.secret_value = Helpers.generate_secret()
