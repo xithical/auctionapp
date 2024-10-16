@@ -22,6 +22,7 @@ class Config(BaseModel):
     entity_logo = CharField(max_length=255)
     primary_color = CharField(max_length=6)
     secondary_color = CharField(max_length=6)
+    stripe_api_key = CharField(max_length=255)
 
     class Meta:
         table_name="Config"
@@ -39,7 +40,8 @@ class Config_Methods:
         entity_name: str = "Silent Auction App",
         entity_logo: str = "app/frontend/assets/default/logo.png",
         primary_color: str = "21362C", # dark green
-        secondary_color: str = "F6F6F6" # off white
+        secondary_color: str = "F6F6F6", # off white
+        stripe_api_key: str = ""
     ) -> int:
         """
         Creates a config record in the database
@@ -52,6 +54,7 @@ class Config_Methods:
             entity_logo: Logo of the entity running the app
             primary_color: The hex color code of the primary UI color
             secondary_color: The hex color code of the secondary UI color
+            stripe_api_key: The string of the API key used for Stripe
 
         Returns:
             int: The numeric ID of the config record
@@ -66,7 +69,8 @@ class Config_Methods:
             entity_name = entity_name,
             entity_logo = entity_logo,
             primary_color = primary_color,
-            secondary_color = secondary_color
+            secondary_color = secondary_color,
+            stripe_api_key = stripe_api_key
         ).entry_id
     
     @staticmethod
