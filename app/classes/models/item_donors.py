@@ -2,7 +2,6 @@ from peewee import (
     AutoField,
     CharField
 )
-from playhouse import model_to_dict
 
 # Models import
 from app.classes.models.base_model import BaseModel
