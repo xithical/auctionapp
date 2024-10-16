@@ -1,4 +1,4 @@
-from playhouse import model_to_dict
+from playhouse.shortcuts import model_to_dict
 
 class DatabaseHelpers:
     @staticmethod
