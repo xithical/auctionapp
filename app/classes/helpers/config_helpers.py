@@ -5,7 +5,7 @@ from app.classes.helpers.shared_helpers import Helpers
 class Config_Helpers:
     @staticmethod
     def get_latest_config():
-        return Config_Methods.get_config_by_id(Config_Methods.get_all_configs()[0])
+        return Config_Methods.get_config_by_id(Config_Methods.get_all_configs()[0]["entry_id"])
     
     @staticmethod
     def get_secret_value():
