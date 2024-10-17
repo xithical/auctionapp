@@ -55,8 +55,9 @@ if __name__ == "__main__":
 
     try:
         Config_Helpers.get_latest_config()
+        print("Existing installation detected - proceeding with app startup")
     except IndexError:
-        print("Database tables not created - creating tables now")
+        print("Fresh installation detected - creating tables now")
         database.create_tables(tables)
         Config_Methods.create_config()
 
