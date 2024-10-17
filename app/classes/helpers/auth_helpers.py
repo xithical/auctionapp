@@ -13,7 +13,7 @@ class Auth_Helpers:
             unique_email = Users_Helpers.check_unique_email(email)
             if unique_email:
                 user_id = Users_Methods.get_user_by_email(email).user_id
-                if Users_Helpers.validate_user_password(user_id):
+                if Users_Helpers.validate_user_password(user_id, password):
                     print(f"User {email} successfully logged in")
                     return True
                 else:
