@@ -5,6 +5,7 @@ from app.classes.models.events import Events_Methods
 
 from app.classes.helpers.users_helpers import Users_Helpers
 from app.classes.helpers.event_helpers import Event_Helpers
+from app.classes.helpers.auth_helpers import Auth_Helpers
 
 class User_Registration_Controller():
     @staticmethod
@@ -45,20 +46,18 @@ class User_Registration_Controller():
 
 class User_Login_Controller:
     @staticmethod
-    def validate_login(email, password):
-        try:
-            unique_email = Users_Helpers.check_unique_email(email)
-            if unique_email:
-                user_id = Users_Methods.get_user_by_email(email).user_id
-                if Users_Helpers.validate_user_password(user_id):
-                    print(f"User {email} successfully logged in")
-                    return True
-                else:
-                    print(f"User {email} tried to login, but entered an invalid password")
-                    return False
-            else:
-                print(f"User {email} tried to login, but does not have a valid account")
-                return False
-        except Exception as e:
-            print(f"Unable to verify user {email}: {e}")
-            return False
+    def login_user(email: str, password: str, event_code: str):
+        email = email.lower()
+        event_code = event_code.upper()
+
+        valid_auth = Auth_Helpers.validate_login(email, password)
+        valid_event = Event_Helpers.check_event_code(event_code)
+
+        if valid_auth & valid_event:
+            user_id = Users_Methods.get_user_by_email(email)
+            event_id = Events_Methods.get_event_by_code(event_code)
+            return Auth_Helpers.issue_jwt_user(user_id, event_id)
+        elif not valid_auth:
+            return None
+        elif not valid_event:
+            return None
