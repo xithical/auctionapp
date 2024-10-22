@@ -35,7 +35,9 @@ class AuctionItems_Methods:
         item_title: str,
         item_description: str,
         item_price: float,
-        item_image: str
+        item_image: str,
+        donor_id: int,
+        event_id: int
     ) -> int:
         """
         Creates an auction item in the database
@@ -56,7 +58,9 @@ class AuctionItems_Methods:
             item_title=item_title,
             item_description=item_description,
             item_price=item_price,
-            item_image=item_image
+            item_image=item_image,
+            donor_id=donor_id,
+            event_id=event_id
         ).item_id
     
     @staticmethod
