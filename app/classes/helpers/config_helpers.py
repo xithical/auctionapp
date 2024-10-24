@@ -1,3 +1,5 @@
+import json
+
 from app.classes.models.config import Config_Methods
 
 from app.classes.helpers.shared_helpers import Helpers
@@ -44,3 +46,9 @@ class Config_Helpers:
         latest_config = Config_Helpers.get_latest_config()
         latest_config.secret_value = Helpers.generate_secret()
         return Config_Methods.update_config(latest_config)
+    
+    @staticmethod
+    def get_db_config():
+        with open('app/config/db_settings.json', 'r') as db_config:
+            data = json.load(db_config)
+        return data
