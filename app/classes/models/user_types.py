@@ -59,3 +59,7 @@ class UserTypes_Methods:
     def delete_type(type_id):
         User_Types.delete().where(User_Types.type_id == type_id).execute()
         return True
+    
+    @staticmethod
+    def get_type_by_name(type_name: str):
+        return User_Types.select().where(User_Types.type_name == type_name).get().type_id

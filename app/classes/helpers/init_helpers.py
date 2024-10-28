@@ -1,4 +1,4 @@
-from peewee import MySQLDatabase
+from peewee import MySQLDatabase, PeeweeException
 
 from app.classes.models.base_model import db_proxy
 
@@ -14,7 +14,7 @@ from app.classes.models.events import Events
 from app.classes.models.item_donors import ItemDonors
 from app.classes.models.main_cart import MainCart
 from app.classes.models.merchandise_items import MerchandiseItems
-from app.classes.models.user_types import User_Types
+from app.classes.models.user_types import User_Types, UserTypes_Methods
 from app.classes.models.users import Users
 
 from app.classes.helpers.config_helpers import Config_Helpers
@@ -37,6 +37,18 @@ tables = [
 
 class Init_Helpers:
     @staticmethod
+    def init_roles():
+        try:
+            UserTypes_Methods.get_type_by_name("Admin")
+            UserTypes_Methods.get_type_by_name("User")
+            return UserTypes_Methods.get_all_types()
+        except PeeweeException:
+            print("Unable to retrieve user types from database - creating.")
+            UserTypes_Methods.create_type(type_name = "Admin")
+            UserTypes_Methods.create_type(type_name = "User")
+            return UserTypes_Methods.get_all_types()
+    
+    @staticmethod
     def init_db():
         db_config = Config_Helpers.get_db_config()
 
@@ -57,5 +69,7 @@ class Init_Helpers:
             print("Fresh installation detected - creating tables now")
             database.create_tables(tables)
             Config_Methods.create_config()
+
+        Init_Helpers.init_roles()
 
         return database

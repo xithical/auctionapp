@@ -61,3 +61,19 @@ class User_Login_Controller:
             return None
         elif not valid_event:
             return None
+        
+    @staticmethod
+    def login_admin(email: str, password: str):
+        email = email.lower()
+
+        valid_auth = Auth_Helpers.validate_login(email, password)
+        admin_user = Users_Helpers.is_user_admin(user_email = email)
+
+        if valid_auth & admin_user:
+            user_id = Users_Methods.get_user_by_email(email)
+            return Auth_Helpers.issue_jwt_admin(user_id)
+        elif not valid_auth:
+            return None
+        elif not admin_user:
+            print(f"User {email} tried to log into the admin page, but they do not have permission.")
+            return None
