@@ -1,5 +1,6 @@
 from peewee import(
     AutoField,
+    BooleanField,
     CharField,
     ForeignKeyField
 )
@@ -22,6 +23,7 @@ class Users(BaseModel):
     user_password = CharField(max_length = 255)
     user_salt = CharField(max_length = 255, unique = True)
     type_id = ForeignKeyField(User_Types, to_field = "type_id")
+    is_active = BooleanField(default = True)
 
     class Meta:
         table_name = "Users"
@@ -38,7 +40,8 @@ class Users_Methods:
         user_email: str,
         user_phone: str,
         user_password: str,
-        type_id: int
+        type_id: int,
+        is_active: bool = True
     ) -> str:
         """
         Creates a user in the database
@@ -64,7 +67,8 @@ class Users_Methods:
             user_email=user_email,
             user_phone=user_phone,
             user_password=user_password,
-            type_id=type_id
+            type_id=type_id,
+            is_active=is_active
         ).user_id
     
     @staticmethod

@@ -1,4 +1,5 @@
 from peewee import (
+    BooleanField,
     CharField,
     DecimalField,
     AutoField
@@ -17,6 +18,7 @@ class MerchandiseItems(BaseModel):
     merch_description = CharField(default = "", max_length = 255)
     merch_price = DecimalField(default = 0)
     merch_image = CharField(default = "", max_length = 1000)
+    is_active = BooleanField(default = True)
 
     class Meta:
         table_name = "MerchandiseItems"
@@ -31,7 +33,8 @@ class MerchandiseItems_Methods:
         merch_title: str,
         merch_description: str,
         merch_price: float,
-        merch_image: str
+        merch_image: str,
+        is_active: bool = True
     ) -> int:
         """
         Creates a merchandise item in the database
@@ -52,7 +55,8 @@ class MerchandiseItems_Methods:
             merch_title=merch_title,
             merch_description=merch_description,
             merch_price=merch_price,
-            merch_image=merch_image
+            merch_image=merch_image,
+            is_active=is_active
         ).merch_id
     
     @staticmethod

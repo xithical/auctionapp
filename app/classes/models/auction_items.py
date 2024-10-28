@@ -1,4 +1,5 @@
 from peewee import (
+    BooleanField,
     CharField,
     DecimalField,
     AutoField,
@@ -22,6 +23,7 @@ class AuctionItems(BaseModel):
     item_image = CharField(default = "", max_length = 1000)
     donor_id = ForeignKeyField(ItemDonors, to_field="donor_id")
     event_id = ForeignKeyField(Events, to_field="event_id")
+    is_active = BooleanField(default = True)
     class Meta:
         table_name = "AuctionItems"
 
@@ -37,7 +39,8 @@ class AuctionItems_Methods:
         item_price: float,
         item_image: str,
         donor_id: int,
-        event_id: int
+        event_id: int,
+        is_active: bool = True
     ) -> int:
         """
         Creates an auction item in the database
@@ -60,7 +63,8 @@ class AuctionItems_Methods:
             item_price=item_price,
             item_image=item_image,
             donor_id=donor_id,
-            event_id=event_id
+            event_id=event_id,
+            is_active = is_active
         ).item_id
     
     @staticmethod
@@ -81,6 +85,7 @@ class AuctionItems_Methods:
         AuctionItems.delete().where(AuctionItems.item_id == item_id).execute()
         return True
     
+    @staticmethod
     def get_items_by_event_id(event_id: int):
         query = AuctionItems.select().where(AuctionItems.event_id == event_id)
         return DatabaseHelpers.get_rows(query)

@@ -1,5 +1,6 @@
 from peewee import (
     AutoField,
+    BooleanField,
     CharField,
     DateTimeField
 )
@@ -19,6 +20,7 @@ class Events(BaseModel):
     start_time = DateTimeField()
     end_time = DateTimeField()
     event_code = CharField(max_length = 6, unique = True)
+    is_active = BooleanField(default = True)
 
     class Meta:
         table_name = "Events"
@@ -33,6 +35,7 @@ class Events_Methods:
         event_name: str,
         start_time: datetime.datetime,
         end_time: datetime.datetime,
+        is_active: bool = True
     ) -> int:
         """
         Creates an auction event in the database
@@ -52,12 +55,13 @@ class Events_Methods:
             event_name=event_name,
             start_time=start_time,
             end_time=end_time,
-            event_code=Helpers.create_event_code()
+            event_code=Helpers.create_event_code(),
+            is_active = is_active
         )
     
     @staticmethod
     def get_all_events():
-        query = Events.select()
+        query = Events.select().order_by(Events.start_time.desc())
         return DatabaseHelpers.get_rows(query)
     
     @staticmethod

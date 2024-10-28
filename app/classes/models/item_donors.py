@@ -1,5 +1,6 @@
 from peewee import (
     AutoField,
+    BooleanField,
     CharField
 )
 
@@ -17,6 +18,7 @@ class ItemDonors(BaseModel):
     donor_email = CharField(max_length = 255)
     donor_phone = CharField(max_length = 20)
     company_name = CharField(max_length = 50, null = True)
+    is_active = BooleanField(default = True)
 
     class Meta:
         table_name = "ItemDonors"
@@ -32,7 +34,8 @@ class ItemDonors_Methods:
         donor_lastname: str,
         donor_email: str,
         donor_phone: str,
-        company_name: str = None
+        company_name: str = None,
+        is_active: bool = True
     ) -> int:
         """
         Creates item donor record in the database
@@ -55,7 +58,8 @@ class ItemDonors_Methods:
             donor_lastname=donor_lastname,
             donor_email=donor_email,
             donor_phone=donor_phone,
-            company_name=company_name
+            company_name=company_name,
+            is_active=is_active
         ).donor_id
     
     @staticmethod
