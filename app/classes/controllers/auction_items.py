@@ -9,8 +9,9 @@ from app.classes.helpers.auth_helpers import Auth_Helpers
 from app.classes.models.auction_items import AuctionItems_Methods
 from app.classes.helpers.auction_item_helpers import Auction_Items_Helpers
 from app.classes.models.item_donors import ItemDonors_Methods
+from app.classes.models.bids import Bids_Methods
 
-class Auction_Items_List_Controller():
+class Auction_Items_Controller:
 
     @staticmethod
     def get_items(
@@ -28,3 +29,12 @@ class Auction_Items_List_Controller():
         item_id: int
     ):
         return Auction_Items_Helpers.get_item_details(item_id)
+    
+    @staticmethod
+    def place_bid(
+        item_id: int,
+        user_id: str,
+        bid_amount: float,
+        bid_time: datetime = datetime.now()
+    ):
+        return Bids_Methods.create_bid(bid_amount, bid_time, item_id, user_id)

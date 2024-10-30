@@ -45,6 +45,9 @@ class MainCart_Methods:
         Raises:
             PeeweeException: If the cart ID already exists or if user_id/event_id fail foreign key constraints
         """
+        if len(DatabaseHelpers.get_rows(MainCart.select().where(MainCart.user_id == user_id & MainCart.event_id == event_id))) > 0:
+            return MainCart.select().where(MainCart.user_id == user_id & MainCart.event_id == event_id)
+        
         return MainCart.create(
             user_id=user_id,
             event_id=event_id,
@@ -58,12 +61,17 @@ class MainCart_Methods:
     
     @staticmethod
     def get_cart_by_id(cart_id: int):
-        return MainCart.select().where(MainCart.cart_id == cart_id)
+        return MainCart.select().where(MainCart.cart_id == cart_id).get()
     
     @staticmethod
     def update_cart(item_obj: object):
         return item_obj.save()
     
+    @staticmethod
     def remove_cart(self, cart_id):
         MainCart.delete().where(MainCart.cart_id == cart_id).execute()
         return True
+    
+    @staticmethod
+    def get_event_cart_for_user(user_id: str, event_id: int):
+        return MainCart.select().where(MainCart.user_id == user_id & MainCart.event_id == event_id).get().cart_id

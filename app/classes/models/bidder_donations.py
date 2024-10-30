@@ -1,5 +1,7 @@
+from datetime import datetime
 from peewee import (
     CharField,
+    DateTimeField,
     DecimalField,
     AutoField,
     ForeignKeyField
@@ -17,8 +19,10 @@ from app.classes.helpers.db_helpers import DatabaseHelpers
 class BidderDonations(BaseModel):
     donation_id = AutoField(primary_key=True, unique=True)
     donation_amount = DecimalField(default = 0)
+    donation_time = DateTimeField()
     user_id = ForeignKeyField(Users, to_field="user_id")
     event_id = ForeignKeyField(Events, to_field="event_id")
+
     class Meta:
         table_name = "BidderDonations"
 
@@ -29,10 +33,10 @@ class BidderDonation_Methods:
 
     @staticmethod
     def create_donation(
-        donation_id: int,
         donation_amount: float,
         user_id: int,
-        event_id: int
+        event_id: int,
+        donation_time: datetime = datetime.now()
     ) -> int:
         """
         Creates a donation in the database
@@ -47,10 +51,10 @@ class BidderDonation_Methods:
             PeeweeException: If the bid ID already exists or if user_id/event_id fail foreign key constraints
         """
         return BidderDonations.create(
-            donation_id=donation_id,
             donation_amount=donation_amount,
             user_id=user_id,
-            event_id=event_id
+            event_id=event_id,
+            donation_time=donation_time
         ).donation_id
     
     @staticmethod
@@ -66,6 +70,11 @@ class BidderDonation_Methods:
     def update_donations(item_obj: object):
         return item_obj.save()
     
+    @staticmethod
     def remove_donations(self, donation_id):
         BidderDonations.delete().where(BidderDonations.donation_id == donation_id).execute()
         return True
+    
+    def get_donations_by_user(user_id: str, event_id: int):
+        query = BidderDonations.select().where(BidderDonations.user_id == user_id & BidderDonations.event_id == event_id)
+        return DatabaseHelpers.get_rows(query)

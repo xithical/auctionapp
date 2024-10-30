@@ -25,7 +25,7 @@ class CartMerchItems_Methods:
         self.database = database
 
     @staticmethod
-    def create_cart(
+    def create_entry(
         cart_id: int,
         merch_id: int
     ) -> int:

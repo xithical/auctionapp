@@ -19,7 +19,7 @@ from app.classes.helpers.db_helpers import DatabaseHelpers
 class Bids (BaseModel):
     bid_id= AutoField(primary_key = True, unique=True)
     bid_amount= DecimalField(default =0)
-    bid_time = DateTimeField
+    bid_time = DateTimeField()
     item_id = ForeignKeyField(AuctionItems, to_field="item_id")
     user_id = ForeignKeyField(Users, to_field= "user_id")
 
