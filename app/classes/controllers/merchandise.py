@@ -13,3 +13,10 @@ class Merchandise_Item_Controller():
             output.append(item_out)
         return output
     
+    @staticmethod
+    def get_merch_item_details(
+        item_id
+    ):
+        return Merchandise_Item_Helpers.get_item_details(item_id)
+    
+    
