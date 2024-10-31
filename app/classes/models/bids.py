@@ -88,3 +88,8 @@ class Bids_Methods:
     def get_bids_by_user_id(user_id: str, event_id: int):
         query = Bids.select().join(AuctionItems).where((Bids.user_id == user_id) & (AuctionItems.event_id == event_id))
         return DatabaseHelpers.get_rows(query)
+    
+    @staticmethod
+    def get_bids_by_user_and_item(user_id: str, item_id: int):
+        query = Bids.select().where(Bids.user_id == user_id & Bids.item_id == item_id)
+        return DatabaseHelpers.get_rows(query)
