@@ -62,4 +62,4 @@ class UserTypes_Methods:
     
     @staticmethod
     def get_type_by_name(type_name: str):
-        return User_Types.select().where(User_Types.type_name == type_name).get().type_id
+        return User_Types.select().where(User_Types.type_name == type_name).get()

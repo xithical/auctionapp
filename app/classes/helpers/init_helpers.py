@@ -1,4 +1,4 @@
-from peewee import MySQLDatabase, PeeweeException
+from peewee import MySQLDatabase, DoesNotExist
 
 from app.classes.models.base_model import db_proxy
 
@@ -38,15 +38,22 @@ tables = [
 class Init_Helpers:
     @staticmethod
     def init_roles():
+        # Admin Role
         try:
             UserTypes_Methods.get_type_by_name("Admin")
-            UserTypes_Methods.get_type_by_name("User")
-            return UserTypes_Methods.get_all_types()
-        except PeeweeException:
-            print("Unable to retrieve user types from database - creating.")
+        except:
+            print("Unable to retrieve Admin user type from database - creating.")
             UserTypes_Methods.create_type(type_name = "Admin")
+
+        # User Role
+        try:
+            UserTypes_Methods.get_type_by_name("User")
+        except:
+            print("Unable to retrieve User user type from database - creating.")
             UserTypes_Methods.create_type(type_name = "User")
-            return UserTypes_Methods.get_all_types()
+
+        return UserTypes_Methods.get_all_types()
+
     
     @staticmethod
     def init_db():
@@ -69,7 +76,7 @@ class Init_Helpers:
             print("Fresh installation detected - creating tables now")
             database.create_tables(tables)
             Config_Methods.create_config()
-
+        
         Init_Helpers.init_roles()
 
         return database
