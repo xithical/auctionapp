@@ -48,18 +48,24 @@ class CartMerchItems_Methods:
         ).entry_id
     
     @staticmethod
-    def get_all_carts():
+    def get_all_entries():
         query = CartMerchItems.select()
         return DatabaseHelpers.get_rows(query)
     
     @staticmethod
-    def get_cart_by_id(entry_id: int):
+    def get_entry_by_id(entry_id: int):
         return CartMerchItems.select().where(CartMerchItems.entry_id == entry_id)
     
     @staticmethod
     def update_cart(item_obj: object):
         return item_obj.save()
     
+    @staticmethod
     def remove_cart(self, entry_id):
         CartMerchItems.delete().where(CartMerchItems.entry_id == entry_id).execute()
         return True
+    
+    @staticmethod
+    def get_entries_by_cart(cart_id: int):
+        query = CartMerchItems.select().where(CartMerchItems.cart_id == cart_id)
+        return DatabaseHelpers.get_rows(query)

@@ -63,6 +63,12 @@ class Cart_AuctionItems_Methods:
     def update_entry(entry_obj: object):
         return entry_obj.save()
     
+    @staticmethod
     def remove_entry(self, entry_id):
         Cart_AuctionItems.delete().where(Cart_AuctionItems.entry_id == entry_id).execute()
         return True
+    
+    @staticmethod
+    def get_entries_by_cart(cart_id: int):
+        query = Cart_AuctionItems.select().where(Cart_AuctionItems.cart_id == cart_id)
+        return DatabaseHelpers(query)
