@@ -1,9 +1,12 @@
+from datetime import datetime
+
 from app.classes.models.main_cart import MainCart_Methods
 from app.classes.models.cart_merch_items import CartMerchItems_Methods
 from app.classes.models.cart_auctionitems import Cart_AuctionItems_Methods
 
 from app.classes.helpers.merchandise_items_helpers import Merchandise_Item_Helpers
 from app.classes.helpers.auction_item_helpers import Auction_Items_Helpers
+from app.classes.helpers.donations_helpers import Donations_Helpers
 
 class Checkout_Controller:
     @staticmethod
@@ -47,3 +50,17 @@ class Checkout_Controller:
         )
 
         return output
+    
+    @staticmethod
+    def place_donation(
+        user_id: str,
+        event_id: int,
+        donation_amount: float,
+        donation_time: datetime = datetime.now()
+    ):
+        return Donations_Helpers.place_bid(
+            user_id=user_id,
+            event_id=event_id,
+            donation_amount=donation_amount,
+            donation_time=donation_time
+        )
