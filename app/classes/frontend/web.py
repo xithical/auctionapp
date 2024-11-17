@@ -2,7 +2,7 @@ from flask import Flask, render_template, jsonify, request, redirect, send_from_
 
 from app.classes.helpers.config_helpers import Config_Helpers
 
-app = Flask(__name__, template_folder='app/classes/frontend/templates')
+app = Flask('__main__', template_folder='app/classes/frontend/templates')
 
 @app.route('/', methods=['GET'])
 def entrypoint():
