@@ -1,11 +1,13 @@
 from datetime import datetime
 
 from app.classes.models.auction_items import AuctionItems_Methods
+from app.classes.models.config import Config_Methods
 from app.classes.models.events import Events_Methods
 from app.classes.models.item_donors import ItemDonors_Methods
 from app.classes.models.merchandise_items import MerchandiseItems_Methods
 from app.classes.models.users import Users_Methods
 
+from app.classes.helpers.config_helpers import Config_Helpers
 from app.classes.helpers.reports_helpers import Reports_Helpers
 from app.classes.helpers.users_helpers import Users_Helpers
 
@@ -272,3 +274,12 @@ class Admin_Controllers:
         @staticmethod
         def get_auction_report(event_id: int):
             return Reports_Helpers.get_auction_report(event_id)
+        
+    class Config_Controller:
+        @staticmethod
+        def get_config():
+            return Config_Helpers.get_latest_config()
+        
+        @staticmethod
+        def update_config(config_obj: object):
+            return Config_Methods.update_config(config_obj)
