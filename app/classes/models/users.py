@@ -92,3 +92,8 @@ class Users_Methods:
     @staticmethod
     def get_user_by_email(user_email):
         return Users.select().where(Users.user_email == user_email).get()
+    
+    @staticmethod
+    def get_all_users_for_type(type_id: int):
+        query = Users.select().where(Users.type_id == type_id)
+        return DatabaseHelpers.get_rows(query)
