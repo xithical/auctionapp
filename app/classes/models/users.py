@@ -23,10 +23,24 @@ class Users(BaseModel):
     user_password = CharField(max_length = 255)
     user_salt = CharField(max_length = 255, unique = True)
     type_id = ForeignKeyField(User_Types, to_field = "type_id")
-    is_active = BooleanField(default = True)
+    active = BooleanField(default = True)
+
+    authenticated = False
 
     class Meta:
         table_name = "Users"
+
+    def is_active(self):
+        return self.active
+    
+    def get_id(self):
+        return self.user_id
+    
+    def is_authenticated(self):
+        return self.authenticated
+    
+    def is_anonymous(self):
+        return False
 
 # Users Class/Methods
 class Users_Methods:

@@ -1,8 +1,18 @@
 from flask import Flask, render_template, jsonify, request, redirect, send_from_directory
+from flask_login import LoginManager
+
+from app.classes.controllers.login import User_Login_Controller
 
 from app.classes.helpers.config_helpers import Config_Helpers
 
 app = Flask('__main__', template_folder='app/classes/frontend/templates')
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id: str):
+    return User_Login_Controller.get_user(user_id)
 
 @app.route('/', methods=['GET'])
 def entrypoint():
