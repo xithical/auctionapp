@@ -163,3 +163,4 @@ cython_debug/
 
 # Configurations
 app/config/db_settings.json
+app/config/default_creds.txt

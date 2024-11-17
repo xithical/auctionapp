@@ -6,6 +6,7 @@ from app.classes.models.item_donors import ItemDonors_Methods
 from app.classes.models.merchandise_items import MerchandiseItems_Methods
 from app.classes.models.users import Users_Methods
 
+from app.classes.helpers.reports_helpers import Reports_Helpers
 from app.classes.helpers.users_helpers import Users_Helpers
 
 class Admin_Controllers:
@@ -266,3 +267,8 @@ class Admin_Controllers:
         @staticmethod
         def delete_user(user_id: str):
             return Users_Methods.delete_user(user_id)
+    
+    class Reports_Controller:
+        @staticmethod
+        def get_auction_report(event_id: int):
+            return Reports_Helpers.get_auction_report(event_id)
