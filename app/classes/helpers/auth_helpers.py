@@ -12,19 +12,19 @@ class Auth_Helpers:
         try:
             unique_email = Users_Helpers.check_unique_email(email)
             if unique_email:
-                user_id = Users_Methods.get_user_by_email(email).user_id
-                if Users_Helpers.validate_user_password(user_id, password):
+                user = Users_Methods.get_user_by_email(email)
+                if Users_Helpers.validate_user_password(user.user_id, password):
                     print(f"User {email} successfully logged in")
-                    return True
+                    return user
                 else:
                     print(f"User {email} tried to login, but entered an invalid password")
-                    return False
+                    return None
             else:
                 print(f"User {email} tried to login, but does not have a valid account")
-                return False
+                return None
         except Exception as e:
             print(f"Unable to verify user {email}: {e}")
-            return False
+            return None
         
     @staticmethod
     def issue_jwt_user(user_id: str, event_id: int):
