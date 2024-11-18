@@ -19,6 +19,7 @@ from app.classes.models.users import Users, Users_Methods
 
 from app.classes.helpers.config_helpers import Config_Helpers
 from app.classes.helpers.shared_helpers import Helpers
+from app.classes.helpers.users_helpers import Users_Helpers
 
 tables = [
     AuctionItems,
@@ -67,7 +68,7 @@ class Init_Helpers:
                 user_lastname="User",
                 user_email="admin@example.com",
                 user_phone="5555555555",
-                user_password=temp_pass,
+                user_password=Users_Helpers.hash_password(temp_pass),
                 type_id=admin_role.type_id,
                 is_active=True
             )
