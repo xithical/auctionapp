@@ -82,3 +82,7 @@ class User_Login_Controller:
             return Users_Methods.get_user_by_id(user_id)
         except:
             return None
+        
+    @staticmethod
+    def is_admin(user_id: str):
+        return Users_Helpers.is_user_admin(user_id)
