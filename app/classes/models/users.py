@@ -21,7 +21,6 @@ class Users(BaseModel):
     user_email = CharField(max_length = 255, unique = True)
     user_phone = CharField(max_length = 20)
     user_password = CharField(max_length = 255)
-    user_salt = CharField(max_length = 255, unique = True)
     type_id = ForeignKeyField(User_Types, to_field = "type_id")
     active = BooleanField(default = True)
 
