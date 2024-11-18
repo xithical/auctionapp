@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, request, redirect, send_from_directory
-from flask_login import LoginManager, login_required, login_user
+from flask_login import LoginManager, login_required, login_user, current_user
 
 from app.classes.controllers.login import User_Login_Controller
 from app.classes.controllers.auction_items import Auction_Items_Controller
@@ -35,6 +35,9 @@ def unauthed_request():
 def get_static_asset(path):
     return send_from_directory('app/classes/frontend/templates/assets', path)
 
+###################################
+#           User Views            #
+###################################
 @app.route('/login', methods=['GET','POST'])
 def user_login():
     match request.method:
@@ -71,7 +74,41 @@ def item_details(event_id, item_id):
         case 'POST':
             return
 
+###################################
+#           Admin Views           #
+###################################
+@app.route('/admin', methods=['GET'])
+def admin_entrypoint():
+    return redirect("/admin/login")
+
+@app.route('/admin/login', methods=['GET','POST'])
+def admin_login():
+    match request.method:
+        case 'GET':
+            org_name = Config_Helpers.get_entity_name()
+            return render_template("Admin-SignIn.html", org_name=org_name)
+        case 'POST':
+            email = request.form['email']
+            password = request.form['password']
+            user = User_Login_Controller.login_admin(email, password)
+            if user is not None:
+                login_user(user)
+                return redirect("/admin/auth-placeholder")
+            else:
+                return redirect("/admin/login")
+
+###################################
+#        Auth Placeholders        #
+###################################
 @app.route('/auth-placeholder', methods=['GET'])
 @login_required
 def test_page():
     return "Auth worked"
+
+@app.route('/admin/auth-placeholder', methods=['GET'])
+@login_required
+def test_admin_page():
+    if User_Login_Controller.is_admin(current_user.user_id):
+        return "Admin auth worked"
+    else:
+        return redirect("/login")

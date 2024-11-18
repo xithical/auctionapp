@@ -65,10 +65,9 @@ class User_Login_Controller:
         email = email.lower()
 
         valid_auth = Auth_Helpers.validate_login(email, password)
-        admin_user = Users_Helpers.is_user_admin(user_email = email)
+        admin_user = Users_Helpers.is_user_admin(user_id = valid_auth.user_id)
 
         if (valid_auth is not None) & admin_user:
-            user_id = Users_Methods.get_user_by_email(email)
             return valid_auth
         elif valid_auth is None:
             return None

@@ -54,20 +54,19 @@ class Users_Helpers():
         
     @staticmethod
     def is_user_admin(user_id: int = None, user_email: str = None):
-        user_email = user_email.lower()
         admin_role = UserTypes_Methods.get_type_by_name("Admin").type_id
 
-        if not user_id == None:
-            user_role = Users_Methods.get_user_by_id(user_id).type_id
-
+        if not (user_id == None):
+            user_role = Users_Methods.get_user_by_id(user_id).type_id.type_id
             if user_role == admin_role:
                 return True
             else:
                 return False
             
-        elif not user_email == None:
-            user_role = Users_Methods.get_user_by_email(user_email).type_id
-            
+        elif not (user_email == None):
+            user_email = user_email.lower()
+            user_role = Users_Methods.get_user_by_email(user_email).type_id.type_id
+
             if user_role == admin_role:
                 return True
             else:
