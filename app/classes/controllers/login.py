@@ -53,11 +53,9 @@ class User_Login_Controller:
         valid_auth = Auth_Helpers.validate_login(email, password)
         valid_event = Event_Helpers.check_event_code(event_code)
 
-        if valid_auth & valid_event:
-            user_id = Users_Methods.get_user_by_email(email)
-            event_id = Events_Methods.get_event_by_code(event_code)
+        if (valid_auth is not None) & valid_event:
             return valid_auth
-        elif not valid_auth:
+        elif valid_auth is None:
             return None
         elif not valid_event:
             return None
@@ -69,10 +67,10 @@ class User_Login_Controller:
         valid_auth = Auth_Helpers.validate_login(email, password)
         admin_user = Users_Helpers.is_user_admin(user_email = email)
 
-        if valid_auth & admin_user:
+        if (valid_auth is not None) & admin_user:
             user_id = Users_Methods.get_user_by_email(email)
-            return Auth_Helpers.issue_jwt_admin(user_id)
-        elif not valid_auth:
+            return valid_auth
+        elif valid_auth is None:
             return None
         elif not admin_user:
             print(f"User {email} tried to log into the admin page, but they do not have permission.")
