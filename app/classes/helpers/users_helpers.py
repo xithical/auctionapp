@@ -6,10 +6,12 @@ from argon2 import (
 from app.classes.models.users import Users_Methods
 from app.classes.models.user_types import UserTypes_Methods
 
+password_hasher = PasswordHasher()
+
 class Users_Helpers():
     @staticmethod
     def hash_password(password: str):
-        return PasswordHasher.hash(password)
+        return password_hasher.hash(password)
 
     @staticmethod
     def reset_password(user_id: str, password: str):
@@ -43,7 +45,7 @@ class Users_Helpers():
     def validate_user_password(user_id, password):
         user_passhash = Users_Methods.get_user_by_id(user_id).user_password
         try:
-            return PasswordHasher.verify(hash=user_passhash, password=password)
+            return password_hasher.verify(hash=user_passhash, password=password)
         except ArgonExceptions.VerifyMismatchError:
             return False
         except Exception as e:
