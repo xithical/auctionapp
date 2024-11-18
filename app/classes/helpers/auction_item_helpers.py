@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from app.classes.models.bids import Bids_Methods
 from app.classes.helpers.config_helpers import Config_Helpers
 from app.classes.models.auction_items import AuctionItems_Methods
@@ -11,9 +13,9 @@ class Auction_Items_Helpers:
         if Config_Helpers.is_min_bid_percent():
             item = AuctionItems_Methods.get_item_by_id(item_id)
             price = item.item_price * (Config_Helpers.get_min_bid_amount()/100)
-            return price
+            return round(price, 2)
         else:
-            return Config_Helpers.get_min_bid_amount()
+            return round(Config_Helpers.get_min_bid_amount(), 2)
 
     @staticmethod
     def get_highest_bid(
@@ -32,7 +34,7 @@ class Auction_Items_Helpers:
             bids = Bids_Methods.get_bid_by_id(item_id)
             sorted_bids = sorted(bids, key=lambda x: x["bid_amount"], reverse=True)
             if sorted_bids[0]["bid_amount"] > starting_bid:
-                return sorted_bids[0]["bid_amount"]
+                return round(sorted_bids[0]["bid_amount"], 2)
             else:
                 return starting_bid
         except Exception as e:
@@ -57,10 +59,29 @@ class Auction_Items_Helpers:
     ):
         item_out = {}
         item = AuctionItems_Methods.get_item_by_id(item_id)
-        item_out["item_id"] = item["item_id"]
+        item_out["item_id"] = item.item_id
+        item_out["event_id"] = item.event_id.event_id
         item_out["starting_bid"] = Auction_Items_Helpers.get_starting_bid(item.item_id)
         item_out["highest_bid"] = Auction_Items_Helpers.get_current_bid(item.item_id)
-        item_out["donor_name"] = Auction_Items_Helpers.get_donor_name(item["donor_id"])
-        item_out["item_image"] = item["item_image"]
-        item_out["item_title"] = item["item_title"]
+        item_out["donor_name"] = Auction_Items_Helpers.get_donor_name(item.donor_id)
+        item_out["item_image"] = item.item_image
+        item_out["item_title"] = item.item_title
+        item_out["num_bids"] = len(Bids_Methods.get_bids_by_item_id(item_id))
         return item_out
+    
+    @staticmethod
+    def place_bid(
+        item_id: int,
+        amount: float,
+        user_id: str
+    ):
+        highest_bid = Auction_Items_Helpers.get_current_bid(item_id)
+        if amount > highest_bid:
+            return Bids_Methods.create_bid(
+                item_id=item_id,
+                amount=amount,
+                user_id=user_id,
+                bid_time=datetime.now()
+            )
+        else:
+            return None

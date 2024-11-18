@@ -18,3 +18,7 @@ class Event_Helpers:
         else:
             print(f"Event {event_code} is a valid event, but the end time has passed.")
             return False
+        
+    @staticmethod
+    def get_event_id(event_code: str):
+        return Events_Methods.get_event_by_code(event_code)

@@ -5,7 +5,7 @@ from peewee import(
     DateTimeField,
     DecimalField
 )
-import datetime
+from datetime import datetime
 
 # Models import
 from app.classes.models.base_model import BaseModel

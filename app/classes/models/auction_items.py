@@ -74,7 +74,7 @@ class AuctionItems_Methods:
     
     @staticmethod
     def get_item_by_id(item_id: int):
-        return AuctionItems.select().where(AuctionItems.item_id == item_id)
+        return AuctionItems.select().where(AuctionItems.item_id == item_id).get()
     
     @staticmethod
     def update_item(item_obj: object):

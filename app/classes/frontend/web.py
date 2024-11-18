@@ -2,8 +2,10 @@ from flask import Flask, render_template, jsonify, request, redirect, send_from_
 from flask_login import LoginManager, login_required, login_user
 
 from app.classes.controllers.login import User_Login_Controller
+from app.classes.controllers.auction_items import Auction_Items_Controller
 
 from app.classes.helpers.config_helpers import Config_Helpers
+from app.classes.helpers.event_helpers import Event_Helpers
 
 app = Flask('__main__', template_folder='app/classes/frontend/templates')
 
@@ -46,9 +48,28 @@ def user_login():
             user = User_Login_Controller.login_user(email, password, event_code)
             if user is not None:
                 login_user(user)
-                return redirect("/auth-placeholder")
+                return redirect(f"/events/{Event_Helpers.get_event_id(event_code)}/items")
             else:
                 return redirect("/login")
+            
+@app.route('/events/<int:event_id>/items', methods=['GET'])
+@login_required
+def auction_items(event_id):
+    items = Auction_Items_Controller.get_items(event_id)
+    return render_template('Auctions.html', items=items, event_id=event_id)
+
+@app.route('/events/<int:event_id>/items/<int:item_id>', methods=['GET','POST'])
+@login_required
+def item_details(event_id, item_id):
+    match request.method:
+        case 'GET':
+            item = Auction_Items_Controller.get_item_details(item_id)
+            if item["event_id"] == event_id:
+                return render_template("AuctionItemInformation.html", item=item, event_id=event_id)
+            else:
+                return redirect(f"/events/{event_id}/items")
+        case 'POST':
+            return
 
 @app.route('/auth-placeholder', methods=['GET'])
 @login_required
