@@ -11,7 +11,7 @@ class Auth_Helpers:
     def validate_login(email, password):
         try:
             unique_email = Users_Helpers.check_unique_email(email)
-            if unique_email:
+            if not unique_email:
                 user = Users_Methods.get_user_by_email(email)
                 if Users_Helpers.validate_user_password(user.user_id, password):
                     print(f"User {email} successfully logged in")
