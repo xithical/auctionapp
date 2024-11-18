@@ -8,6 +8,8 @@ from app.classes.frontend.web import app
 if __name__ == "__main__":    
     Init_Helpers.init_db()
 
+    app.config["SECRET_KEY"] = Config_Helpers.get_secret_value()
+
     app.run()
 
     exit()
