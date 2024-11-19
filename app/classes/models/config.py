@@ -23,6 +23,7 @@ class Config(BaseModel):
     primary_color = CharField(max_length=6)
     secondary_color = CharField(max_length=6)
     stripe_api_key = CharField(max_length=255)
+    tax_id = CharField(max_length=20)
 
     class Meta:
         table_name="Config"
@@ -41,7 +42,8 @@ class Config_Methods:
         entity_logo: str = "app/frontend/assets/default/logo.png",
         primary_color: str = "21362C", # dark green
         secondary_color: str = "F6F6F6", # off white
-        stripe_api_key: str = ""
+        stripe_api_key: str = "",
+        tax_id: str = ""
     ) -> int:
         """
         Creates a config record in the database
@@ -70,7 +72,8 @@ class Config_Methods:
             entity_logo = entity_logo,
             primary_color = primary_color,
             secondary_color = secondary_color,
-            stripe_api_key = stripe_api_key
+            stripe_api_key = stripe_api_key,
+            tax_id=tax_id
         ).entry_id
     
     @staticmethod
