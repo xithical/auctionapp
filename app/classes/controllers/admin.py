@@ -16,7 +16,7 @@ class Admin_Controllers:
         @staticmethod
         def list_events():
             events_list = Events_Methods.get_all_events()
-            return events_list
+            return sorted(events_list, key=lambda x: x["start_time"], reverse=True)
         
         @staticmethod
         def create_event(

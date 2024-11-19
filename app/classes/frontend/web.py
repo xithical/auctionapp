@@ -1,6 +1,20 @@
-from flask import Flask, render_template, jsonify, request, redirect, send_from_directory
-from flask_login import LoginManager, login_required, login_user, current_user
+from flask import (
+    Flask,
+    render_template,
+    jsonify,
+    request,
+    redirect,
+    send_from_directory,
+    abort
+)
+from flask_login import (
+    LoginManager,
+    login_required,
+    login_user,
+    current_user
+)
 
+from app.classes.controllers.admin import Admin_Controllers
 from app.classes.controllers.login import User_Login_Controller
 from app.classes.controllers.auction_items import Auction_Items_Controller
 
@@ -96,6 +110,19 @@ def admin_login():
                 return redirect("/admin/auth-placeholder")
             else:
                 return redirect("/admin/login")
+
+@app.route('/admin/events', methods=['GET','POST'])
+@login_required
+def admin_events():
+    if User_Login_Controller.is_admin(current_user.user_id):
+        match request.method:
+            case 'GET':
+                events = Admin_Controllers.EventAdmin_Controller.list_events()
+                return render_template("Admin-Auctions.html", events=events)
+            case 'POST':
+                return
+    else:
+        abort(403)
 
 ###################################
 #        Auth Placeholders        #
