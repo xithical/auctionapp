@@ -24,7 +24,7 @@ class Reports_Helpers:
             item_out["item_value"] = item["item_price"]
             item_out["winning_bid_amount"] = winning_bid["bid_amount"]
             item_out["winning_bid_time"] = winning_bid["bid_time"]
-            item_out["winning_bidder_name"] = f"{winning_user["user_firstname"]} {winning_user["user_lastname"]}"
+            item_out["winning_bidder_name"] = f"{winning_user['user_firstname']} {winning_user['user_lastname']}"
             item_out["winning_bidder_email"] = winning_user["user_email"]
             item_out["winning_bidder_phone"] = winning_user["user_phone"]
 
