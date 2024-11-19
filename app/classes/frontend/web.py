@@ -111,7 +111,7 @@ def admin_login():
             else:
                 return redirect("/admin/login")
 
-@app.route('/admin/events', methods=['GET','POST'])
+@app.route('/admin/events', methods=['GET','POST','PUT'])
 @login_required
 def admin_events():
     if User_Login_Controller.is_admin(current_user.user_id):
@@ -120,6 +120,8 @@ def admin_events():
                 events = Admin_Controllers.EventAdmin_Controller.list_events()
                 return render_template("Admin-Auctions.html", events=events)
             case 'POST':
+                return
+            case 'PUT':
                 return
     else:
         abort(403)
