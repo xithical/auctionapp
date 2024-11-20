@@ -107,7 +107,7 @@ def admin_login():
             user = User_Login_Controller.login_admin(email, password)
             if user is not None:
                 login_user(user)
-                return redirect("/admin/auth-placeholder")
+                return redirect("/admin/events")
             else:
                 return redirect("/admin/login")
 
