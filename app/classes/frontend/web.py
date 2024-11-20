@@ -144,6 +144,22 @@ def admin_events():
     else:
         abort(403)
 
+@app.route('/admin/events/<int:event_id>/items', methods=['GET','POST','PUT','DELETE'])
+@login_required
+def admin_auction_items(event_id):
+    if User_Login_Controller.is_admin(current_user.user_id):
+        match request.method:
+            case 'GET':
+                return
+            case 'POST':
+                return
+            case 'PUT':
+                return
+            case 'DELETE':
+                return
+    else:
+        abort(403)
+
 ###################################
 #        Auth Placeholders        #
 ###################################
