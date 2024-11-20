@@ -34,7 +34,7 @@
                   <i class="lni lni-grid-alt"></i>
               </button>
               <div class="sidebar-logo">
-                  <a href="#">Admin</a>
+                  <a href="">Admin</a>
               </div>
           </div>
           <ul class="sidebar-nav">
@@ -112,20 +112,20 @@
                       </tr>
                   </thead>
                   <tbody>
-                      <tr>
-                        {% for event in events %}
-                          <td type="text">{{ event.event_name }}</td>
-                          <td type="datetime-local">{{ event.start_time }}</td>
-                          <td type="datetime-local">{{ event.end_time }}</td>
-                          <td type="text">{{ event.event_code }}</td>
+                    {% for event in events %}
+                      <tr id={{ event.event_id }}>
+                          <td name="event_name" type="text">{{ event.event_name }}</td>
+                          <td name="start_time" type="datetime-local">{{ event.start_time }}</td>
+                          <td name="end_time" type="datetime-local">{{ event.end_time }}</td>
+                          <td name="event_code" type="text">{{ event.event_code }}</td>
                           <td>
                             <a href="Admin-Auctions-Items.html"> view items  </a>
                             <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                             <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                             <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                           </td>
-                        {% endfor %}
                       </tr>    
+                      {% endfor %}
                   </tbody>
               </table>
           </div>

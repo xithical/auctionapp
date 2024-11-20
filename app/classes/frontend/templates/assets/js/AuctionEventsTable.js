@@ -26,12 +26,14 @@ $(document).ready(function(){
 		var empty = false;
 		var input = $(this).parents("tr").find('input');
         input.each(function(){
-			if(!$(this).val()){
+			if(!$(this).val() && !($(this).attr("name") == "EventCode")){
 				$(this).addClass("error");
 				empty = true;
-			} else{
+			} 
+			else{
                 $(this).removeClass("error");
-            }
+            };
+			console.log($(this).attr("name"))
 		});
 		$(this).parents("tr").find(".error").first().focus();
 		if(!empty){
@@ -40,19 +42,49 @@ $(document).ready(function(){
 			});			
 			$(this).parents("tr").find(".add, .edit").toggle();
 			$(".add-new").removeAttr("disabled");
-		}		
+		};		
+		if(!$(this).parents("tr").attr("edit_mode") == true){
+			var request = $.post({
+				url: "/admin/events",
+				data: input.serialize()
+			});
+		}
+		else{
+			var data = {
+				"event_id": $(this).parents("tr").attr("id"),
+			};
+			input.each(function(){
+				data[$(this).attr("name")] = $(this).val()
+			});
+			console.log(data)
+			var request = fetch("/admin/events", {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(data)
+			});
+		}
+		location.reload()
     });
 	// Edit row on edit button click
 	$(document).on("click", ".edit", function(){		
         $(this).parents("tr").find("td:not(:last-child)").each(function(){
-			$(this).html('<input type="'+$(this).attr("type") + '" class="form-control" value="' + $(this).text() + '">');
+			$(this).html('<input name="'+ $(this).attr("name") +'" type="'+$(this).attr("type") + '" class="form-control" value="' + $(this).text() + '">');
 		});		
 		$(this).parents("tr").find(".add, .edit").toggle();
+		$(this).parents("tr").attr("edit_mode", true)
 		$(".add-new").attr("disabled", "disabled");
     });
 	// Delete row on delete button click
 	$(document).on("click", ".delete", function(){
-        $(this).parents("tr").remove();
-		$(".add-new").removeAttr("disabled");
+        var request = fetch("/admin/events", {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({"event_id": $(this).parents("tr").attr("id")})
+		});
+		location.reload()
     });
 });

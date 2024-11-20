@@ -111,7 +111,7 @@ def admin_login():
             else:
                 return redirect("/admin/login")
 
-@app.route('/admin/events', methods=['GET','POST','PUT'])
+@app.route('/admin/events', methods=['GET','POST','PUT','DELETE'])
 @login_required
 def admin_events():
     if User_Login_Controller.is_admin(current_user.user_id):
@@ -120,9 +120,27 @@ def admin_events():
                 events = Admin_Controllers.EventAdmin_Controller.list_events()
                 return render_template("Admin-Auctions.html", events=events)
             case 'POST':
-                return
+                if request.form['StartTime'] < request.form['EndTime']:
+                    Admin_Controllers.EventAdmin_Controller.create_event(
+                        event_name = request.form['EventName'],
+                        start_time = request.form['StartTime'],
+                        end_time = request.form['EndTime']
+                    )
+                return redirect("/admin/events")
             case 'PUT':
-                return
+                data = request.get_json()
+                Admin_Controllers.EventAdmin_Controller.update_event(
+                    event_id = data["event_id"],
+                    event_name = data["event_name"],
+                    start_time = data["start_time"],
+                    end_time = data["end_time"]
+                )
+                return redirect("/admin/events")
+            case 'DELETE':
+                Admin_Controllers.EventAdmin_Controller.delete_event(
+                    request.get_json()["event_id"]
+                )
+                return redirect("/admin/events")
     else:
         abort(403)
 
