@@ -46,7 +46,13 @@ $(document).ready(function(){
     });
 	// Delete row on delete button click
 	$(document).on("click", ".delete", function(){
-        $(this).parents("tr").remove();
-		$(".add-new").removeAttr("disabled");
+        var request = fetch("", {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({"item_id": $(this).parents("tr").attr("item_id")})
+		});
+		location.reload()
     });
 });

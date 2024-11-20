@@ -66,6 +66,7 @@ class Auction_Items_Helpers:
         item_out["donor_name"] = Auction_Items_Helpers.get_donor_name(item.donor_id)
         item_out["item_image"] = item.item_image
         item_out["item_title"] = item.item_title
+        item_out["item_description"] = item.item_description
         item_out["num_bids"] = len(Bids_Methods.get_bids_by_item_id(item_id))
         return item_out
     

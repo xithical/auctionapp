@@ -92,7 +92,7 @@ class Admin_Controllers:
         ):
             item = AuctionItems_Methods.get_item_by_id(item_id)
             item.item_title = item_title
-            item.description = item_description
+            item.item_description = item_description
             item.price = item_price
             item.item_image = item_image
             item.donor_id = donor_id

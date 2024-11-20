@@ -18,6 +18,7 @@ from app.classes.controllers.admin import Admin_Controllers
 from app.classes.controllers.login import User_Login_Controller
 from app.classes.controllers.auction_items import Auction_Items_Controller
 
+from app.classes.helpers.auction_item_helpers import Auction_Items_Helpers
 from app.classes.helpers.config_helpers import Config_Helpers
 from app.classes.helpers.event_helpers import Event_Helpers
 
@@ -25,6 +26,13 @@ app = Flask('__main__', template_folder='app/classes/frontend/templates')
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+UPLOAD_FOLDER = "app/uploads"
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif']
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @login_manager.user_loader
 def load_user(user_id: str):
@@ -144,19 +152,81 @@ def admin_events():
     else:
         abort(403)
 
-@app.route('/admin/events/<int:event_id>/items', methods=['GET','POST','PUT','DELETE'])
+@app.route('/admin/events/<int:event_id>/items', methods=['GET','DELETE'])
 @login_required
 def admin_auction_items(event_id):
     if User_Login_Controller.is_admin(current_user.user_id):
         match request.method:
             case 'GET':
-                return
+                items = Admin_Controllers.EventAdmin_Controller.list_auction_items(event_id)
+                return render_template("Admin-Auctions-Items.html", event_id=event_id, items=items)
+            case 'DELETE':
+                Admin_Controllers.EventAdmin_Controller.delete_auction_item(
+                    request.get_json()["item_id"]
+                )
+                return redirect(f"/admin/events/{event_id}/items")
+    else:
+        abort(403)
+
+@app.route('/admin/events/<int:event_id>/items/new', methods=['GET','POST'])
+@login_required
+def admin_new_auction_item(event_id):
+    if User_Login_Controller.is_admin(current_user.user_id):
+        match request.method:
+            case 'GET':
+                item = {
+                    "item_title": "Item Title",
+                    "donor_id": None,
+                    "item_description": "Item Description",
+                    "item_value": "Item Value"
+                }
+                donors = Admin_Controllers.DonorAdmin_Controller.list_donors()
+                donor_list = []
+                for donor in donors:
+                    donor_out = {
+                        "donor_id": donor["donor_id"],
+                        "donor_name": Auction_Items_Helpers.get_donor_name(donor["donor_id"])
+                    }
+                    donor_list.append(donor_out)
+                return render_template("Admin-Auctions-Items-Modify.html", event_id=event_id, item=item, donors=donor_list)
             case 'POST':
                 return
-            case 'PUT':
-                return
-            case 'DELETE':
-                return
+    else:
+        abort(403)
+
+@app.route('/admin/events/<int:event_id>/items/<int:item_id>', methods=['GET','POST'])
+@login_required
+def admin_edit_auction_item(event_id, item_id):
+    if User_Login_Controller.is_admin(current_user.user_id):
+        match request.method:
+            case 'GET':
+                item = Admin_Controllers.EventAdmin_Controller.get_auction_item(item_id)
+                donors = Admin_Controllers.DonorAdmin_Controller.list_donors()
+                donor_list = []
+                for donor in donors:
+                    donor_out = {
+                        "donor_id": donor["donor_id"],
+                        "donor_name": Auction_Items_Helpers.get_donor_name(donor["donor_id"])
+                    }
+                    donor_list.append(donor_out)
+                return render_template("Admin-Auctions-Items-Modify.html", event_id=event_id, item=item, donors=donor_list)
+            case 'POST':
+                file = request.files['file']
+                item_image = Admin_Controllers.EventAdmin_Controller.get_auction_item(item_id).item_image
+                if not file.filename == "":
+                    if allowed_file(file.filename):
+                        print("reached file upload")
+                Admin_Controllers.EventAdmin_Controller.update_auction_item(
+                    item_id=item_id,
+                    item_title=request.form["item_title"],
+                    item_description=request.form["item_description"],
+                    item_price=float(request.form["item_price"]),
+                    item_image=item_image,
+                    donor_id=int(request.form["donor_id"]),
+                    event_id=event_id,
+                    is_active=True
+                )
+                return redirect(f"/admin/events/{event_id}/items")
     else:
         abort(403)
 
