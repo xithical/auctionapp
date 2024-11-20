@@ -18,9 +18,85 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <!--style for file upload-->
+    <style>
+      .form {
+           background-color: #86878ad9;
+           border: 1px solid rgb(159, 159, 159);
+           border-radius: 7px;
+           padding: 2rem .7rem .7rem .7rem;
+           text-align: center;
+           font-size: 1.125rem;
+           max-width: 520px;
+           transform: translate (-50%, -50%);
+           font-family: sans-serif;
+           margin-bottom: 20px;
+           margin-top: 10px;
+      } 
+
+      .form-icon {
+       color: #fff;
+       font-size: 4rem;
+      }
+
+      .drop-container {
+       background-color: #86878ad9;
+       position: relative;
+       display:flex;
+       gap: 10px;
+       flex-direction: column;
+       justify-content:center;
+       align-items: center;
+       padding: 10px;
+       margin-top: 1rem;
+       margin-bottom: 0.4rem;
+       border-radius: 4px;
+       border: 2px dashed #fff;
+       color: #fff;
+       cursor: pointer;
+       transition: background .2s ease-in-out, border .2s ease-in-out;
+      }
+
+      .drop-container:hover {
+       background: #9ba0cd5c;
+      }
+
+      .drop-title {
+       color: #fff;
+       font-size: 20px;
+       text-align: center;
+       transition: color .2s ease-in-out;
+      }
+
+      #file-input {
+       width: 350px;
+       max-width: 100%;
+       color: #444;
+       padding: 2px;
+       background: #fff;
+       border-radius: 4px;
+       border: 1px solid rgba (8,8,8,0.288);
+      }
+
+      #file-input::file-selector-button {
+       margin-right: 20px;
+       border: none;
+       background :#084cdf;
+       padding: 10px 20px;
+       border-radius: 4px;
+       color: #fff;
+       cursor: pointer;
+       transition: background .2s ease-in-out;
+      }
+
+      #file-input::file-selector-button:hover {
+       background: #0d45a5;
+      }
+
+   </style>
   </head>
 
-  <body>
+  <body style="background-color: #FAFBFE;">
 
     <div class="wrapper">
       <aside id="sidebar">
@@ -39,6 +115,13 @@
                       <span>Auction Events</span>
                   </a>
               </li>
+
+              <li class="sidebar-item">
+                <a href="Admin-Auctions-Merchandise.html" class="sidebar-link">
+                  <i class='bx bx-store nav__icon'></i>
+                    <span>Merchandise</span>
+                </a>
+            </li>
           
               <li class="sidebar-item">
                 <a href="Admin-Donors.html" class="sidebar-link">
@@ -80,14 +163,113 @@
               </a>
           </div>
       </aside>
-
-      <div class="main p-3">
-          <div class="text-center">
+      <div class="wrapper" style="width: 100%; margin-left:100px; margin-right:100px;">
+        <div class="main p-3">
+            <div style="margin-top:30px;">
               <h1>
                   Settings
               </h1>
-              <h4>add timer for event here</h4>
-          </div>
+            </div>
+
+            <!--True or false dropdown for min percentage-->
+            <div class="card" style="width: 100%; height:140px; margin-top:30px;">
+              <div class="col-sm-7">
+                <div class="card-body">
+                  <p>Select 'True' or 'False' if the minimum bid will be a percentage</p>
+                  <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Select
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">True</a></li>
+                      <li><a class="dropdown-item" href="#">False</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div> 
+            </div>
+
+            <!--Minimum bid amount-->
+            <div class="card" style="width: 100%; height:140px; margin-top:25px;">
+              <div class="col-sm-7">
+                <div class="card-body">
+                  <p>Create minimum bid amount</p>
+                  <div class="form-floating mb-3">
+                    <input type="number" class="form-control" id="floatingInput" >
+                    <label for="floatingInput">Enter minimum bid amount:</label>
+                  </div>
+                </div>
+              </div> 
+            </div>
+            
+            <!--Button to regen secrets-->
+            <div class="card" style="width: 100%; height:140px; margin-top:25px;">
+              <div class="col-sm-7">
+                <div class="card-body">
+                  <p>Click to regenerate secrets</p>
+                  <button type="button" class="btn btn-primary">Regenerate</button>
+                </div>
+              </div> 
+            </div>
+
+            <!--Entity Name-->
+            <div class="card" style="width: 100%; height:140px; margin-top:25px;">
+              <div class="col-sm-7">
+                <div class="card-body">
+                  <p>Entity Name</p>
+                </div>
+              </div> 
+            </div>
+
+            <!--Logo Change-->
+            <div class="card" style="width: 100%; height:315px; margin-top:25px;">
+              <div class="col-sm-7">
+                <div class="card-body">
+                  <p>Upload image here to change logo</p>
+                        <!--upload image-->
+                        <form class="form"> 
+                          <span class="form-icon">
+                              <ion-icon name="cloud-upload-outline"></ion-icon>
+                          </span>
+                          <label for="file-input" class="drop-container">
+                              <span class="drop-title">Drag file here to upload</span>
+                              or
+                          <input type="file" id="file-input" accept="image/*" requried>
+                          </label>
+                      </form>
+                </div>
+              </div> 
+            </div>
+
+            <!--Change Primary and Secondary website colors-->
+            <div class="card" style="width: 100%; height:175px; margin-top:25px;">
+              <div class="col-sm-7">
+                <div class="card-body">
+                  <p>Click to change the website's colors</p>
+                  <!--Primary-->
+                  <div style="margin-bottom:10px;">
+                    <input type="color" id="head" name="head" value="#21362C" />
+                    <label for="head">Primary</label>
+                  </div>
+                  <!--Secondary-->
+                  <div>
+                    <input type="color" id="body" name="body" value="#F6F6F6" />
+                    <label for="body">Secondary</label>
+                  </div>
+                </div>
+              </div> 
+            </div>
+
+            <!--Stripe API-->
+            <div class="card" style="width: 100%; height:140px; margin-top:25px; margin-bottom:30px;">
+              <div class="col-sm-7">
+                <div class="card-body">
+                  <p>Stripe API</p>
+                </div>
+              </div> 
+            </div>
+
+      </div>
       </div>
   </div>
   
