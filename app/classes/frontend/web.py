@@ -284,6 +284,31 @@ def admin_merch_new():
     else:
         abort(403)
 
+@app.route('/admin/merch/<int:merch_id>', methods=['GET','POST'])
+@login_required
+def admin_merch_edit(merch_id):
+    if User_Login_Controller.is_admin(current_user.user_id):
+        match request.method:
+            case 'GET':
+                item = Admin_Controllers.MerchAdmin_Controller.get_merch_item(merch_id)
+                return render_template("Admin-Auctions-Merchandise-Modify.html", item=item)
+            case 'POST':
+                file = request.files['file']
+                item_image = Admin_Controllers.MerchAdmin_Controller.get_merch_item(merch_id).merch_image
+                if not file.filename == "":
+                    if allowed_file(file.filename):
+                        print("reached file upload")
+                Admin_Controllers.MerchAdmin_Controller.modify_merch_item(
+                    merch_id=merch_id,
+                    merch_title=request.form["item_title"],
+                    merch_description=request.form["item_description"],
+                    merch_price=float(request.form["item_price"]),
+                    merch_image=item_image
+                )
+                return redirect("/admin/merch")
+    else:
+        abort(403)
+
 ###################################
 #        Auth Placeholders        #
 ###################################
