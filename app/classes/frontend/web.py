@@ -190,7 +190,20 @@ def admin_new_auction_item(event_id):
                     donor_list.append(donor_out)
                 return render_template("Admin-Auctions-Items-Modify.html", event_id=event_id, item=item, donors=donor_list)
             case 'POST':
-                return
+                file = request.files['file']
+                item_image = "/static/assets/img/placeholder1.png"
+                if not file.filename == "":
+                    if allowed_file(file.filename):
+                        print("reached file upload")
+                Admin_Controllers.EventAdmin_Controller.create_auction_item(
+                    item_title=request.form["item_title"],
+                    item_description=request.form["item_description"],
+                    item_price=float(request.form["item_price"]),
+                    item_image=item_image,
+                    donor_id=int(request.form["donor_id"]),
+                    event_id=event_id
+                )
+                return redirect(f"/admin/events/{event_id}/items")
     else:
         abort(403)
 
