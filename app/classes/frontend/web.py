@@ -252,7 +252,10 @@ def admin_merch_items():
                 items = Admin_Controllers.MerchAdmin_Controller.list_merch_items()
                 return render_template("Admin-Auctions-Merchandise.html", items=items)
             case 'DELETE':
-                return
+                Admin_Controllers.MerchAdmin_Controller.delete_merch_item(
+                    int(request.get_json()["item_id"])
+                )
+                return redirect("/admin/merch")
     else:
         abort(403)
 

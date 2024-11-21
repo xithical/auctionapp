@@ -72,6 +72,6 @@ class MerchandiseItems_Methods:
     def update_item(item_obj: object):
         return item_obj.save()
     
-    def remove_item(self, item_id):
+    def remove_item(item_id):
         MerchandiseItems.delete().where(MerchandiseItems.merch_id == item_id).execute()
         return True

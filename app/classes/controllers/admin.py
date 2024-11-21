@@ -195,7 +195,7 @@ class Admin_Controllers:
             return MerchandiseItems_Methods.update_item(item)
         
         @staticmethod
-        def delete_merch_item(merch_id):
+        def delete_merch_item(merch_id: int):
             return MerchandiseItems_Methods.remove_item(merch_id)
     
     class UserAdmin_Controller:
