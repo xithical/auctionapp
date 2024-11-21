@@ -243,6 +243,47 @@ def admin_edit_auction_item(event_id, item_id):
     else:
         abort(403)
 
+@app.route('/admin/merch', methods=['GET','DELETE'])
+@login_required
+def admin_merch_items():
+    if User_Login_Controller.is_admin(current_user.user_id):
+        match request.method:
+            case 'GET':
+                items = Admin_Controllers.MerchAdmin_Controller.list_merch_items()
+                return render_template("Admin-Auctions-Merchandise.html", items=items)
+            case 'DELETE':
+                return
+    else:
+        abort(403)
+
+@app.route('/admin/merch/new', methods=['GET','POST'])
+@login_required
+def admin_merch_new():
+    if User_Login_Controller.is_admin(current_user.user_id):
+        match request.method:
+            case 'GET':
+                item = {
+                    "merch_title": "Item Title",
+                    "merch_description": "Item description",
+                    "merch_price": 0
+                }
+                return render_template("Admin-Auctions-Merchandise-Modify.html", item=item)
+            case 'POST':
+                file = request.files['file']
+                item_image = "/static/assets/img/placeholder1.png"
+                if not file.filename == "":
+                    if allowed_file(file.filename):
+                        print("reached file upload")
+                Admin_Controllers.MerchAdmin_Controller.create_merch_item(
+                    merch_title=request.form["item_title"],
+                    merch_description=request.form["item_description"],
+                    merch_price=float(request.form["item_price"]),
+                    merch_image = item_image
+                )
+                return redirect("/admin/merch")
+    else:
+        abort(403)
+
 ###################################
 #        Auth Placeholders        #
 ###################################
