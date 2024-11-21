@@ -312,7 +312,7 @@ def admin_merch_edit(merch_id):
     else:
         abort(403)
 
-@app.route('/admin/donors', methods=['GET','DELETE'])
+@app.route('/admin/donors', methods=['GET','POST','PUT','DELETE'])
 @login_required
 def admin_donors():
     if User_Login_Controller.is_admin(current_user.user_id):
@@ -321,6 +321,10 @@ def admin_donors():
                 donors = Admin_Controllers.DonorAdmin_Controller.list_donors()
                 return render_template("Admin-Donors.html", donors=donors)
             case 'POST':
+                return
+            case 'PUT':
+                return
+            case 'DELETE':
                 return
     else:
         abort(403)
