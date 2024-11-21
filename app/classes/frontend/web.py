@@ -312,7 +312,7 @@ def admin_merch_edit(merch_id):
     else:
         abort(403)
 
-@app.route('/admin/donors', methods=['GET','POST'])
+@app.route('/admin/donors', methods=['GET','DELETE'])
 @login_required
 def admin_donors():
     if User_Login_Controller.is_admin(current_user.user_id):
