@@ -309,6 +309,19 @@ def admin_merch_edit(merch_id):
     else:
         abort(403)
 
+@app.route('/admin/donors', methods=['GET','POST'])
+@login_required
+def admin_donors():
+    if User_Login_Controller.is_admin(current_user.user_id):
+        match request.method:
+            case 'GET':
+                donors = Admin_Controllers.DonorAdmin_Controller.list_donors()
+                return render_template("Admin-Donors.html", donors=donors)
+            case 'POST':
+                return
+    else:
+        abort(403)
+
 ###################################
 #        Auth Placeholders        #
 ###################################
