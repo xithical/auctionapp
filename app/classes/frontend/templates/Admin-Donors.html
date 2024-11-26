@@ -121,11 +121,11 @@
                   <tbody>
                       {% for donor in donors %}
                       <tr id={{ donor.donor_id }}>
-                          <td>{{ donor.donor_firstname }}</td>
-                          <td>{{ donor.donor_lastname }}</td>
-                          <td>{{ donor.donor_email }}</td>
-                          <td>{{ donor.donor_phone }}</td>
-                          <td>{{ donor.company_name }}</td>
+                          <td name="UserFirst" type="text">{{ donor.donor_firstname }}</td>
+                          <td name="UserLast" type="text">{{ donor.donor_lastname }}</td>
+                          <td name="UserEmail" type="text">{{ donor.donor_email }}</td>
+                          <td name="UserPhone" type="text">{{ donor.donor_phone }}</td>
+                          <td name="UserCompany" type="text">{{ donor.company_name }}</td>
                           <td>
                             <a href="/admin/donors/{{ donor.donor_id }}/items">Items Donated</a>
                             <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>

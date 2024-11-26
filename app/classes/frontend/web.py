@@ -321,11 +321,43 @@ def admin_donors():
                 donors = Admin_Controllers.DonorAdmin_Controller.list_donors()
                 return render_template("Admin-Donors.html", donors=donors)
             case 'POST':
-                return
+                if request.form["UserCompany"] == "":
+                    donor_company = None
+                else:
+                    donor_company = request.form["UserCompany"]
+                Admin_Controllers.DonorAdmin_Controller.create_donor(
+                    donor_firstname = request.form["UserFirst"],
+                    donor_lastname = request.form["UserLast"],
+                    donor_email = request.form["UserEmail"],
+                    donor_phone = request.form["UserPhone"],
+                    company_name = donor_company
+                )
+                return redirect("/admin/donors")
             case 'PUT':
-                return
+                data = request.get_json()
+                match data["UserCompany"]:
+                    case None:
+                        donor_company = None
+                    case "":
+                        donor_company = None
+                    
+                    case _:
+                        donor_company = data["UserCompany"]
+                Admin_Controllers.DonorAdmin_Controller.update_donor(
+                    donor_id = data["donor_id"],
+                    donor_firstname = data["UserFirst"],
+                    donor_lastname = data["UserLast"],
+                    donor_email = data["UserEmail"],
+                    donor_phone = data["UserPhone"],
+                    company_name = donor_company
+                )
+                return redirect("/admin/donors")
             case 'DELETE':
-                return
+                data = request.get_json()
+                Admin_Controllers.DonorAdmin_Controller.delete_donor(
+                    donor_id = data["donor_id"]
+                )
+                return redirect("/admin/donors")
     else:
         abort(403)
 
