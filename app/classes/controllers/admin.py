@@ -149,6 +149,23 @@ class Admin_Controllers:
             donor.company_name = company_name
             donor.is_active = is_active
             return ItemDonors_Methods.update_donor(donor)
+            
+        @staticmethod
+        def list_donor_items(
+            donor_id: int
+        ):
+            items = AuctionItems_Methods.get_items_by_donor_id(donor_id)
+            output = []
+            for item in items:
+                item_out = {}
+
+                item_out["item_title"] = item["item_title"]
+                item_out["event_date"] = item["event_id"]["start_time"]
+                item_out["item_price"] = round(item["item_price"], 2)
+
+                output.append(item_out)
+            
+            return output
         
         @staticmethod
         def delete_donor(donor_id: int):

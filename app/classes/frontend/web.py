@@ -358,8 +358,15 @@ def admin_donors():
                     donor_id = data["donor_id"]
                 )
                 return redirect("/admin/donors")
+
     else:
         abort(403)
+
+@app.route('/admin/donors/<int:donor_id>/items', methods=['GET'])
+@login_required
+def admin_donors_items(donor_id):
+    items = Admin_Controllers.DonorAdmin_Controller.list_donor_items(donor_id)
+    return render_template("Admin-Donor-Information.html", items=items)
 
 ###################################
 #        Auth Placeholders        #

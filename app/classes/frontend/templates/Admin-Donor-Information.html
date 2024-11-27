@@ -105,13 +105,13 @@
                       </tr>
                   </thead>
                   <tbody>
+                    {% for item in items %}
                       <tr>
-                        
-                          <td>donation 1</td>
-                          <td>02/12/2024</td>
-                          <td>50.99</td>
-                          
-                      </tr>    
+                          <td>{{ item.item_title }}</td>
+                          <td>{{ item.event_date }}</td>
+                          <td>${{ item.item_price }}</td>
+                      </tr> 
+                    {% endfor %}
                   </tbody>
               </table>
           </div>
