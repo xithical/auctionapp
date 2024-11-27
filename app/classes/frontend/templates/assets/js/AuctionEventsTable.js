@@ -33,7 +33,6 @@ $(document).ready(function(){
 			else{
                 $(this).removeClass("error");
             };
-			console.log($(this).attr("name"))
 		});
 		$(this).parents("tr").find(".error").first().focus();
 		if(!empty){
@@ -56,7 +55,6 @@ $(document).ready(function(){
 			input.each(function(){
 				data[$(this).attr("name")] = $(this).val()
 			});
-			console.log(data)
 			var request = fetch("/admin/events", {
 				method: "PUT",
 				headers: {
