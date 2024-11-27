@@ -424,6 +424,31 @@ def admin_regen_secrets():
     else:
         abort(403)
 
+@app.route('/admin/users', methods=['GET','POST','PUT','DELETE'])
+@login_required
+def admin_users():
+    if User_Login_Controller.is_admin(current_user.user_id):
+        match request.method:
+            case 'GET':
+                users = Admin_Controllers.UserAdmin_Controller.list_users()
+                return render_template("Admin-UserInfo.html", users=users)
+            case 'POST':
+                return
+            case 'PUT':
+                return
+            case 'DELETE':
+                return
+    else:
+        abort(403)
+
+@app.route('/admin/users/get_roles', methods=['GET'])
+@login_required
+def admin_get_roles():
+    if User_Login_Controller.is_admin(current_user.user_id):
+        return jsonify({"roles": Admin_Controllers.UserAdmin_Controller.list_roles()})
+    else:
+        abort(403)
+
 ###################################
 #        Auth Placeholders        #
 ###################################

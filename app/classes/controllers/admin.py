@@ -6,6 +6,7 @@ from app.classes.models.config import Config_Methods
 from app.classes.models.events import Events_Methods
 from app.classes.models.item_donors import ItemDonors_Methods
 from app.classes.models.merchandise_items import MerchandiseItems_Methods
+from app.classes.models.user_types import UserTypes_Methods
 from app.classes.models.users import Users_Methods
 
 from app.classes.helpers.config_helpers import Config_Helpers
@@ -308,6 +309,10 @@ class Admin_Controllers:
         @staticmethod
         def delete_user(user_id: str):
             return Users_Methods.delete_user(user_id)
+        
+        @staticmethod
+        def list_roles():
+            return UserTypes_Methods.get_all_types()
     
     class Reports_Controller:
         @staticmethod

@@ -113,33 +113,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>John</td>
-                        <td>Doe</td>
-                        <td>jd@email.com</td>
-                        <td>555-555-5555</td>
-                        <td>ldakfjdkljf</td>
-                        <td>user</td>
+                    {% for user in users %}
+                    <tr id="{{ user.user_id }}">
+                        <td name="user_firstname">{{ user.user_firstname }}</td>
+                        <td name="user_lastname">{{ user.user_lastname }}</td>
+                        <td name="user_email">{{ user.user_email }}</td>
+                        <td name="user_phone">{{ user.user_phone }}</td>
+                        <td name="user_password"></td>
+                        <td name="type_id">{{ user.type_id.type_name }}</td>
                         <td>
 							<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                             <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                             <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                         </td>
                     </tr>
-                    <tr>
-                        <td>Peter</td>
-                        <td>Parker</td>
-                        <td>peterp@email.com</td>
-                        <td>555-555-5556</td>
-                        <td>fjuFHJLyrt</td>
-                        <td>admin</td>
-                        <td>
-							<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                            <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                            <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
-                        </td>
-                    </tr>
-                       
+                    {% endfor %}
                 </tbody>
             </table>
         </div>

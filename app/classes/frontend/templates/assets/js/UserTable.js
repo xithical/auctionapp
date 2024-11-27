@@ -4,16 +4,21 @@ $(document).ready(function(){
 	$('[data-toggle="tooltip"]').tooltip();
 	var actions = $("table td:last-child").html();
 	// Append table with add row form on add new button click
-    $(".add-new").click(function(){
+    $(".add-new").click(async function(){
 		$(this).attr("disabled", "disabled");
 		var index = $("table tbody tr:last-child").index();
+		const req = await fetch("/admin/users/get_roles");
+		var response = await req.json()
+			.then(data => {
+				roles = data.roles
+			});
+		console.log(roles);
         var row = '<tr>' +
-            '<td><input type="text" class="form-control" name="UserFirst" id="UserFirst"></td>' +
-            '<td><input type="text" class="form-control" name="UserLast" id="UserLast"></td>' +
-            '<td><input type="text" class="form-control" name="UserEmail" id="UserEmail"></td>' +
-            '<td><input type="text" class="form-control" name="UserPassword" id="UserPassword"></td>' +
-            '<td><input type="text" class="form-control" name="UserType" id="UserType"></td>' +
-            '<td><input type="text" class="form-control" name="UserRole" id="UserRole"></td>' +
+            '<td><input name="user_firstname" type="text" class="form-control" name="UserFirst" id="UserFirst"></td>' +
+            '<td><input name="user_lastname" type="text" class="form-control" name="UserLast" id="UserLast"></td>' +
+            '<td><input name="user_email" type="text" class="form-control" name="UserEmail" id="UserEmail"></td>' +
+            '<td><input name="user_password" type="text" class="form-control" name="UserPassword" id="UserPassword"></td>' +
+            '<td><input name="type" type="text" class="form-control" name="UserType" id="UserType"></td>' +
 			'<td>' + actions + '</td>' +
         '</tr>';
     	$("table").append(row);		
