@@ -20,8 +20,8 @@ class Config(BaseModel):
     secret_value = CharField(max_length=32)
     entity_name = CharField(max_length=255)
     entity_logo = CharField(max_length=255)
-    primary_color = CharField(max_length=6)
-    secondary_color = CharField(max_length=6)
+    primary_color = CharField(max_length=7)
+    secondary_color = CharField(max_length=7)
     stripe_api_key = CharField(max_length=255)
     tax_id = CharField(max_length=20)
 
@@ -40,8 +40,8 @@ class Config_Methods:
         secret_value: str = Helpers.generate_secret(),
         entity_name: str = "Silent Auction App",
         entity_logo: str = "app/frontend/assets/default/logo.png",
-        primary_color: str = "21362C", # dark green
-        secondary_color: str = "F6F6F6", # off white
+        primary_color: str = "#21362C", # dark green
+        secondary_color: str = "#F6F6F6", # off white
         stripe_api_key: str = "",
         tax_id: str = ""
     ) -> int:

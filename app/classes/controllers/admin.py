@@ -317,8 +317,44 @@ class Admin_Controllers:
     class Config_Controller:
         @staticmethod
         def get_config():
-            return Config_Helpers.get_latest_config()
+            config = Config_Helpers.get_latest_config()
+            config_out = {}
+
+            config_out["min_bid_percent"] = config.min_bid_percent
+            config_out["min_bid_amount"] = round(config.min_bid_amount, 2)
+            config_out["entity_name"] = config.entity_name
+            config_out["entity_logo"] = config.entity_logo
+            config_out["primary_color"] = config.primary_color
+            config_out["secondary_color"] = config.secondary_color
+            config_out["tax_id"] = config.tax_id
+
+            return config_out
         
         @staticmethod
-        def update_config(config_obj: object):
-            return Config_Methods.update_config(config_obj)
+        def update_config(
+            min_bid_percent: bool,
+            min_bid_amount: float,
+            entity_name: str,
+            entity_logo: str,
+            primary_color: str,
+            secondary_color: str,
+            tax_id: str,
+            stripe_api_key: str = ""
+        ):
+            config = Config_Helpers.get_latest_config()
+
+            config.min_bid_percent = min_bid_percent
+            config.min_bid_amount = min_bid_amount
+            config.entity_name = entity_name
+            config.entity_logo = entity_logo
+            config.primary_color = primary_color
+            config.secondary_color = secondary_color
+            config.tax_id = tax_id
+            if stripe_api_key != "":
+                config.stripe_api_key = stripe_api_key
+
+            return Config_Methods.update_config(config)
+        
+        @staticmethod
+        def regen_secret():
+            return Config_Helpers.update_secret()

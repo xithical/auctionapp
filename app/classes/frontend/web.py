@@ -387,6 +387,43 @@ def admin_donors_items(donor_id):
     else:
         abort(403)
 
+@app.route('/admin/config', methods=['GET','POST'])
+@login_required
+def admin_config():
+    if User_Login_Controller.is_admin(current_user.user_id):
+        match request.method:
+            case 'GET':
+                config = Admin_Controllers.Config_Controller.get_config()
+                return render_template("Admin-Settings.html", config=config)
+            case 'POST':
+                file = request.files['entity_logo']
+                logo_image = Config_Helpers.get_entity_logo()
+                if not file.filename == "":
+                    if allowed_file(file.filename):
+                        print("reached file uploade")
+                Admin_Controllers.Config_Controller.update_config(
+                    min_bid_percent = request.form["min_bid_percent"],
+                    min_bid_amount = round(float(request.form["min_bid_amount"])),
+                    entity_name = request.form["entity_name"],
+                    entity_logo = logo_image,
+                    primary_color = request.form["primary_color"],
+                    secondary_color = request.form["secondary_color"],
+                    tax_id = request.form["tax_id"],
+                    stripe_api_key = request.form["stripe_api_key"]
+                )
+                return redirect("/admin/config")
+    else:
+        abort(403)
+
+@app.route('/admin/config/regen-secrets', methods=['GET'])
+@login_required
+def admin_regen_secrets():
+    if User_Login_Controller.is_admin(current_user.user_id):
+        Admin_Controllers.Config_Controller.regen_secret()
+        return redirect("/admin/login")
+    else:
+        abort(403)
+
 ###################################
 #        Auth Placeholders        #
 ###################################

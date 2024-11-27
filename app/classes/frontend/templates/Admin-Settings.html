@@ -164,20 +164,22 @@
                   Settings
               </h1>
             </div>
-
+            <form action="" method="post" enctype="multipart/form-data">
             <!--True or false dropdown for min percentage-->
             <div class="card" style="width: 100%; height:140px; margin-top:30px;">
               <div class="col-sm-7">
                 <div class="card-body">
                   <p>Select 'True' or 'False' if the minimum bid will be a percentage</p>
                   <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Select
-                    </button>
-                    <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">True</a></li>
-                      <li><a class="dropdown-item" href="#">False</a></li>
-                    </ul>
+                    <select name="min_bid_percent" class="btn btn-secondary dropdown-toggle" aria-expanded="false" value="{{ config.min_bid_percent }}">
+                      {% if config.min_bid_percent == True %}
+                      <option value="True" selected>True</option>
+                      <option value="False">False</option>
+                      {% else %}
+                      <option value="True">True</option>
+                      <option value="False" selected>False</option>
+                      {% endif %}
+                    </select>
                   </div>
                 </div>
               </div> 
@@ -189,7 +191,7 @@
                 <div class="card-body">
                   <p>Create minimum bid amount</p>
                   <div class="form-floating mb-3">
-                    <input type="number" class="form-control" id="floatingInput" >
+                    <input name="min_bid_amount" type="number" class="form-control" id="floatingInput" value="{{ config.min_bid_amount }}">
                     <label for="floatingInput">Enter minimum bid amount:</label>
                   </div>
                 </div>
@@ -201,7 +203,7 @@
               <div class="col-sm-7">
                 <div class="card-body">
                   <p>Click to regenerate secrets</p>
-                  <button type="button" class="btn btn-primary">Regenerate</button>
+                  <a href="/admin/config/regen-secrets"><button type="button" class="btn btn-primary">Regenerate</button></a>
                 </div>
               </div> 
             </div>
@@ -212,7 +214,7 @@
                 <div class="card-body">
                   <p>Entity name</p>
                   <div class="form-floating mb-3">
-                    <input type="number" class="form-control" id="floatingInput" >
+                    <input name="entity_name" type="text" class="form-control" id="floatingInput" value="{{ config.entity_name }}">
                     <label for="floatingInput">Enter Entity name:</label>
                   </div>
                 </div>
@@ -225,16 +227,14 @@
                 <div class="card-body">
                   <p>Upload image here to change logo</p>
                         <!--upload image-->
-                        <form class="form"> 
                           <span class="form-icon">
                               <ion-icon name="cloud-upload-outline"></ion-icon>
                           </span>
                           <label for="file-input" class="drop-container">
                               <span class="drop-title">Drag file here to upload</span>
                               or
-                          <input type="file" id="file-input" accept="image/*" requried>
+                          <input name="entity_logo" type="file" id="file-input" accept="image/*">
                           </label>
-                      </form>
                 </div>
               </div> 
             </div>
@@ -246,12 +246,12 @@
                   <p>Click to change the website's colors</p>
                   <!--Primary-->
                   <div style="margin-bottom:10px;">
-                    <input type="color" id="head" name="head" value="#21362C" />
+                    <input name="primary_color" type="color" type="color" id="head" name="head" value="{{ config.primary_color }}" />
                     <label for="head">Primary</label>
                   </div>
                   <!--Secondary-->
                   <div>
-                    <input type="color" id="body" name="body" value="#F6F6F6" />
+                    <input name="secondary_color" type="color" id="body" name="body" value="{{ config.secondary_color }}" />
                     <label for="body">Secondary</label>
                   </div>
                 </div>
@@ -264,8 +264,8 @@
                 <div class="card-body">
                   <p>Stripe API</p>
                   <div class="form-floating mb-3">
-                    <input type="number" class="form-control" id="floatingInput" >
-                    <label for="floatingInput">Enter Stripe API:</label>
+                    <input name="stripe_api_key" type="text" class="form-control" id="floatingInput" value="" >
+                    <label for="floatingInput">Enter Stripe API Key (leave blank if unchanged):</label>
                   </div>
                 </div>
               </div> 
@@ -277,13 +277,14 @@
                 <div class="card-body">
                   <p>Tax ID</p>
                   <div class="form-floating mb-3">
-                    <input type="number" class="form-control" id="floatingInput" >
+                    <input name="tax_id" type="text" class="form-control" id="floatingInput" value="{{ config.tax_id }}">
                     <label for="floatingInput">Enter Tax ID:</label>
                   </div>
                 </div>
               </div> 
             </div>
-
+            <input type="submit" value="Save" class="btn savebid btn-primary">
+          </form>
       </div>
       </div>
   </div>

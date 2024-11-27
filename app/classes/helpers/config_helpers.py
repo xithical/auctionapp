@@ -42,6 +42,10 @@ class Config_Helpers:
         return Config_Helpers.get_latest_config().stripe_api_key
     
     @staticmethod
+    def get_tax_id():
+        return Config_Helpers.get_latest_config().tax_id
+    
+    @staticmethod
     def update_secret():
         latest_config = Config_Helpers.get_latest_config()
         latest_config.secret_value = Helpers.generate_secret()
