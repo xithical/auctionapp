@@ -433,11 +433,34 @@ def admin_users():
                 users = Admin_Controllers.UserAdmin_Controller.list_users()
                 return render_template("Admin-UserInfo.html", users=users)
             case 'POST':
-                return
+                data = request.get_json()
+                Admin_Controllers.UserAdmin_Controller.create_user(
+                    user_firstname = data["user_firstname"],
+                    user_lastname = data["user_lastname"],
+                    user_email = data["user_email"],
+                    user_phone = data["user_phone"],
+                    user_password = data["user_password"],
+                    type_id = data["type_id"]
+                )
+                return redirect("/admin/users")
             case 'PUT':
-                return
+                data = request.get_json()
+                Admin_Controllers.UserAdmin_Controller.update_user(
+                    user_id = data["user_id"],
+                    user_firstname = data["user_firstname"],
+                    user_lastname = data["user_lastname"],
+                    user_email = data["user_email"],
+                    user_phone = data["user_phone"],
+                    user_password = data["user_password"],
+                    type_id = data["type_id"]
+                )
+                return redirect("/admin/users")
             case 'DELETE':
-                return
+                data = request.get_json()
+                Admin_Controllers.UserAdmin_Controller.delete_user(
+                    user_id = data["user_id"]
+                )
+                return redirect("/admin/users")
     else:
         abort(403)
 

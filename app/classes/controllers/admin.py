@@ -241,7 +241,7 @@ class Admin_Controllers:
     class UserAdmin_Controller:
         @staticmethod
         def list_users():
-            return Users_Methods.get_all_users()
+            return sorted(Users_Methods.get_all_users(), key = lambda x: x["user_firstname"])
         
         @staticmethod
         def get_user(user_id: str):
@@ -280,7 +280,7 @@ class Admin_Controllers:
         ):
             user_email = user_email.lower()
 
-            if user_password is not None:
+            if user_password is not (None or ""):
                 Users_Helpers.reset_password(
                     user_id=user_id,
                     password=user_password

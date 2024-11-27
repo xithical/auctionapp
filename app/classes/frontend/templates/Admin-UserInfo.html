@@ -115,12 +115,12 @@
                 <tbody>
                     {% for user in users %}
                     <tr id="{{ user.user_id }}">
-                        <td name="user_firstname">{{ user.user_firstname }}</td>
-                        <td name="user_lastname">{{ user.user_lastname }}</td>
-                        <td name="user_email">{{ user.user_email }}</td>
-                        <td name="user_phone">{{ user.user_phone }}</td>
-                        <td name="user_password"></td>
-                        <td name="type_id">{{ user.type_id.type_name }}</td>
+                        <td name="user_firstname" input-mode="input" input-type="text">{{ user.user_firstname }}</td>
+                        <td name="user_lastname" input-mode="input" input-type="text">{{ user.user_lastname }}</td>
+                        <td name="user_email" input-mode="input" input-type="text">{{ user.user_email }}</td>
+                        <td name="user_phone" input-mode="input" input-type="text">{{ user.user_phone }}</td>
+                        <td name="user_password" input-mode="input" input-type="text"></td>
+                        <td name="type_id" input-mode="select" type_id={{ user.type_id.type_id }}>{{ user.type_id.type_name }}</td>
                         <td>
 							<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                             <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
