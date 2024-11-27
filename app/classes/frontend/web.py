@@ -243,6 +243,22 @@ def admin_edit_auction_item(event_id, item_id):
     else:
         abort(403)
 
+@app.route('/admin/events/<int:event_id>/items/<int:item_id>/bids', methods=['GET','DELETE'])
+@login_required
+def admin_item_bids(event_id, item_id):
+    if User_Login_Controller.is_admin(current_user.user_id):
+        match request.method:
+            case 'GET':
+                bids = Admin_Controllers.EventAdmin_Controller.get_item_bids(item_id)
+                return render_template("Admin-Item-Bids.html", event_id=event_id, bids=bids)
+            case 'DELETE':
+                data = request.get_json()
+                print(data)
+                Admin_Controllers.EventAdmin_Controller.delete_bid(data["item_id"])
+                return redirect(f"/admin/events/{event_id}/items/{item_id}/bids")
+    else:
+        abort(403)
+
 @app.route('/admin/merch', methods=['GET','DELETE'])
 @login_required
 def admin_merch_items():
@@ -365,8 +381,11 @@ def admin_donors():
 @app.route('/admin/donors/<int:donor_id>/items', methods=['GET'])
 @login_required
 def admin_donors_items(donor_id):
-    items = Admin_Controllers.DonorAdmin_Controller.list_donor_items(donor_id)
-    return render_template("Admin-Donor-Information.html", items=items)
+    if User_Login_Controller.is_admin(current_user.user_id):
+        items = Admin_Controllers.DonorAdmin_Controller.list_donor_items(donor_id)
+        return render_template("Admin-Donor-Information.html", items=items)
+    else:
+        abort(403)
 
 ###################################
 #        Auth Placeholders        #

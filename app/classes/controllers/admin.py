@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from app.classes.models.auction_items import AuctionItems_Methods
+from app.classes.models.bids import Bids_Methods
 from app.classes.models.config import Config_Methods
 from app.classes.models.events import Events_Methods
 from app.classes.models.item_donors import ItemDonors_Methods
@@ -103,6 +104,27 @@ class Admin_Controllers:
         @staticmethod
         def delete_auction_item(item_id: int):
             return AuctionItems_Methods.remove_item(item_id)
+        
+        @staticmethod
+        def get_item_bids(item_id: int):
+            bids = Bids_Methods.get_bids_by_item_id(item_id)
+            output = []
+
+            for bid in bids:
+                bid_out = {}
+
+                bid_out["bid_id"] = bid["bid_id"]
+                bid_out["bidder_name"] = f"{bid['user_id']['user_firstname']} {bid['user_id']['user_lastname']}"
+                bid_out["bid_time"] = bid["bid_time"]
+                bid_out["bid_amount"] = round(bid["bid_amount"], 2)
+
+                output.append(bid_out)
+            
+            return sorted(output, key = lambda x: x["bid_time"], reverse = True)
+        
+        @staticmethod
+        def delete_bid(bid_id: int):
+            return Bids_Methods.remove_bid(bid_id)
         
     class DonorAdmin_Controller:
         @staticmethod
