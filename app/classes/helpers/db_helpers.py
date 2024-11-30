@@ -10,6 +10,6 @@ class DatabaseHelpers:
                 for object in query:
                     rows.append(model_to_dict(object))
         except Exception as e:
-            print(f"Database Error: {e}")
+            print(f"{__name__} - Database Error: {e}")
         
         return rows

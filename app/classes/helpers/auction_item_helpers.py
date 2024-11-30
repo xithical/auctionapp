@@ -38,7 +38,7 @@ class Auction_Items_Helpers:
             else:
                 return starting_bid
         except Exception as e:
-            print(f"Database error: {e}")
+            print(f"{__name__} - Database error: {e}")
             return starting_bid
         
     @staticmethod    
