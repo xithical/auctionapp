@@ -81,7 +81,7 @@ class Init_Helpers:
             return admins[0]["user_id"]
     
     @staticmethod
-    def init_db():
+    def init_db(scheduler: bool = False):
         db_config = Config_Helpers.get_db_config()
 
         database = MySQLDatabase(
@@ -94,15 +94,16 @@ class Init_Helpers:
 
         db_proxy.initialize(database)
 
-        try:
-            Config_Helpers.get_latest_config()
-            print("Existing installation detected - proceeding with app startup")
-        except IndexError:
-            print("Fresh installation detected - creating tables now")
-            database.create_tables(tables)
-            Config_Methods.create_config()
-        
-        Init_Helpers.init_roles()
-        Init_Helpers.init_admin()
+        if not scheduler:
+            try:
+                Config_Helpers.get_latest_config()
+                print("Existing installation detected - proceeding with app startup")
+            except IndexError:
+                print("Fresh installation detected - creating tables now")
+                database.create_tables(tables)
+                Config_Methods.create_config()
+            
+            Init_Helpers.init_roles()
+            Init_Helpers.init_admin()
 
         return database
