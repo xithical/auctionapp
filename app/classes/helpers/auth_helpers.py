@@ -6,6 +6,7 @@ from app.classes.helpers.event_helpers import Event_Helpers
 from app.classes.helpers.config_helpers import Config_Helpers
 
 from app.classes.models.auction_items import AuctionItems_Methods
+from app.classes.models.main_cart import MainCart_Methods
 from app.classes.models.users import Users_Methods
 
 class Auth_Helpers:
@@ -33,6 +34,11 @@ class Auth_Helpers:
         if "event_id" not in session:
             return "event_id"
         if Event_Helpers.validate_event(session["event_id"]):
+            try: 
+                MainCart_Methods.get_event_cart_for_user(current_user.user_id, int(session["event_id"]))
+            except Exception as e:
+                print(f"{__name__} - Unable to retrieve cart for user {current_user.user_id} in event {session['event_id']}, redirecting to Stripe Checkout")
+                return "cart"
             if item_id is not None:
                 item = AuctionItems_Methods.get_item_by_id(item_id)
                 if item.event_id.event_id == int(session["event_id"]):

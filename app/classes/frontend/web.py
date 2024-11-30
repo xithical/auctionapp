@@ -121,9 +121,11 @@ def auction_items():
         current_user,
         session
     )
-    if not validate_session:
+    if validate_session is not True:
         if validate_session == "event_id":
             return redirect("/login")
+        elif validate_session == "cart":
+            return redirect("/card_setup")
     event_id = session["event_id"]
     items = Auction_Items_Controller.get_items(event_id)
     return render_template('Auctions.html', items=items)
@@ -135,11 +137,13 @@ def item_details(item_id):
         current_user,
         session
     )
-    if not validate_session:
+    if validate_session is not True:
         if validate_session == "event_id":
             return redirect("/login")
         elif validate_session == "item_id":
             return redirect("/event/items")
+        elif validate_session == "cart":
+            return redirect("/card_setup")
     match request.method:
         case 'GET':
             item = Auction_Items_Controller.get_item_details(item_id)
