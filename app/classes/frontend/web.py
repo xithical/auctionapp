@@ -13,6 +13,7 @@ from flask_login import (
     login_user,
     current_user
 )
+import os
 
 from app.classes.controllers.admin import Admin_Controllers
 from app.classes.controllers.login import User_Login_Controller
@@ -22,7 +23,7 @@ from app.classes.helpers.auction_item_helpers import Auction_Items_Helpers
 from app.classes.helpers.config_helpers import Config_Helpers
 from app.classes.helpers.event_helpers import Event_Helpers
 
-app = Flask('__main__', template_folder='app/classes/frontend/templates')
+app = Flask(__name__, template_folder=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates'))
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -55,7 +56,7 @@ def unauthed_request():
 
 @app.route('/static/assets/<path:path>', methods=['GET'])
 def get_static_asset(path):
-    return send_from_directory('app/classes/frontend/templates/assets', path)
+    return send_from_directory(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates/assets'), path)
 
 ###################################
 #           User Views            #

@@ -18,6 +18,6 @@ RUN python3 -m venv venv \
     && . venv/bin/activate \
     && pip3 install -r requirements.txt
 
-EXPOSE 5000
+EXPOSE 8000
 
-CMD ["python3", "main.py"]
+CMD ["gunicorn", "-w 4", "-b 0.0.0.0", "main:app"]
