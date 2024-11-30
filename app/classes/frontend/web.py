@@ -1,3 +1,5 @@
+import os
+
 from flask import (
     Flask,
     render_template,
@@ -14,7 +16,7 @@ from flask_login import (
     login_user,
     current_user
 )
-import os
+from werkzeug.utils import secure_filename
 
 from app.classes.controllers.admin import Admin_Controllers
 from app.classes.controllers.login import User_Login_Controller
@@ -29,7 +31,7 @@ app = Flask(__name__, template_folder=os.path.join(os.path.dirname(os.path.abspa
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-UPLOAD_FOLDER = "app/uploads"
+UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif']
 
@@ -56,8 +58,14 @@ def unauthed_request():
             return redirect('/login')
 
 @app.route('/static/assets/<path:path>', methods=['GET'])
+@login_required
 def get_static_asset(path):
     return send_from_directory(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates/assets'), path)
+
+@app.route('/uploads/<filename>')
+@login_required
+def get_uploads(filename):
+    return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
 ###################################
 #           User Views            #
@@ -209,7 +217,9 @@ def admin_new_auction_item(event_id):
                 item_image = "/static/assets/img/placeholder1.png"
                 if not file.filename == "":
                     if allowed_file(file.filename):
-                        print("reached file upload")
+                        filename = secure_filename(file.filename)
+                        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                        item_image = f"/uploads/{filename}"
                 Admin_Controllers.EventAdmin_Controller.create_auction_item(
                     item_title=request.form["item_title"],
                     item_description=request.form["item_description"],
@@ -243,7 +253,9 @@ def admin_edit_auction_item(event_id, item_id):
                 item_image = Admin_Controllers.EventAdmin_Controller.get_auction_item(item_id).item_image
                 if not file.filename == "":
                     if allowed_file(file.filename):
-                        print("reached file upload")
+                        filename = secure_filename(file.filename)
+                        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                        item_image = f"/uploads/{filename}"
                 Admin_Controllers.EventAdmin_Controller.update_auction_item(
                     item_id=item_id,
                     item_title=request.form["item_title"],
@@ -307,7 +319,9 @@ def admin_merch_new():
                 item_image = "/static/assets/img/placeholder1.png"
                 if not file.filename == "":
                     if allowed_file(file.filename):
-                        print("reached file upload")
+                        filename = secure_filename(file.filename)
+                        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                        item_image = f"/uploads/{filename}"
                 Admin_Controllers.MerchAdmin_Controller.create_merch_item(
                     merch_title=request.form["item_title"],
                     merch_description=request.form["item_description"],
@@ -331,7 +345,9 @@ def admin_merch_edit(merch_id):
                 item_image = Admin_Controllers.MerchAdmin_Controller.get_merch_item(merch_id).merch_image
                 if not file.filename == "":
                     if allowed_file(file.filename):
-                        print("reached file upload")
+                        filename = secure_filename(file.filename)
+                        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                        item_image = f"/uploads/{filename}"
                 Admin_Controllers.MerchAdmin_Controller.modify_merch_item(
                     merch_id=merch_id,
                     merch_title=request.form["item_title"],
@@ -415,7 +431,9 @@ def admin_config():
                 logo_image = Config_Helpers.get_entity_logo()
                 if not file.filename == "":
                     if allowed_file(file.filename):
-                        print("reached file uploade")
+                        filename = secure_filename(file.filename)
+                        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                        logo_image = f"/uploads/{filename}"
                 Admin_Controllers.Config_Controller.update_config(
                     min_bid_percent = request.form["min_bid_percent"],
                     min_bid_amount = round(float(request.form["min_bid_amount"])),
