@@ -10,54 +10,54 @@
         <!--this is the css link for bootstrap--> 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     
-        <title>Be Kind for Ollie Auction</title>
+        <title>{{org_name}}</title>
     
     </head>
     <body style="background-color: #21362C;">
   
         <div class="wrapper-main">
-          <img src="/assets/img/logo.png" alt="Company logo" class="companyLogo1">
-          <h1 class="sign-inPageTitle">Be Kind for Ollie</h1>
+          <img src="/static/assets/img/logo.png" alt="Company logo" class="companyLogo1">
+          <h1 class="sign-inPageTitle">{{org_name}}</h1>
           <div class="shadow p-3 mb-5 bg-body rounded">
           <div class="card1" style="width: 100%; height:650px">
             <div class="card-body">
-              <form>
+              <form action="/register" method="post">
                 <div class="mb-3">
                   <label for="InputFirstName" class="form-label">First Name</label>
-                  <input type="text" class="form-control" id="exampleInputFirstName" aria-describedby="FirstNameHelp">
+                  <input name="user_firstname" type="text" class="form-control" id="exampleInputFirstName" aria-describedby="FirstNameHelp" required>
                 </div>
       
                 <div class="mb-3">
                   <label for="InputLastName" class="form-label" placeholder="lastname" aria-label="Password">Last Name</label>
-                  <input type="text" class="form-control" id="exampleInputLastName">
+                  <input name="user_lastname" type="text" class="form-control" id="exampleInputLastName" required>
                 </div>
       
                 <div class="mb-3">
                   <label for="InputEmail" class="form-label">Email</label>
-                  <input type="email" class="form-control" id="InputEmail">
+                  <input name="user_email" type="email" class="form-control" id="InputEmail" required>
                 </div>
                 
                 <div class="mb-3">
                     <label for="InputPassword" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password1" onchange="CompareFields('password1', 'password2', true)">
+                    <input name="user_password" type="password" class="form-control" id="password1" onchange="CompareFields('password1', 'password2', true)" required>
                 </div>
                 
                 <!--Confirmation for Passwork input field-->
                 <div class="mb-3">
                   <label for="InputPassword" class="form-label">Confirm Password</label>
-                  <input type="password" class="form-control" id="password2" onchange="CompareFields('password1', 'password2', true)">
+                  <input type="password" class="form-control" id="password2" onchange="CompareFields('password1', 'password2', true)" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="InputPhoneNumber" class="form-label">Phone Number</label>
-                    <input type="number" class="form-control" id="InputPhoneNumber">
+                    <input name="user_phone" type="tel" class="form-control" id="InputPhoneNumber" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="InputAuctionCode" class="form-label">Auction Code</label>
-                    <input type="text" class="form-control" id="InputAuctionCode">
+                    <input name="event_code" type="text" class="form-control" id="InputAuctionCode" required>
                 </div>
-                <a href="Auctions.html" button type="submit" class="btn signin btn-primary" style="margin-top: 20px;" value="Submit" id="Sign-up" disabled="disabled">Join Now!</a>
+                <input type="submit" class="btn signin btn-primary" style="margin-top: 20px;" value="Join Now!">
                 
               </form>
             </div>

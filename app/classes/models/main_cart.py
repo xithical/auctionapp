@@ -78,4 +78,4 @@ class MainCart_Methods:
     
     @staticmethod
     def get_event_cart_for_user(user_id: str, event_id: int):
-        return MainCart.select().where(MainCart.user_id == user_id & MainCart.event_id == event_id).get().cart_id
+        return MainCart.select().where((MainCart.user_id == user_id) & (MainCart.event_id == event_id)).get().cart_id

@@ -37,7 +37,7 @@ class Auth_Helpers:
             try: 
                 MainCart_Methods.get_event_cart_for_user(current_user.user_id, int(session["event_id"]))
             except Exception as e:
-                print(f"{__name__} - Unable to retrieve cart for user {current_user.user_id} in event {session['event_id']}, redirecting to Stripe Checkout")
+                print(f"{__name__} - Unable to retrieve cart for user {current_user.user_id} in event {session['event_id']}, redirecting to Stripe Checkout: {e}")
                 return "cart"
             if item_id is not None:
                 item = AuctionItems_Methods.get_item_by_id(item_id)

@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from app.classes.models.users import Users_Methods
+from app.classes.models.user_types import UserTypes_Methods
 from app.classes.models.events import Events_Methods
 
 from app.classes.helpers.users_helpers import Users_Helpers
@@ -15,12 +16,14 @@ class User_Registration_Controller():
         user_email: str,
         user_phone: str,
         user_password: str,
-        type_id: int,
-        event_code: str
+        event_code: str,
+        type_id: int = None
     ):
         user_email = user_email.lower()
         event_code = event_code.upper()
         user_password = Users_Helpers.hash_password(user_password)
+        if type_id is None:
+            type_id = UserTypes_Methods.get_type_by_name("User").type_id
 
         email_valid = Users_Helpers.check_unique_email(user_email)
         event_valid = Event_Helpers.check_event_code(event_code)
@@ -36,13 +39,17 @@ class User_Registration_Controller():
                 type_id=type_id
             )
         elif not email_valid:
-            return "Email address is already in use"
+            print(f"{__name__} - User {user_email} tried to register, but the email address is already in use")
+            return False
         elif not event_valid:
-            return "Invalid event ID"
+            print(f"{__name__} - User {user_email} tried to register, but the event code {event_code} is invalid")
+            return False
         elif not type_valid:
-            return "Invalid user type"
+            print(f"{__name__} - User {user_email} tried to register, but the type ID {type_id} is invalid")
+            return False
         else:
-            return "Unknown error"
+            print(f"{__name__} - User {user_email} tried to register, but the process encountered an unknown error")
+            return False
 
 class User_Login_Controller:
     @staticmethod

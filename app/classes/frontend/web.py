@@ -19,7 +19,7 @@ from flask_login import (
 from werkzeug.utils import secure_filename
 
 from app.classes.controllers.admin import Admin_Controllers
-from app.classes.controllers.login import User_Login_Controller
+from app.classes.controllers.login import User_Login_Controller, User_Registration_Controller
 from app.classes.controllers.auction_items import Auction_Items_Controller
 from app.classes.controllers.checkout import Checkout_Controller
 
@@ -92,9 +92,23 @@ def user_login():
 def user_register():
     match request.method:
         case 'GET':
-            return
+            org_name = Config_Helpers.get_entity_name()
+            return render_template('SignUp.html', org_name=org_name)
         case 'POST':
-            return
+            new_user = User_Registration_Controller.register_user(
+                user_firstname=request.form["user_firstname"],
+                user_lastname=request.form["user_lastname"],
+                user_email=request.form["user_email"],
+                user_phone=request.form["user_phone"],
+                user_password=request.form["user_password"],
+                event_code=request.form["event_code"]
+            )
+            if new_user is not False:
+                user = User_Login_Controller.get_user(new_user)
+                login_user(user)
+                return redirect(f"/login/{request.form['event_code']}")
+            else:
+                return redirect("/register")
             
 @app.route('/login/<string:event_code>', methods=['GET'])
 @login_required
