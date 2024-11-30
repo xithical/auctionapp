@@ -5,7 +5,8 @@ from flask import (
     request,
     redirect,
     send_from_directory,
-    abort
+    abort,
+    session
 )
 from flask_login import (
     LoginManager,
@@ -74,26 +75,39 @@ def user_login():
             user = User_Login_Controller.login_user(email, password, event_code)
             if user is not None:
                 login_user(user)
-                return redirect(f"/events/{Event_Helpers.get_event_id(event_code)}/items")
+                return redirect(f"/login/{event_code}")
             else:
                 return redirect("/login")
             
-@app.route('/events/<int:event_id>/items', methods=['GET'])
+@app.route('/login/<string:event_code>', methods=['GET'])
 @login_required
-def auction_items(event_id):
+def event_login(event_code):
+    print(type(Event_Helpers.get_event_id(event_code)))
+    session["event_id"] = Event_Helpers.get_event_id(event_code)
+    return redirect("/event/items")
+            
+@app.route('/event/items', methods=['GET'])
+@login_required
+def auction_items():
+    if "event_id" not in session:
+        return redirect("/login")
+    event_id = session["event_id"]
     items = Auction_Items_Controller.get_items(event_id)
-    return render_template('Auctions.html', items=items, event_id=event_id)
+    return render_template('Auctions.html', items=items)
 
-@app.route('/events/<int:event_id>/items/<int:item_id>', methods=['GET','POST'])
+@app.route('/event/items/<int:item_id>', methods=['GET','POST'])
 @login_required
-def item_details(event_id, item_id):
+def item_details(item_id):
     match request.method:
         case 'GET':
             item = Auction_Items_Controller.get_item_details(item_id)
+            if "event_id" not in session:
+                return redirect("/login")
+            event_id = session["event_id"]
             if item["event_id"] == event_id:
                 return render_template("AuctionItemInformation.html", item=item, event_id=event_id)
             else:
-                return redirect(f"/events/{event_id}/items")
+                return redirect(f"/event/items")
         case 'POST':
             return
 

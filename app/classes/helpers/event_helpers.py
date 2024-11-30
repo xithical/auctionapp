@@ -21,4 +21,4 @@ class Event_Helpers:
         
     @staticmethod
     def get_event_id(event_code: str):
-        return Events_Methods.get_event_by_code(event_code)
+        return Events_Methods.get_event_by_code(event_code).event_id
