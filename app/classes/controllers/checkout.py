@@ -3,6 +3,7 @@ from datetime import datetime
 from app.classes.models.main_cart import MainCart_Methods
 from app.classes.models.cart_merch_items import CartMerchItems_Methods
 from app.classes.models.cart_auctionitems import Cart_AuctionItems_Methods
+from app.classes.models.users import Users_Methods
 
 from app.classes.helpers.merchandise_items_helpers import Merchandise_Item_Helpers
 from app.classes.helpers.auction_item_helpers import Auction_Items_Helpers
@@ -63,4 +64,16 @@ class Checkout_Controller:
             event_id=event_id,
             donation_amount=donation_amount,
             donation_time=donation_time
+        )
+    
+    @staticmethod
+    def get_user(user_id: str):
+        return Users_Methods.get_user_by_id(user_id)
+    
+    @staticmethod
+    def create_cart(user_id: str, event_id: int, checkout_session: str):
+        return MainCart_Methods.create_cart(
+            user_id=user_id,
+            event_id=event_id,
+            checkout_session=checkout_session
         )

@@ -21,10 +21,13 @@ from werkzeug.utils import secure_filename
 from app.classes.controllers.admin import Admin_Controllers
 from app.classes.controllers.login import User_Login_Controller
 from app.classes.controllers.auction_items import Auction_Items_Controller
+from app.classes.controllers.checkout import Checkout_Controller
 
 from app.classes.helpers.auction_item_helpers import Auction_Items_Helpers
+from app.classes.helpers.auth_helpers import Auth_Helpers
 from app.classes.helpers.config_helpers import Config_Helpers
 from app.classes.helpers.event_helpers import Event_Helpers
+from app.classes.helpers.payments_helpers import Payments_Helpers
 
 app = Flask(__name__, template_folder=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates'))
 
@@ -90,15 +93,37 @@ def user_login():
 @app.route('/login/<string:event_code>', methods=['GET'])
 @login_required
 def event_login(event_code):
-    print(type(Event_Helpers.get_event_id(event_code)))
     session["event_id"] = Event_Helpers.get_event_id(event_code)
+    return redirect("/event/items")
+
+@app.route('/card_setup', methods=['GET'])
+@login_required
+def card_setup():
+    customer_id = Payments_Helpers.verify_customer(current_user.user_id)
+    return redirect(Payments_Helpers.create_checkout_session(
+        customer_id=customer_id,
+        success_url=f"{request.base_url}/card_add?session_id={{CHECKOUT_SESSION_ID}}"
+    )["url"])
+
+@app.route('/card_setup/card_add', methods=['GET'])
+@login_required
+def card_add():
+    user_id = current_user.user_id
+    event_id = session["event_id"]
+    checkout_session = request.args.get('session_id')
+    Checkout_Controller.create_cart(user_id, event_id, checkout_session)
     return redirect("/event/items")
             
 @app.route('/event/items', methods=['GET'])
 @login_required
 def auction_items():
-    if "event_id" not in session:
-        return redirect("/login")
+    validate_session = Auth_Helpers.validate_session(
+        current_user,
+        session
+    )
+    if not validate_session:
+        if validate_session == "event_id":
+            return redirect("/login")
     event_id = session["event_id"]
     items = Auction_Items_Controller.get_items(event_id)
     return render_template('Auctions.html', items=items)
@@ -106,6 +131,15 @@ def auction_items():
 @app.route('/event/items/<int:item_id>', methods=['GET','POST'])
 @login_required
 def item_details(item_id):
+    validate_session = Auth_Helpers.validate_session(
+        current_user,
+        session
+    )
+    if not validate_session:
+        if validate_session == "event_id":
+            return redirect("/login")
+        elif validate_session == "item_id":
+            return redirect("/event/items")
     match request.method:
         case 'GET':
             item = Auction_Items_Controller.get_item_details(item_id)

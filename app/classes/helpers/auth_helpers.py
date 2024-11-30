@@ -4,6 +4,8 @@ from datetime import datetime, timedelta
 from app.classes.helpers.users_helpers import Users_Helpers
 from app.classes.helpers.event_helpers import Event_Helpers
 from app.classes.helpers.config_helpers import Config_Helpers
+
+from app.classes.models.auction_items import AuctionItems_Methods
 from app.classes.models.users import Users_Methods
 
 class Auth_Helpers:
@@ -27,28 +29,17 @@ class Auth_Helpers:
             return None
         
     @staticmethod
-    def issue_jwt_user(user_id: str, event_id: int):
-        expiration = datetime.now() + timedelta(hours=24)
-        encoded_jwt = jwt.encode(
-            {
-                "user_id": user_id,
-                "event_id": event_id,
-                "valid_to": expiration
-            },
-            Config_Helpers.get_secret_value(),
-            algorithm="HS256"
-        )
-        return encoded_jwt
-    
-    @staticmethod
-    def issue_jwt_admin(user_id: str):
-        expiration = datetime.now() + timedelta(hours=24)
-        encoded_jwt = jwt.encode(
-            {
-                "user_id": user_id,
-                "valid_to": expiration
-            },
-            Config_Helpers.get_secret_value(),
-            algorithm="HS256"
-        )
-        return encoded_jwt
+    def validate_session(current_user, session, item_id: int = None):
+        if "event_id" not in session:
+            return "event_id"
+        if Event_Helpers.validate_event(session["event_id"]):
+            if item_id is not None:
+                item = AuctionItems_Methods.get_item_by_id(item_id)
+                if item.event_id.event_id == int(session["event_id"]):
+                    return True
+                else:
+                    return "item_id"
+            else:
+                return True
+        else:
+            return "event_id"

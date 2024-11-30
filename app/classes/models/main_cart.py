@@ -1,6 +1,7 @@
 from peewee import (
     AutoField,
     BooleanField,
+    CharField,
     ForeignKeyField
 )
 
@@ -17,6 +18,7 @@ class MainCart(BaseModel):
     cart_id = AutoField(primary_key=True, unique=True)
     user_id = ForeignKeyField(Users, to_field="user_id")
     event_id = ForeignKeyField(Events, to_field="event_id")
+    checkout_session = CharField(max_length=255)
     is_active = BooleanField(default = True)
     class Meta:
         table_name = "MainCart"
@@ -30,6 +32,7 @@ class MainCart_Methods:
     def create_cart(
         user_id: str,
         event_id: int,
+        checkout_session: str,
         is_active: bool = True
     ) -> int:
         """
@@ -51,6 +54,7 @@ class MainCart_Methods:
         return MainCart.create(
             user_id=user_id,
             event_id=event_id,
+            checkout_session=checkout_session,
             is_active=is_active
         ).cart_id
     
