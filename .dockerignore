@@ -18,4 +18,6 @@ lang_sort_log.txt
 .vscode
 README.md
 sonar-project.properties
+
 app/config/
+app/classes/frontend/uploads/
