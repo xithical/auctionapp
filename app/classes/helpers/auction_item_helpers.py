@@ -31,7 +31,7 @@ class Auction_Items_Helpers:
     ):
         starting_bid = Auction_Items_Helpers.get_starting_bid(item_id)
         try:
-            bids = Bids_Methods.get_bid_by_id(item_id)
+            bids = Bids_Methods.get_bids_by_item_id(item_id)
             sorted_bids = sorted(bids, key=lambda x: x["bid_amount"], reverse=True)
             if sorted_bids[0]["bid_amount"] > starting_bid:
                 return round(sorted_bids[0]["bid_amount"], 2)
