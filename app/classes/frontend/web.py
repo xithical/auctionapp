@@ -111,6 +111,8 @@ def card_add():
     user_id = current_user.user_id
     event_id = session["event_id"]
     checkout_session = request.args.get('session_id')
+    if not Payments_Helpers.verify_checkout_session(checkout_session):
+        return redirect("/card_setup")
     Checkout_Controller.create_cart(user_id, event_id, checkout_session)
     return redirect("/event/items")
             

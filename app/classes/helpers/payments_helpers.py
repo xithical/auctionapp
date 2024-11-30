@@ -42,3 +42,11 @@ class Payments_Helpers:
             success_url=success_url,
             payment_method_types=["card"]
         )
+    
+    @staticmethod
+    def verify_checkout_session(checkout_session: str):
+        try:
+            stripe.checkout.Session.retrieve(checkout_session)
+            return True
+        except:
+            return False
