@@ -10,7 +10,7 @@ app.config["SECRET_KEY"] = Config_Helpers.get_secret_value()
 # Run the app
 if __name__ == "__main__":    
 
-    app.run()
+    app.run(host = '0.0.0.0', ssl_context='adhoc')
 
     # Terminate when the app stops running
     exit()
