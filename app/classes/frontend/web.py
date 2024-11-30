@@ -61,12 +61,10 @@ def unauthed_request():
             return redirect('/login')
 
 @app.route('/static/assets/<path:path>', methods=['GET'])
-@login_required
 def get_static_asset(path):
     return send_from_directory(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates/assets'), path)
 
 @app.route('/uploads/<filename>')
-@login_required
 def get_uploads(filename):
     return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
@@ -89,6 +87,14 @@ def user_login():
                 return redirect(f"/login/{event_code}")
             else:
                 return redirect("/login")
+            
+@app.route('/register', methods=['GET','POST'])
+def user_register():
+    match request.method:
+        case 'GET':
+            return
+        case 'POST':
+            return
             
 @app.route('/login/<string:event_code>', methods=['GET'])
 @login_required
