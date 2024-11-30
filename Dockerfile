@@ -20,4 +20,4 @@ RUN python3 -m venv venv \
 
 EXPOSE 8000
 
-CMD ["gunicorn", "-w 4", "-b 0.0.0.0", "main:app"]
+ENTRYPOINT ["./start.sh"]
