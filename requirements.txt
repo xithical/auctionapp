@@ -7,3 +7,4 @@ flask==3.1.0
 Flask_Login==0.6.3
 gunicorn==23.0.0
 APScheduler==3.11.0
+Werkzeug==3.1.3
