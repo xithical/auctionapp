@@ -4,7 +4,7 @@ from app.classes.models.bidder_donations import BidderDonation_Methods
 
 class Donations_Helpers:
     @staticmethod
-    def place_bid(
+    def place_donation(
         user_id: str,
         event_id: int,
         donation_amount: float,

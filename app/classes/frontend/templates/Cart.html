@@ -22,42 +22,70 @@
   
   <div class="wrapper-main">
   
-    <img src="/assets/img/webpageLogo.png" alt="Company logo" class="companyLogo2">
+    <img src="/static/assets/img/webpageLogo.png" alt="Company logo" class="companyLogo2">
     <h1 class="pageTitle">Cart</h1>
-
+    <h2>Auction Items</h2>
     <!--Cart Card Format-->
+    {% for item in auction_items %}
+    <div class="shadow p-3 mb-5 bg-body rounded">
+      <div class="card2" style="width: 100%; height: 200px;">
+
+        <div class="col-sm-3">
+          <img src="{{item.value.item_image}}" style="max-width: 150px; max-height: 150px;" alt="placeholder" class="imgplaceholder">
+        </div>
+
+        <div class="col-sm-7">
+          <div class="card-body">
+            <div class="auctionItemTitle">
+              <p class="card-text" style="font-weight: bolder; font-size: 14px; margin-top:10px;">{{ item.value.item_title }}</p>
+              <p class="card-text" style="font-size: 14px; color: #ACA9A9; margin-top: -15px;">Donated by: {{ item.value.donor_name }}</p>
+              <p class="card-text" style="font-size: 14px; color: #ACA9A9;">Bid price: <span style="color: black; font-weight: bolder;">${{ item.value.highest_bid }} </span> <b>USD</b></p>
+              <p class="card-text" style="font-size: 14px; color: #ACA9A9; margin-top: -15px;">Bidders ({{ item.value.num_bids }} bids)</p>
+            </div>
+          </div>
+        </div> 
+      </div>
+    </div>
+    {% endfor %}
+    <h2>Merchandise Items</h2>
+    <!--Cart Card Format-->
+    {% for item in merch_items %}
+    <form action="/cart/remove?entry_id={{ item.key }}">
     <div class="shadow p-3 mb-5 bg-body rounded">
       <div class="card2" style="width: 100%; height: 200px;">
 
         <!--Remove item button-->
-        <button type="btn-danger" class="btn btn-danger">-</button>
+        <input type="submit" class="btn btn-danger" value="-">
 
         <div class="col-sm-3">
-          <img src="assets/img/placeholder1.png" alt="placeholder" class="imgplaceholder">
+          <img src="{{ item.value.item_image }}" alt="placeholder" class="imgplaceholder">
         </div>
 
         <div class="col-sm-7">
           <div class="card-body">
             <div class="auctionItemTitle">
               <p class="card-text" style="font-weight: bolder; font-size: 14px; margin-top:10px;">Item Title</p>
-              <p class="card-text" style="font-size: 14px; color: #ACA9A9; margin-top: -15px;">Donated by: John Doe</p>
-              <p class="card-text" style="font-size: 14px; color: #ACA9A9;">Bid price: <span style="color: black; font-weight: bolder;">1 </span> <b>USD</b></p>
-              <p class="card-text" style="font-size: 14px; color: #ACA9A9; margin-top: -15px;">Bidders (0 bids)</p>
+              <p class="card-text" style="font-size: 14px; color: #ACA9A9;">Price: <span style="color: black; font-weight: bolder;">${{ item.value.price }} </span> <b>USD</b></p>
             </div>
           </div>
         </div> 
       </div>
     </div>
-
-          <!--Enter donation amount form-->
-          <div class="form-floating mb-3">
-            <input type="number" class="form-control" id="floatingInput" placeholder="Enter donation amount">
-            <label for="floatingInput">Enter donation amount:</label>
-          </div>
-          <a href="Cart.html" button type="placedonation" class="btn placedonation btn-primary"><b>Place Donation</b></a>
-
-    <!--Add to cart button-->
-    <a href="OrderSummary.html" button type="checkout" class="btn checkout btn-primary" data-name="ItemTitle" data-price="1.00"style="margin-bottom: 70px;"><b>Checkout</b></a>
+    </form>
+    {% endfor %}
+    <div style="margin-top: 50px; float: right;">
+      <div style="float: right;">
+        <h3>Auction Total: ${{ auction_total }}</h3>
+        <h3>Merch Total: ${{ merch_total }}</h3>
+        <h3 style="margin-top: 25px">Grand Total: ${{ total }}</h3>
+      </div>
+      <div style="clear: both; margin-top: 25px;">
+        <p>
+          Note: Total will be charged at the close time of the auction.<br>
+          Please contact the event administrator to remove an auction item.
+        </p>
+      </div>
+    </div>
     
   <!--Nav Bar-->
   <header class="header" id="header">
@@ -66,7 +94,7 @@
         <ul class="nav__list">
 
           <li class="nav__item">
-            <a href="Auctions.html" class="nav__link">        
+            <a href="/event/items" class="nav__link">        
               <i class='fa fa-legal nav__icon'></i>
                 <span class="nav__name">Auctions</span>
             </a>
@@ -87,7 +115,7 @@
           </li>
 
           <li class="nav__item">
-            <a href="Cart.html" class="nav__link active-link" data-toggle="card" data-target="#cart">
+            <a href="/cart" class="nav__link active-link" data-toggle="card" data-target="#cart">
               <i class='bx bx-cart nav__icon'></i>
                 <span class="nav__name">Cart</span>
             </a>

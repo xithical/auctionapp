@@ -32,3 +32,7 @@ class Merchandise_Item_Helpers():
             cart_id = MainCart_Methods.create_cart(user_id, event_id)
 
         return CartMerchItems_Methods.create_entry(cart_id, item_id)
+    
+    @staticmethod
+    def get_item_id(item: dict):
+        return item["merch_id"]

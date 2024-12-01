@@ -1,4 +1,5 @@
 from datetime import datetime
+from decimal import Decimal
 
 from app.classes.models.main_cart import MainCart_Methods
 from app.classes.models.cart_merch_items import CartMerchItems_Methods
@@ -20,11 +21,20 @@ class Checkout_Controller:
         cart = MainCart_Methods.get_event_cart_for_user(user_id, event_id)
         cart_entries = cart_model.get_entries_by_cart(cart)
 
-        output = []
+        cart_value = Decimal(0.00)
+        output = {
+            "items": []
+        }
         for entry in cart_entries:
-            item = helper.get_item_details(entry["merch_id"])
-            output.append(item)
-
+            item_id = helper.get_item_id(entry)
+            item = helper.get_item_details(item_id)
+            item_out = {
+                "key": entry["entry_id"],
+                "value": item
+            }
+            output["items"].append(item_out)
+            cart_value += item["price"]
+        output["price_total"] = cart_value
         return output
     
     @staticmethod
@@ -59,7 +69,7 @@ class Checkout_Controller:
         donation_amount: float,
         donation_time: datetime = datetime.now()
     ):
-        return Donations_Helpers.place_bid(
+        return Donations_Helpers.place_donation(
             user_id=user_id,
             event_id=event_id,
             donation_amount=donation_amount,
@@ -77,3 +87,11 @@ class Checkout_Controller:
             event_id=event_id,
             checkout_session=checkout_session
         )
+    
+    @staticmethod
+    def remove_merchcart_entry(cart_id: int, entry_id: int):
+        entry = CartMerchItems_Methods.get_entry_by_id(entry_id)
+        if entry.cart_id.cart_id == cart_id:
+            return CartMerchItems_Methods.remove_entry(entry_id)
+        else:
+            return None

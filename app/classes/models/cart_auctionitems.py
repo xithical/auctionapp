@@ -71,4 +71,12 @@ class Cart_AuctionItems_Methods:
     @staticmethod
     def get_entries_by_cart(cart_id: int):
         query = Cart_AuctionItems.select().where(Cart_AuctionItems.cart_id == cart_id)
-        return DatabaseHelpers(query)
+        return DatabaseHelpers.get_rows(query)
+    
+    @staticmethod
+    def remove_entries_for_item(item_id: int):
+        query = Bids.select().where(Bids.item_id == item_id)
+        bids = DatabaseHelpers.get_rows(query)
+        for bid in bids:
+            Cart_AuctionItems.delete().where(Cart_AuctionItems.bid_id == bid["bid_id"]).execute()
+        return True

@@ -57,11 +57,11 @@ class CartMerchItems_Methods:
         return CartMerchItems.select().where(CartMerchItems.entry_id == entry_id)
     
     @staticmethod
-    def update_cart(item_obj: object):
+    def update_entry(item_obj: object):
         return item_obj.save()
     
     @staticmethod
-    def remove_cart(self, entry_id):
+    def remove_entry(entry_id: int):
         CartMerchItems.delete().where(CartMerchItems.entry_id == entry_id).execute()
         return True
     

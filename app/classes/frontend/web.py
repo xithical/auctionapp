@@ -181,6 +181,52 @@ def item_details(item_id):
                 return redirect("/event/items")
             else:
                 return redirect(f"/event/items/{item_id}")
+
+@app.route('/cart', methods=['GET'])
+@login_required
+def user_cart():
+    validate_session = Auth_Helpers.validate_session(
+        current_user,
+        session
+    )
+    if validate_session is not True:
+        if validate_session == "event_id":
+            return redirect("/login")
+        elif validate_session == "cart":
+            return redirect("/card_setup")
+    event_id = session["event_id"]
+    cart = Checkout_Controller.get_cart(current_user.user_id, event_id)
+    auction_items = cart["auction_items"]["items"]
+    merch_items = cart["merch_items"]["items"]
+    auction_total = cart["auction_items"]["price_total"]
+    merch_total = cart["merch_items"]["price_total"]
+    total = auction_total + merch_total
+    return render_template("Cart.html",
+        auction_items=auction_items,
+        merch_items=merch_items,
+        auction_total=auction_total,
+        merch_total=merch_total,
+        total=total
+    )
+
+@app.route('/cart/remove', methods=['GET'])
+@login_required
+def cart_remove():
+    validate_session = Auth_Helpers.validate_session(
+        current_user,
+        session
+    )
+    if validate_session is not True:
+        if validate_session == "event_id":
+            return redirect("/login")
+        elif validate_session == "cart":
+            return redirect("/card_setup")
+    event_id = session["event_id"]
+    entry_id = request.args.get('entry_id')
+    cart_id = Checkout_Controller.get_cart(current_user.user_id, event_id)
+    Checkout_Controller.remove_merchcart_entry(cart_id, entry_id)
+    return redirect("/cart")
+
 ###################################
 #           Admin Views           #
 ###################################
