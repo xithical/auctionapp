@@ -35,6 +35,5 @@ class Auction_Items_Controller:
         item_id: int,
         user_id: str,
         bid_amount: float,
-        bid_time: datetime = datetime.now()
     ):
-        return Bids_Methods.create_bid(bid_amount, bid_time, item_id, user_id)
+        return Auction_Items_Helpers.place_bid(item_id, bid_amount, user_id)

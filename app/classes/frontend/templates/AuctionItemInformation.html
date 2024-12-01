@@ -46,11 +46,13 @@
           <p class="card-text" style="margin-top: -15px;"><span style="color: #06D75A;">${{ item.highest_bid }} </span><b>({{ item.num_bids }} bids)</b></p>
           
           <!--Enter bid amount form-->
+          <form action="" method="post">
           <div class="form-floating mb-3">
-            <input type="number" class="form-control" id="floatingInput" placeholder="Enter bid amount">
+            <input name="bid_amount" type="number" class="form-control" id="floatingInput" placeholder="Enter bid amount" required>
             <label for="floatingInput">Enter bid amount</label>
           </div>
-          <a href="Cart.html" button type="placebid" class="btn placebid btn-primary"><b>Place bid</b></a>
+          <input type="submit" type="placebid" class="btn placebid btn-primary" value="Place bid">
+          </form>
         </div>
       </div> 
     

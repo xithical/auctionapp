@@ -76,11 +76,12 @@ class Auction_Items_Helpers:
         amount: float,
         user_id: str
     ):
+        bid = round(float(amount), ndigits=2)
         highest_bid = Auction_Items_Helpers.get_current_bid(item_id)
-        if amount > highest_bid:
+        if bid > highest_bid:
             return Bids_Methods.create_bid(
                 item_id=item_id,
-                amount=amount,
+                bid_amount=bid,
                 user_id=user_id,
                 bid_time=datetime.now()
             )

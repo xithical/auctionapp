@@ -166,19 +166,21 @@ def item_details(item_id):
             return redirect("/event/items")
         elif validate_session == "cart":
             return redirect("/card_setup")
+    item = Auction_Items_Controller.get_item_details(item_id)
     match request.method:
         case 'GET':
-            item = Auction_Items_Controller.get_item_details(item_id)
-            if "event_id" not in session:
-                return redirect("/login")
-            event_id = session["event_id"]
-            if item["event_id"] == event_id:
-                return render_template("AuctionItemInformation.html", item=item, event_id=event_id)
-            else:
-                return redirect(f"/event/items")
+            return render_template("AuctionItemInformation.html", item=item, event_id=session["event_id"])
         case 'POST':
-            return
-
+            item = Auction_Items_Controller.get_item_details(item_id)
+            bid = Auction_Items_Controller.place_bid(
+                item_id=item_id,
+                bid_amount=request.form["bid_amount"],
+                user_id=current_user.user_id
+            )
+            if bid is not None:
+                return redirect("/event/items")
+            else:
+                return redirect(f"/event/items/{item_id}")
 ###################################
 #           Admin Views           #
 ###################################
