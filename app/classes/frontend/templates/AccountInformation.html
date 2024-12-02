@@ -22,31 +22,32 @@
   
   <div class="wrapper-main">
   
-    <img src="/assets/img/webpageLogo.png" alt="Company logo" class="companyLogo2">
+    <img src="/static/assets/img/webpageLogo.png" alt="Company logo" class="companyLogo2">
     <h1 class="pageTitle">Account Information</h1>
     <div class="shadow p-3 mb-5 bg-body rounded">
     <div class="card2" style="width: 100%; height:437px;">
       <div class="card-body">
-        <form>
-          <fieldset disabled>
-            <div class="mb-3">
-                <label for="InputFirstName" class="form-label">First Name</label>
-                <input type="firstName" class="form-control" id="exampleInputFirstName" aria-describedby="FirstNameHelp">
-            </div>
-            <div class="mb-3">
-                <label for="InputLastName" class="form-label" placeholder="lastname" aria-label="Password">Last Name</label>
-                <input type="lastname" class="form-control" id="exampleInputLastName">
-            </div>
-            <div class="mb-3">
-                <label for="InputEmail" class="form-label">Email</label>
-                <input type="email" class="form-control" id="InputEmail">
-            </div>
-            <div class="mb-3">
-                <label for="InputePhoneNumber" class="form-label">Phone Number</label>
-                <input type="phonenumber" class="form-control" id="InputPhoneNumber">
-            </div>
-          </fieldset>
-          <a href="SignIn.html" button type="logout" class="btn signout btn-primary">Logout</a>
+        <form action="" method="post">
+          <div class="mb-3">
+              <label for="InputFirstName" class="form-label">First Name</label>
+              <input name="user_firstname" type="firstName" class="form-control" id="exampleInputFirstName" aria-describedby="FirstNameHelp" value="{{ user.user_firstname }}">
+          </div>
+          <div class="mb-3">
+              <label for="InputLastName" class="form-label" placeholder="lastname">Last Name</label>
+              <input name="user_lastname" type="lastName" class="form-control" id="exampleInputLastName" value="{{ user.user_lastname }}">
+          </div>
+          <div class="mb-3">
+              <label for="InputEmail" class="form-label">Email</label>
+              <input name="user_email" type="email" class="form-control" id="InputEmail" value="{{ user.user_email }}">
+          </div>
+          <div class="mb-3">
+              <label for="InputPhoneNumber" class="form-label">Phone Number</label>
+              <input name="user_phone" type="phonenumber" class="form-control" id="InputPhoneNumber" value="{{ user.user_phone }}">
+          </div>
+          <input type="submit" class="btn placebid btn-primary" value="Update Info">
+        </form>
+        <form action="/logout" method="get">
+          <input type="submit" class="btn signout btn-primary" value="Logout">
         </form>
       </div>
     </div>

@@ -16,10 +16,12 @@ from flask_login import (
     LoginManager,
     login_required,
     login_user,
+    logout_user,
     current_user
 )
 from werkzeug.utils import secure_filename
 
+from app.classes.controllers.account import Account_Controller
 from app.classes.controllers.admin import Admin_Controllers
 from app.classes.controllers.login import User_Login_Controller, User_Registration_Controller
 from app.classes.controllers.auction_items import Auction_Items_Controller
@@ -296,6 +298,38 @@ def donations():
                 Decimal(request.form["donation_amount"])
             )
             return redirect("/donate")
+        
+@app.route('/account', methods=['GET','POST'])
+@login_required
+def account_manager():
+    validate_session = Auth_Helpers.validate_session(
+        current_user,
+        session
+    )
+    if validate_session is not True:
+        if validate_session == "event_id":
+            return redirect("/login")
+        elif validate_session == "cart":
+            return redirect("/card_setup")
+    match request.method:
+        case 'GET':
+            user = Account_Controller.list_user_details(current_user.user_id)
+            return render_template("AccountInformation.html", user=user)
+        case 'POST':
+            Account_Controller.update_user_details(
+                current_user.user_id,
+                request.form["user_firstname"],
+                request.form["user_lastname"],
+                request.form["user_email"],
+                request.form["user_phone"]
+            )
+            return redirect("/account")
+
+@app.route('/logout', methods=['GET'])
+@login_required
+def user_logout():
+    logout_user()
+    return redirect("/login")
 
 ###################################
 #           Admin Views           #
