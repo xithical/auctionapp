@@ -1,0 +1,41 @@
+services:
+  auctionapp:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app/config:/app/config
+      - ./app/classes/frontend/uploads:/app/classes/frontend/uploads
+    environment:
+      # Adjust to the appropriate timezone where necessary
+      - TZ=America/Chicago
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      auctionapp-db:
+        condition: service_healthy
+        restart: true
+  auctionapp-db:
+    image: mysql:8.0
+    restart: always
+    command: --lower_case_table_names=1
+    environment:
+      MYSQL_DATABASE: 'auctionapp'
+      MYSQL_USER: 'auctionapp'
+      MYSQL_PASSWORD: 'changeme'
+      MYSQL_ROOT_PASSWORD: 'changeme'
+      # Change as required for access control
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - auctionapp-db:/var/lib/mysql
+    healthcheck:
+      test: ["mysqladmin", "ping", "--silent"]
+      interval: 5s
+      timeout: 30s
+      retries: 6
+      start_period: 10s
+volumes:
+  auctionapp-db:

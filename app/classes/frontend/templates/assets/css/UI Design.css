@@ -1,0 +1,496 @@
+/*=============== GOOGLE FONTS ===============*/
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap");
+
+.wrapper-main {
+    width: 1000px;
+    padding: 100px ;
+    margin: 0 auto;
+}
+
+/* adding break points for responsive devices */
+
+/*This is for mobile devices*/
+@media (max-width: 600px) {
+    .wrapper-main {
+        width: 100%;
+        padding: 5% ;
+        margin: 0 auto;
+    }
+
+}
+
+.sign-inPageTitle {
+    color: #FFFFFF;
+    font-size: 38px;
+    font-family: Georgia;
+    padding: 15px;
+    text-align: center;
+}
+
+.pageTitle {
+    color: #000000;
+    font-size: 30px;
+    /*font-family:*/
+    font-weight: bolder;
+    padding: 15px;
+    text-align: center;
+    margin-bottom:-5px;
+     
+}
+
+.card1 {
+    box-shadow: p-3 mb-5 bg-body rounded;
+     
+}
+
+
+.card2 {
+    box-shadow: p-3 mb-5 bg-body rounded;
+
+}
+
+.companyLogo1{
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 25%;
+   
+}
+
+.companyLogo2{
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+   
+}
+
+/*sign in button*/
+.btn.signin.btn-primary {
+    background: #21362C;
+    border-color: #21362C !important;
+    margin-left: auto;
+    margin-right: auto;
+    display:block;
+    padding:10px 20px 10px 20px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    
+}
+
+.btn.signin.btn-primary:hover {
+    background: #518C70;
+}
+
+.btn.signin.btn-primary:active,
+.btn.signin.btn-primary:focus
+ {
+    background: #21362C !important;
+    
+}
+
+.sign-up-link {
+    color: #21362C;
+}
+
+.sign-up-link:hover {
+    color: #518C70;
+}
+
+/*sign out button */
+.btn.signout.btn-primary {
+    background: #D70606;
+    border-color: #D70606 !important;
+    margin-left: auto;
+    margin-right: auto;
+    display:block;
+    padding:10px 20px 10px 20px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    
+}
+
+.btn.signout.btn-primary:hover {
+    background: #bb2121;
+}
+
+.btn.signout.btn-primary:active,
+.btn.signout.btn-primary:focus
+ {
+    background: #C10000 !important;
+    
+}
+
+
+/* sign up button */
+.sign-up-link {
+    color: #21362C;
+}
+
+.sign-up-link:hover {
+    color: #518C70;
+}
+
+html {
+    scroll-behavior: smooth;
+  }
+
+.imgplaceholder {
+   float:left;
+   margin-top: 25px;
+   display:flex;
+}
+
+.imgplaceholder1 {
+    height: 226px !important;
+    width: 270px !important;
+    margin-left:auto;
+    margin-right:auto;
+    margin-bottom: 15px;
+    float:left;
+    
+}
+
+.auctionItemTitle {
+ 
+   margin-left: 15px;
+   margin-top: 15px;
+   float:left;
+}
+
+.itemTitle {
+    font-weight: bolder;
+    font-size: 14px;
+}
+
+.auctionItemBody {
+    margin-right: 65px;
+    margin-top: 50px;
+    float:right;
+}
+
+.itemBody {
+    font-size: 14px;
+    color: #ACA9A9;
+}
+
+.dropdown {
+    margin-bottom: 15px;
+    margin-top: 10px;
+
+}
+
+.btn.btn-secondary.dropdown-toggle {
+    background-color: white;
+    color:black;
+}
+
+.tileLink {
+    color:black;
+}
+
+.btn.placebid.btn-primary {
+    background-color:#06D75A;
+    border-color: #06D75A !important;
+    margin-bottom:10px;
+    padding:10px 10px 10px 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    display:block;
+}
+
+
+.btn.placebid.btn-primary:hover {
+    background: #06d75ab8;
+}
+
+.btn.placebid.btn-primary:active,
+.btn.placebid.btn-primary:focus {
+    background: #05a645 !important;
+    
+}
+
+.btn-close {
+    margin-top: 15px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.btn.btn-danger {
+    float:right;
+    font-weight: bolder;
+    height: 30px;
+    font-size: 12px;
+    font-weight: bolder;
+    align-items: center;
+    justify-content: center;
+   
+}
+
+.btn.checkout.btn-primary {
+    background-color:#06D75A;
+    border-color: #06D75A !important;
+    margin-bottom:90px;
+    padding:10px 10px 10px 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    display:block;
+    
+}
+
+.btn.checkout.btn-primary:hover {
+    background: #06d75ab8;
+}
+
+.btn.checkout.btn-primary:active,
+.btn.checkout.btn-primary:focus {
+    background: #05a645 !important;
+    
+}
+
+.btn.purchase.btn-primary {
+    background-color:#06D75A;
+    border-color: #06D75A !important;
+    margin-bottom:90px;
+    padding:10px 10px 10px 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    display:block;
+    
+}
+
+.btn.purchase.btn-primary:hover {
+    background: #06d75ab8;
+}
+
+.btn.purchase.btn-primary:active,
+.btn.purchase.btn-primary:focus {
+    background: #05a645 !important;
+    
+}
+
+.btn.finalpurchase.btn-primary {
+    background-color:#06D75A;
+    border-color: #06D75A !important;
+    margin-bottom:90px;
+    padding:10px 10px 10px 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    display:block;
+    
+}
+
+.btn.finalpurchase.btn-primary:hover {
+    background: #06d75ab8;
+}
+
+.btn.finalpurchase.btn-primary:active,
+.btn.finalpurchase.btn-primary:focus {
+    background: #05a645 !important;
+    
+}
+
+.btn.placedonation.btn-primary {
+    background-color:#000000;
+    border-color: #000000 !important;
+    margin-bottom:90px;
+    padding:10px 10px 10px 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    display:block;
+    
+}
+
+.btn.placedonation.btn-primary:hover {
+    background: #000000cc;
+}
+
+.btn.placedonation.btn-primary:active,
+.btn.placedonation.btn-primary:focus {
+    background: #00000039 !important;
+    
+}
+
+.btn.reset.btn-primary {
+    margin-bottom:90px;
+    padding:10px 10px 10px 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    display:block;
+    
+}
+
+.btn.resetlink.btn-primary {
+    margin-bottom:90px;
+    padding:10px 10px 10px 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    display:block;
+    
+}
+
+.lock_icon {
+    font-size: 2.75rem;
+}
+
+.lock {
+    text-align: center;
+}
+
+.unlock_icon {
+    font-size: 2.75rem;
+}
+
+.unlock {
+    text-align: center;
+}
+
+/* css for admin user info table */
+
+.table-wrapper {
+		width: 1500px;
+		margin: 30px auto;
+        padding-right: 150px;
+ 
+    }
+    .table-title {
+        padding-bottom: 10px;
+        margin: 0 0 10px;
+    }
+    .table-title h2 {
+        margin: 6px 0 0;
+        font-size: 22px;
+    }
+    .table-title .add-new {
+        float: right;
+		height: 30px;
+		font-weight: bold;
+		font-size: 12px;
+		text-shadow: none;
+		min-width: 100px;
+		border-radius: 50px;
+		line-height: 13px;
+    }
+	.table-title .add-new i {
+		margin-right: 4px;
+	}
+    table.table {
+        table-layout: fixed;
+    }
+    table.table tr th, table.table tr td {
+        border-color: #e9e9e9;
+    }
+    table.table th i {
+        font-size: 13px;
+        margin: 0 5px;
+        cursor: pointer;
+    }
+    table.table th:last-child {
+        width: 100px;
+    }
+    table.table td a {
+		cursor: pointer;
+        display: inline-block;
+        margin: 0 5px;
+		min-width: 24px;
+    }    
+	table.table td a.add {
+        color: #27C46B;
+    }
+    table.table td a.edit {
+        color: #FFC107;
+    }
+    table.table td a.delete {
+        color: #E34724;
+    }
+    table.table td i {
+        font-size: 19px;
+    }
+	table.table td a.add i {
+        font-size: 24px;
+    	margin-right: -1px;
+        position: relative;
+        top: 3px;
+    }    
+    table.table .form-control {
+        height: 32px;
+        line-height: 32px;
+        box-shadow: none;
+        border-radius: 2px;
+    }
+	table.table .form-control.error {
+		border-color: #f50000;
+	}
+	table.table td .add {
+		display: none;
+	}
+
+    .btn-info.add-new {
+        margin-bottom:90px;
+        padding:10px 10px 10px 10px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        margin-left: auto;
+        margin-right: auto;
+        display:block;
+        
+    }
+
+    .btn.savebid.btn-primary {
+        background-color:#06D75A;
+        border-color: #06D75A !important;
+        margin-bottom:90px;
+        padding:10px 10px 10px 10px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        margin-left: auto;
+        margin-right: auto;
+  
+        
+    }
+    
+    .btn.savebid.btn-primary:hover {
+        background: #06d75ab8;
+    }
+    
+    .btn.savebid.btn-primary:active,
+    .btn.savebid.btn-primary:focus {
+        background: #05a645 !important;
+        
+    }
+
+    .btn.deletebid.btn-primary {
+        background: #D70606;
+        border-color: #D70606 !important;
+        margin-left: auto;
+        margin-right: auto;
+        padding:10px 20px 10px 20px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        
+    }
+    
+    .btn.deletebid.btn-primary:hover {
+        background: #bb2121;
+    }
+    
+    .btn.deletebid.btn-primary:active,
+    .btn.deletebid.btn-primary:focus
+     {
+        background: #C10000 !important;
+        
+    }

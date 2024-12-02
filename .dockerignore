@@ -1,0 +1,23 @@
+# docker related
+docker/
+.dockerignore
+Dockerfile
+docker-compose.yml
+docker-compose.yml.example
+
+# git & github related
+.git/
+.github/
+.gitignore
+lang_sort_log.txt
+
+# root
+.editorconfig
+.pylintrc
+.venv
+.vscode
+README.md
+sonar-project.properties
+
+app/config/
+app/classes/frontend/uploads/

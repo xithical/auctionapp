@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    
+    <!--this is for scaling to mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/assets/css/UI Design.css">
+
+    <!--this is the css link for bootstrap--> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  
+    <!--Admin CSS-->
+    <link rel="stylesheet" href="/static/assets/css/Admin.css">
+
+    <!--Button Icons-->
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!--style for file upload-->
+    <style>
+      .form {
+           background-color: #86878ad9;
+           border: 1px solid rgb(159, 159, 159);
+           border-radius: 7px;
+           padding: 2rem .7rem .7rem .7rem;
+           text-align: center;
+           font-size: 1.125rem;
+           max-width: 520px;
+           transform: translate (-50%, -50%);
+           font-family: sans-serif;
+           margin-bottom: 20px;
+           margin-top: 10px;
+      } 
+
+      .form-icon {
+       color: #fff;
+       font-size: 4rem;
+      }
+
+      .drop-container {
+       background-color: #86878ad9;
+       position: relative;
+       display:flex;
+       gap: 10px;
+       flex-direction: column;
+       justify-content:center;
+       align-items: center;
+       padding: 10px;
+       margin-top: 1rem;
+       margin-bottom: 0.4rem;
+       border-radius: 4px;
+       border: 2px dashed #fff;
+       color: #fff;
+       cursor: pointer;
+       transition: background .2s ease-in-out, border .2s ease-in-out;
+      }
+
+      .drop-container:hover {
+       background: #9ba0cd5c;
+      }
+
+      .drop-title {
+       color: #fff;
+       font-size: 20px;
+       text-align: center;
+       transition: color .2s ease-in-out;
+      }
+
+      #file-input {
+       width: 350px;
+       max-width: 100%;
+       color: #444;
+       padding: 2px;
+       background: #fff;
+       border-radius: 4px;
+       border: 1px solid rgba (8,8,8,0.288);
+      }
+
+      #file-input::file-selector-button {
+       margin-right: 20px;
+       border: none;
+       background :#084cdf;
+       padding: 10px 20px;
+       border-radius: 4px;
+       color: #fff;
+       cursor: pointer;
+       transition: background .2s ease-in-out;
+      }
+
+      #file-input::file-selector-button:hover {
+       background: #0d45a5;
+      }
+
+   </style>
+  </head>
+
+  <body style="background-color: #FAFBFE;">
+
+    <div class="wrapper">
+      <aside id="sidebar">
+          <div class="d-flex">
+              <button class="toggle-btn" type="button">
+                  <i class="lni lni-grid-alt"></i>
+              </button>
+              <div class="sidebar-logo">
+                  <a href="#">Admin</a>
+              </div>
+          </div>
+          <ul class="sidebar-nav">
+              <li class="sidebar-item">
+                  <a href="/admin/events" class="sidebar-link">
+                    <i class='fa fa-legal nav__icon'></i>
+                      <span>Auction Events</span>
+                  </a>
+              </li>
+
+              <li class="sidebar-item">
+                <a href="/admin/merch" class="sidebar-link">
+                  <i class='bx bx-store nav__icon'></i>
+                    <span>Merchandise</span>
+                </a>
+            </li>
+          
+              <li class="sidebar-item">
+                <a href="/admin/donors" class="sidebar-link">
+                  <i class='bx bxs-donate-heart nav__icon'></i>
+                    <span>Donors</span>
+                </a>
+            </li>
+
+              <li class="sidebar-item">
+                <a href="/admin/users" class="sidebar-link">
+                  <i class='bx bx-user nav__icon'></i>
+                    <span>User Information</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+              <a href="/admin/reports" class="sidebar-link">
+                <i class='bx bxs-report nav__icon'></i>
+                  <span>Reports</span>
+              </a>
+          </li>
+              <li class="sidebar-item">
+                  <a href="/admin/config" class="sidebar-link">
+                      <i class="lni lni-cog"></i>
+                      <span>Settings</span>
+                  </a>
+              </li>
+          </ul>
+
+          <div class="sidebar-footer">
+              <a href="/admin/login" class="sidebar-link">
+                  <i class="lni lni-exit"></i>
+                  <span>Logout</span>
+              </a>
+          </div>
+      </aside>
+      <div class="wrapper" style="width: 100%; margin-left:100px; margin-right:100px;">
+        <div class="main p-3">
+            <div style="margin-top:30px;">
+              <h1>
+                  Settings
+              </h1>
+            </div>
+            <form action="" method="post" enctype="multipart/form-data">
+            <!--True or false dropdown for min percentage-->
+            <div class="card" style="width: 100%; height:140px; margin-top:30px;">
+              <div class="col-sm-7">
+                <div class="card-body">
+                  <p>Select 'True' or 'False' if the minimum bid will be a percentage</p>
+                  <div class="dropdown">
+                    <select name="min_bid_percent" class="btn btn-secondary dropdown-toggle" aria-expanded="false" value="{{ config.min_bid_percent }}">
+                      {% if config.min_bid_percent == True %}
+                      <option value="True" selected>True</option>
+                      <option value="False">False</option>
+                      {% else %}
+                      <option value="True">True</option>
+                      <option value="False" selected>False</option>
+                      {% endif %}
+                    </select>
+                  </div>
+                </div>
+              </div> 
+            </div>
+
+            <!--Minimum bid amount-->
+            <div class="card" style="width: 100%; height:140px; margin-top:25px;">
+              <div class="col-sm-7">
+                <div class="card-body">
+                  <p>Create minimum bid amount</p>
+                  <div class="form-floating mb-3">
+                    <input name="min_bid_amount" type="number" class="form-control" id="floatingInput" value="{{ config.min_bid_amount }}">
+                    <label for="floatingInput">Enter minimum bid amount:</label>
+                  </div>
+                </div>
+              </div> 
+            </div>
+            
+            <!--Button to regen secrets-->
+            <div class="card" style="width: 100%; height:140px; margin-top:25px;">
+              <div class="col-sm-7">
+                <div class="card-body">
+                  <p>Click to regenerate secrets</p>
+                  <a href="/admin/config/regen-secrets"><button type="button" class="btn btn-primary">Regenerate</button></a>
+                </div>
+              </div> 
+            </div>
+
+            <!--Entity Name-->
+            <div class="card" style="width: 100%; height:140px; margin-top:25px;">
+              <div class="col-sm-7">
+                <div class="card-body">
+                  <p>Entity name</p>
+                  <div class="form-floating mb-3">
+                    <input name="entity_name" type="text" class="form-control" id="floatingInput" value="{{ config.entity_name }}">
+                    <label for="floatingInput">Enter Entity name:</label>
+                  </div>
+                </div>
+              </div> 
+            </div>
+
+            <!--Logo Change-->
+            <div class="card" style="width: 100%; height:315px; margin-top:25px;">
+              <div class="col-sm-7">
+                <div class="card-body">
+                  <p>Upload image here to change logo</p>
+                        <!--upload image-->
+                          <span class="form-icon">
+                              <ion-icon name="cloud-upload-outline"></ion-icon>
+                          </span>
+                          <label for="file-input" class="drop-container">
+                              <span class="drop-title">Drag file here to upload</span>
+                              or
+                          <input name="entity_logo" type="file" id="file-input" accept="image/*">
+                          </label>
+                </div>
+              </div> 
+            </div>
+
+            <!--Change Primary and Secondary website colors-->
+            <div class="card" style="width: 100%; height:175px; margin-top:25px;">
+              <div class="col-sm-7">
+                <div class="card-body">
+                  <p>Click to change the website's colors</p>
+                  <!--Primary-->
+                  <div style="margin-bottom:10px;">
+                    <input name="primary_color" type="color" type="color" id="head" name="head" value="{{ config.primary_color }}" />
+                    <label for="head">Primary</label>
+                  </div>
+                  <!--Secondary-->
+                  <div>
+                    <input name="secondary_color" type="color" id="body" name="body" value="{{ config.secondary_color }}" />
+                    <label for="body">Secondary</label>
+                  </div>
+                </div>
+              </div> 
+            </div>
+
+           <!--Stripe API-->
+            <div class="card" style="width: 100%; height:140px; margin-top:25px; margin-bottom:30px;">
+              <div class="col-sm-7">
+                <div class="card-body">
+                  <p>Stripe API</p>
+                  <div class="form-floating mb-3">
+                    <input name="stripe_api_key" type="password" class="form-control" id="floatingInput" value="" >
+                    <label for="floatingInput">Enter Stripe API Key (leave blank if unchanged):</label>
+                  </div>
+                </div>
+              </div> 
+            </div>
+
+            <!--Tax ID input field-->
+            <div class="card" style="width: 100%; height:140px; margin-top:25px; margin-bottom:30px;">
+              <div class="col-sm-7">
+                <div class="card-body">
+                  <p>Tax ID</p>
+                  <div class="form-floating mb-3">
+                    <input name="tax_id" type="text" class="form-control" id="floatingInput" value="{{ config.tax_id }}">
+                    <label for="floatingInput">Enter Tax ID:</label>
+                  </div>
+                </div>
+              </div> 
+            </div>
+
+            <!--SMTP User input field-->
+            <div class="card" style="width: 100%; height:140px; margin-top:25px; margin-bottom:30px;">
+              <div class="col-sm-7">
+                <div class="card-body">
+                  <p>SMTP Username</p>
+                  <div class="form-floating mb-3">
+                    <input name="smtp_user" type="text" class="form-control" id="floatingInput" value="{{ config.smtp_user }}">
+                    <label for="floatingInput">Enter SMTP Username:</label>
+                  </div>
+                </div>
+              </div> 
+            </div>
+
+            <!--SMTP Email input field-->
+            <div class="card" style="width: 100%; height:140px; margin-top:25px; margin-bottom:30px;">
+              <div class="col-sm-7">
+                <div class="card-body">
+                  <p>SMTP Email</p>
+                  <div class="form-floating mb-3">
+                    <input name="smtp_email" type="text" class="form-control" id="floatingInput" value="{{ config.smtp_email }}">
+                    <label for="floatingInput">Enter SMTP 'From:' Email:</label>
+                  </div>
+                </div>
+              </div> 
+            </div>
+
+            <!--SMTP server input field-->
+            <div class="card" style="width: 100%; height:140px; margin-top:25px; margin-bottom:30px;">
+              <div class="col-sm-7">
+                <div class="card-body">
+                  <p>SMTP Server</p>
+                  <div class="form-floating mb-3">
+                    <input name="smtp_server" type="text" class="form-control" id="floatingInput" value="{{ config.smtp_server }}">
+                    <label for="floatingInput">Enter SMTP Server:</label>
+                  </div>
+                </div>
+              </div> 
+            </div>
+
+            <!--SMTP Port input field-->
+            <div class="card" style="width: 100%; height:140px; margin-top:25px; margin-bottom:30px;">
+              <div class="col-sm-7">
+                <div class="card-body">
+                  <p>SMTP Port</p>
+                  <div class="form-floating mb-3">
+                    <input name="smtp_port" type="number" class="form-control" id="floatingInput" value="{{ config.smtp_port }}">
+                    <label for="floatingInput">Enter SMTP Port:</label>
+                  </div>
+                </div>
+              </div> 
+            </div>
+
+            <!--SMTP User input field-->
+            <div class="card" style="width: 100%; height:140px; margin-top:25px; margin-bottom:30px;">
+              <div class="col-sm-7">
+                <div class="card-body">
+                  <p>SMTP Password</p>
+                  <div class="form-floating mb-3">
+                    <input name="smtp_password" type="password" class="form-control" id="floatingInput" value="">
+                    <label for="floatingInput">Enter SMTP Password (leave blank if unchanged):</label>
+                  </div>
+                </div>
+              </div> 
+            </div>
+            <input type="submit" value="Save" class="btn savebid btn-primary">
+          </form>
+      </div>
+      </div>
+  </div>
+  
+
+    <!-- this is the javascript link for bootstrap-->
+    <script src = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/assets/js/UI Design.js"></script>
+  </body>
+</html>
