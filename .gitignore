@@ -168,3 +168,6 @@ app/classes/frontend/uploads/
 
 # Sockets
 *.sock
+
+# Docker
+docker-compose.yml
