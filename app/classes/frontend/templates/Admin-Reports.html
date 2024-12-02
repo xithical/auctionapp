@@ -87,23 +87,24 @@
               <div class="table-title">
                   <div class="row">
                       <div class="col-sm-8"><h1>Event Reports</h1></div>
-                      <h6>Click to download auction report</h6>
                   </div>
               </div>
               <table class="table table-bordered">
                   <thead>
                       <tr>                         
                         <th>Event Name</th>
-                          <th style="width: 250px;"></th>                                             
+                        <th>Event Date</th>
+                        <th style="width: 250px;"></th>                                             
                       </tr>
                   </thead>
                   <tbody>
-                      <tr onclick="window.location='#';" style="cursor: pointer;" >
-                        
-                          <td>Auction 2024</td>
-                          <td><a href="#">Download report</a></td>
-                          
-                      </tr>    
+                    {% for event in events %}
+                      <tr>
+                          <td>{{ event.event_name }}</td>
+                          <td>{{ event.start_time }}</td>
+                          <td><a href="/admin/reports?event_id={{ event.event_id }}">Download report</a></td> 
+                      </tr>  
+                    {% endfor %}  
                   </tbody>
               </table>
           </div>

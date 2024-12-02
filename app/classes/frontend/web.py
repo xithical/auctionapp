@@ -9,7 +9,8 @@ from flask import (
     redirect,
     send_from_directory,
     abort,
-    session
+    session,
+    make_response
 )
 from flask_login import (
     LoginManager,
@@ -683,6 +684,25 @@ def admin_users():
 def admin_get_roles():
     if User_Login_Controller.is_admin(current_user.user_id):
         return jsonify({"roles": Admin_Controllers.UserAdmin_Controller.list_roles()})
+    else:
+        abort(403)
+
+@app.route('/admin/reports', methods=['GET'])
+@login_required
+def admin_reports():
+    if User_Login_Controller.is_admin(current_user.user_id):
+        if request.args.get("event_id") is not None:
+            report = Admin_Controllers.Reports_Controller.get_auction_report(
+                int(request.args.get("event_id"))
+            )
+            response = make_response(report)
+            cd = 'attachment; filename=event_report.csv'
+            response.headers['Content-Disposition'] = cd
+            response.mimetype='text/csv'
+            return response
+        else:
+            events = Admin_Controllers.EventAdmin_Controller.list_events()
+            return render_template("Admin-Reports.html", events=events)
     else:
         abort(403)
 
