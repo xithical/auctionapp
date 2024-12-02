@@ -438,7 +438,7 @@
   <![endif]-->
   </head>
   <body>
-    <span class="preheader">This is a receipt for your recent purchase on {{ donation_time }}. No payment is due with this receipt.</span>
+    <span class="preheader">This is a receipt for your recent donation on {{ end_time }}. No payment is due with this receipt.</span>
     <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
       <tr>
         <td align="center">
@@ -457,39 +457,46 @@
                     <td class="content-cell">
                       <div class="f-fallback">
                         <h1>Hi {{name}},</h1>
-                        <p>Thank you for joining us at our event {{ event_name }} that began on {{ start_time }}. This email is the receipt for your purchase. No payment is due.</p>
+                        <p>Thank you for donating items to our event {{ event_name }} that ended on {{ end_time }}. This email is the receipt for your donation. No payment is due.</p>
                         <table class="purchase" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                           <tr>
                             <td>
                               <h3>{{ event_name }}</h3></td>
                             <td>
-                              <h3 class="align-right">{{ donation_time }}</h3></td>
+                              <h3 class="align-right">{{ end_time }}</h3></td>
                           </tr>
                           <tr>
                             <td colspan="2">
-                              <h2>Donations</h2>
+                              <h2>Auction Items</h2>
                               <table class="purchase_content" width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                   <th class="purchase_heading" align="left">
                                     <p class="f-fallback">Item Name</p>
                                   </th>
                                   <th class="purchase_heading" align="right">
-                                    <p class="f-fallback">Amount</p>
+                                    <p class="f-fallback">Value</p>
                                   </th>
                                 </tr>
+                                {% for item in items %}
                                 <tr>
-                                  <td width="80%" class="purchase_item"><span class="f-fallback">Donation</span></td>
-                                  <td class="align-right" width="20%" class="purchase_item"><span class="f-fallback">${{amount}}</span></td>
+                                  <td width="80%" class="purchase_item"><span class="f-fallback">{{item.item_title}}</span></td>
+                                  <td class="align-right" width="20%" class="purchase_item"><span class="f-fallback">${{item.item_price}}</span></td>
                                 </tr>
+                                {% endfor %}
                                 <tr>
                                   <td width="80%" class="purchase_footer" valign="middle">
                                     <p class="f-fallback purchase_total purchase_total--label">Total</p>
                                   </td>
                                   <td width="20%" class="purchase_footer" valign="middle">
-                                    <p class="f-fallback purchase_total">${{amount}}</p>
+                                    <p class="f-fallback purchase_total">${{total}}</p>
                                   </td>
                                 </tr>
                               </table>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <h2>Grand Total: {{ total }}</h2>
                             </td>
                           </tr>
                         </table>

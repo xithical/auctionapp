@@ -2,12 +2,16 @@ import time
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime
+from decimal import Decimal
 
+from app.classes.models.auction_items import AuctionItems_Methods
 from app.classes.models.events import Events_Methods
+from app.classes.models.item_donors import ItemDonors_Methods
 from app.classes.models.main_cart import MainCart_Methods
 
 from app.classes.controllers.checkout import Checkout_Controller
 
+from app.classes.helpers.auction_item_helpers import Auction_Items_Helpers
 from app.classes.helpers.init_helpers import Init_Helpers
 from app.classes.helpers.config_helpers import Config_Helpers
 from app.classes.helpers.email_helpers import Email_Helpers
@@ -19,6 +23,7 @@ scheduler = BackgroundScheduler()
     
 def end_event(event_id: int):
     carts = MainCart_Methods.get_all_carts_for_event(event_id)
+    donors = ItemDonors_Methods.get_all_donors()
 
     for cart in carts:
         cart_summary = Checkout_Controller.get_cart(cart["user_id"]["user_id"], cart["event_id"]["event_id"])
@@ -29,6 +34,24 @@ def end_event(event_id: int):
                 Email_Helpers.Senders.event_receipt(cart["user_id"]["user_id"], cart["event_id"]["event_id"])
             else:
                 print(f'{__name__} - failed to send receipt for {cart["user_id"]["user_id"]}')
+    for donor in donors:
+        donor_items = AuctionItems_Methods.get_items_by_donor_and_event(donor["donor_id"], event_id)
+        items = []
+        total = 0
+        for item in donor_items:
+            item_out = {}
+            item_out["item_title"] = round(item["item_title"], ndigits=2)
+            item_out["item_price"] = item["item_price"]
+            total += round(item["item_price"], ndigits=2)
+            items.append(item_out)
+        if len(items) > 0:
+            Email_Helpers.Senders.item_donor_receipt(
+                donor["donor_id"],
+                event_id,
+                items,
+                total
+            )
+
     print(f"{__name__} - Ended event {event_id} and charged cards where applicable")
 
 def init_scheduler(scheduler):

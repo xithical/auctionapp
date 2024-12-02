@@ -94,3 +94,8 @@ class AuctionItems_Methods:
     def get_items_by_donor_id(donor_id: int):
         query = AuctionItems.select().where(AuctionItems.donor_id == donor_id)
         return DatabaseHelpers.get_rows(query)
+    
+    @staticmethod
+    def get_items_by_donor_and_event(donor_id: int, event_id: int):
+        query = AuctionItems.select().where((AuctionItems.donor_id == donor_id) & (AuctionItems.event_id==event_id))
+        return DatabaseHelpers.get_rows(query)

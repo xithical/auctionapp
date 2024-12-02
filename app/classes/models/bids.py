@@ -91,5 +91,5 @@ class Bids_Methods:
     
     @staticmethod
     def get_bids_by_user_and_item(user_id: str, item_id: int):
-        query = Bids.select().where(Bids.user_id == user_id & Bids.item_id == item_id)
+        query = Bids.select().where((Bids.user_id == user_id) & (Bids.item_id == item_id))
         return DatabaseHelpers.get_rows(query)
