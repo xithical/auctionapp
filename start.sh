@@ -1,2 +1,3 @@
 #!/bin/bash
-gunicorn -w 4 -b 0.0.0.0 --daemon main:app && python3 scheduler.py
+python3 init.py
+gunicorn -w 4 -b 0.0.0.0 --daemon --capture-output --enable-stdio-inheritance main:app && python3 scheduler.py

@@ -13,7 +13,7 @@ from app.classes.helpers.config_helpers import Config_Helpers
 from app.classes.helpers.email_helpers import Email_Helpers
 from app.classes.helpers.payments_helpers import Payments_Helpers
 
-Init_Helpers.init_db(scheduler=True)
+Init_Helpers.init_db()
 
 scheduler = BackgroundScheduler()
     
@@ -59,6 +59,7 @@ def update_events(scheduler):
 if __name__ == '__main__':
     scheduler.start()
     init_scheduler(scheduler)
+    print("Started scheduler")
     try:
         while True:
             time.sleep(1)

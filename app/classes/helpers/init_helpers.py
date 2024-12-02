@@ -1,4 +1,6 @@
-from peewee import MySQLDatabase, DoesNotExist
+import time
+
+from peewee import MySQLDatabase
 
 from app.classes.models.base_model import db_proxy
 
@@ -81,7 +83,7 @@ class Init_Helpers:
             return admins[0]["user_id"]
     
     @staticmethod
-    def init_db(scheduler: bool = False):
+    def init_db(startup: bool = False):
         db_config = Config_Helpers.get_db_config()
 
         database = MySQLDatabase(
@@ -93,8 +95,20 @@ class Init_Helpers:
         )
 
         db_proxy.initialize(database)
+        counter=0
+        connected=False
+        while not connected:
+            try:
+                connected = db_proxy.connect()
+            except Exception as e:
+                print(f"{__name__} - Couldn't connect to database: {e}")
+            time.sleep(5)
+            counter += 1
+            if counter >= 5:
+                print(f"{__name__} - Unable to successfully initialize database, exiting")
+                exit()
 
-        if not scheduler:
+        if startup:
             try:
                 Config_Helpers.get_latest_config()
                 print("Existing installation detected - proceeding with app startup")
