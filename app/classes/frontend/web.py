@@ -82,7 +82,7 @@ def user_login():
     match request.method:
         case 'GET':
             org_name = Config_Helpers.get_entity_name()
-            return render_template('SignIn.html', org_name=org_name)
+            return render_template('SignIn.html', org_name=org_name, logo=Config_Helpers.get_entity_logo())
         case 'POST':
             email = request.form['email']
             password = request.form['password']
@@ -99,7 +99,7 @@ def user_register():
     match request.method:
         case 'GET':
             org_name = Config_Helpers.get_entity_name()
-            return render_template('SignUp.html', org_name=org_name)
+            return render_template('SignUp.html', org_name=org_name, logo=Config_Helpers.get_entity_logo())
         case 'POST':
             new_user = User_Registration_Controller.register_user(
                 user_firstname=request.form["user_firstname"],
@@ -156,7 +156,7 @@ def auction_items():
             return redirect("/card_setup")
     event_id = session["event_id"]
     items = Auction_Items_Controller.get_items(event_id)
-    return render_template('Auctions.html', items=items)
+    return render_template('Auctions.html', items=items, logo=Config_Helpers.get_entity_logo())
 
 @app.route('/event/items/<int:item_id>', methods=['GET','POST'])
 @login_required
@@ -175,7 +175,7 @@ def item_details(item_id):
     item = Auction_Items_Controller.get_item_details(item_id)
     match request.method:
         case 'GET':
-            return render_template("AuctionItemInformation.html", item=item, event_id=session["event_id"])
+            return render_template("AuctionItemInformation.html", item=item, event_id=session["event_id"], logo=Config_Helpers.get_entity_logo())
         case 'POST':
             item = Auction_Items_Controller.get_item_details(item_id)
             bid = Auction_Items_Controller.place_bid(
@@ -212,7 +212,8 @@ def user_cart():
         merch_items=merch_items,
         auction_total=auction_total,
         merch_total=merch_total,
-        total=total
+        total=total,
+        logo=Config_Helpers.get_entity_logo()
     )
 
 @app.route('/cart/remove', methods=['POST'])
@@ -247,7 +248,7 @@ def merch_items():
             return redirect("/card_setup")
     event_id = session["event_id"]
     merch_items = Merchandise_Item_Controller.list_items()
-    return render_template("Merchandise.html", merch_items=merch_items)
+    return render_template("Merchandise.html", merch_items=merch_items, logo=Config_Helpers.get_entity_logo())
 
 @app.route('/merch/<int:item_id>', methods=['GET','POST'])
 @login_required
@@ -265,7 +266,7 @@ def merch_item_details(item_id):
     match request.method:
         case 'GET':
             item = Merchandise_Item_Controller.get_merch_item_details(item_id)
-            return render_template("MerchandiseItemInfo.html", item=item)
+            return render_template("MerchandiseItemInfo.html", item=item, logo=Config_Helpers.get_entity_logo())
         case 'POST':
             Merchandise_Item_Controller.add_item_to_cart(
                 item_id = item_id,
@@ -290,7 +291,7 @@ def donations():
     match request.method:
         case 'GET':
             org_name = Config_Helpers.get_entity_name()
-            return render_template("Donate.html", org_name=org_name)
+            return render_template("Donate.html", org_name=org_name, logo=Config_Helpers.get_entity_logo())
         case 'POST':
             Donations_Controller.place_donation(
                 current_user.user_id,
@@ -314,7 +315,7 @@ def account_manager():
     match request.method:
         case 'GET':
             user = Account_Controller.list_user_details(current_user.user_id)
-            return render_template("AccountInformation.html", user=user)
+            return render_template("AccountInformation.html", user=user, logo=Config_Helpers.get_entity_logo())
         case 'POST':
             Account_Controller.update_user_details(
                 current_user.user_id,
@@ -343,7 +344,7 @@ def admin_login():
     match request.method:
         case 'GET':
             org_name = Config_Helpers.get_entity_name()
-            return render_template("Admin-SignIn.html", org_name=org_name)
+            return render_template("Admin-SignIn.html", org_name=org_name, logo=Config_Helpers.get_entity_logo())
         case 'POST':
             email = request.form['email']
             password = request.form['password']
@@ -361,7 +362,7 @@ def admin_events():
         match request.method:
             case 'GET':
                 events = Admin_Controllers.EventAdmin_Controller.list_events()
-                return render_template("Admin-Auctions.html", events=events)
+                return render_template("Admin-Auctions.html", events=events, logo=Config_Helpers.get_entity_logo())
             case 'POST':
                 if request.form['StartTime'] < request.form['EndTime']:
                     Admin_Controllers.EventAdmin_Controller.create_event(
@@ -394,7 +395,7 @@ def admin_auction_items(event_id):
         match request.method:
             case 'GET':
                 items = Admin_Controllers.EventAdmin_Controller.list_auction_items(event_id)
-                return render_template("Admin-Auctions-Items.html", event_id=event_id, items=items)
+                return render_template("Admin-Auctions-Items.html", event_id=event_id, items=items, logo=Config_Helpers.get_entity_logo())
             case 'DELETE':
                 Admin_Controllers.EventAdmin_Controller.delete_auction_item(
                     request.get_json()["item_id"]
@@ -423,7 +424,7 @@ def admin_new_auction_item(event_id):
                         "donor_name": Auction_Items_Helpers.get_donor_name(donor["donor_id"])
                     }
                     donor_list.append(donor_out)
-                return render_template("Admin-Auctions-Items-Modify.html", event_id=event_id, item=item, donors=donor_list)
+                return render_template("Admin-Auctions-Items-Modify.html", event_id=event_id, item=item, donors=donor_list, logo=Config_Helpers.get_entity_logo())
             case 'POST':
                 file = request.files['file']
                 item_image = "/static/assets/img/placeholder1.png"
@@ -459,7 +460,7 @@ def admin_edit_auction_item(event_id, item_id):
                         "donor_name": Auction_Items_Helpers.get_donor_name(donor["donor_id"])
                     }
                     donor_list.append(donor_out)
-                return render_template("Admin-Auctions-Items-Modify.html", event_id=event_id, item=item, donors=donor_list)
+                return render_template("Admin-Auctions-Items-Modify.html", event_id=event_id, item=item, donors=donor_list, logo=Config_Helpers.get_entity_logo())
             case 'POST':
                 file = request.files['file']
                 item_image = Admin_Controllers.EventAdmin_Controller.get_auction_item(item_id).item_image
@@ -489,7 +490,7 @@ def admin_item_bids(event_id, item_id):
         match request.method:
             case 'GET':
                 bids = Admin_Controllers.EventAdmin_Controller.get_item_bids(item_id)
-                return render_template("Admin-Item-Bids.html", event_id=event_id, bids=bids)
+                return render_template("Admin-Item-Bids.html", event_id=event_id, bids=bids, logo=Config_Helpers.get_entity_logo())
             case 'DELETE':
                 data = request.get_json()
                 Admin_Controllers.EventAdmin_Controller.delete_bid(data["item_id"])
@@ -504,7 +505,7 @@ def admin_merch_items():
         match request.method:
             case 'GET':
                 items = Admin_Controllers.MerchAdmin_Controller.list_merch_items()
-                return render_template("Admin-Auctions-Merchandise.html", items=items)
+                return render_template("Admin-Auctions-Merchandise.html", items=items, logo=Config_Helpers.get_entity_logo())
             case 'DELETE':
                 Admin_Controllers.MerchAdmin_Controller.delete_merch_item(
                     int(request.get_json()["item_id"])
@@ -524,7 +525,7 @@ def admin_merch_new():
                     "merch_description": "Item description",
                     "merch_price": 0
                 }
-                return render_template("Admin-Auctions-Merchandise-Modify.html", item=item)
+                return render_template("Admin-Auctions-Merchandise-Modify.html", item=item, logo=Config_Helpers.get_entity_logo())
             case 'POST':
                 file = request.files['file']
                 item_image = "/static/assets/img/placeholder1.png"
@@ -550,7 +551,7 @@ def admin_merch_edit(merch_id):
         match request.method:
             case 'GET':
                 item = Admin_Controllers.MerchAdmin_Controller.get_merch_item(merch_id)
-                return render_template("Admin-Auctions-Merchandise-Modify.html", item=item)
+                return render_template("Admin-Auctions-Merchandise-Modify.html", item=item, logo=Config_Helpers.get_entity_logo())
             case 'POST':
                 file = request.files['file']
                 item_image = Admin_Controllers.MerchAdmin_Controller.get_merch_item(merch_id).merch_image
@@ -577,7 +578,7 @@ def admin_donors():
         match request.method:
             case 'GET':
                 donors = Admin_Controllers.DonorAdmin_Controller.list_donors()
-                return render_template("Admin-Donors.html", donors=donors)
+                return render_template("Admin-Donors.html", donors=donors, logo=Config_Helpers.get_entity_logo())
             case 'POST':
                 if request.form["UserCompany"] == "":
                     donor_company = None
@@ -625,7 +626,7 @@ def admin_donors():
 def admin_donors_items(donor_id):
     if User_Login_Controller.is_admin(current_user.user_id):
         items = Admin_Controllers.DonorAdmin_Controller.list_donor_items(donor_id)
-        return render_template("Admin-Donor-Information.html", items=items)
+        return render_template("Admin-Donor-Information.html", items=items, logo=Config_Helpers.get_entity_logo())
     else:
         abort(403)
 
@@ -636,7 +637,7 @@ def admin_config():
         match request.method:
             case 'GET':
                 config = Admin_Controllers.Config_Controller.get_config()
-                return render_template("Admin-Settings.html", config=config)
+                return render_template("Admin-Settings.html", config=config, logo=Config_Helpers.get_entity_logo())
             case 'POST':
                 file = request.files['entity_logo']
                 logo_image = Config_Helpers.get_entity_logo()
@@ -680,7 +681,7 @@ def admin_users():
         match request.method:
             case 'GET':
                 users = Admin_Controllers.UserAdmin_Controller.list_users()
-                return render_template("Admin-UserInfo.html", users=users)
+                return render_template("Admin-UserInfo.html", users=users, logo=Config_Helpers.get_entity_logo())
             case 'POST':
                 data = request.get_json()
                 Admin_Controllers.UserAdmin_Controller.create_user(
@@ -736,7 +737,7 @@ def admin_reports():
             return response
         else:
             events = Admin_Controllers.EventAdmin_Controller.list_events()
-            return render_template("Admin-Reports.html", events=events)
+            return render_template("Admin-Reports.html", events=events, logo=Config_Helpers.get_entity_logo())
     else:
         abort(403)
 
@@ -754,4 +755,4 @@ def test_admin_page():
     if User_Login_Controller.is_admin(current_user.user_id):
         return "Admin auth worked"
     else:
-        return redirect("/login")
+        abort(403)
