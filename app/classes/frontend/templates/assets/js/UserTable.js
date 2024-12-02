@@ -25,7 +25,11 @@ $(document).ready(function(){
 			'<td><input name="user_phone" type="text" class="form-control" id="UserPhone"></td>' +
             '<td><input name="user_password" type="text" class="form-control" id="UserPassword"></td>' +
             '<td><select name="type_id" class="form-control" id="UserType">'+ roles_list +'</select></td>' +
-			'<td>' + actions + '</td>' +
+			'<td>'+
+			'<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>' +
+			'<a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>' +
+			'<a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>' +
+			'</td>' +
         '</tr>';
     	$("table").append(row);		
 		$("table tbody tr").eq(index + 1).find(".add, .edit").toggle();
