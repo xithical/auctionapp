@@ -49,24 +49,21 @@ def update_events(scheduler):
     events = scheduler.get_jobs()
     for event in events:
         event_id = int(event.id.rsplit('_',1)[1])
-        db_event = Events_Methods.get_event_by_id(event_id)
-        schedule_time = (event.next_run_time).replace(tzinfo=None)
-        if not db_event.end_time == schedule_time:
-            scheduler.reschedule_job(f'event_{event_id}', trigger='date', run_date=db_event.end_time)
-            print(f'Rescheduled {event.id}, \"{db_event.event_name}\" from {schedule_time} to {db_event.end_time}')
-
+        try:
+            db_event = Events_Methods.get_event_by_id(event_id)
+            schedule_time = (event.next_run_time).replace(tzinfo=None)
+            if not db_event.end_time == schedule_time:
+                scheduler.reschedule_job(f'event_{event_id}', trigger='date', run_date=db_event.end_time)
+                print(f'Rescheduled {event.id}, \"{db_event.event_name}\" from {schedule_time} to {db_event.end_time}')
+        except Exception as e:
+            print(f"{__name__} - Couldn't get event for schedule {event.id}, removing scheduled task: {e}")
+            scheduler.remove_job(event.id)
 
 if __name__ == '__main__':
     scheduler.start()
     init_scheduler(scheduler)
     print("Started scheduler")
-    try:
-        while True:
+    while True:
             time.sleep(1)
             check_new_events(scheduler)
             update_events(scheduler)
-    except Exception as e:
-        print(f"Halting scheduler: {e}")
-        exit()
-    finally:
-        exit()
