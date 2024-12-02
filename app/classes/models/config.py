@@ -45,7 +45,7 @@ class Config_Methods:
         min_bid_amount: float = 30,
         secret_value: str = Helpers.generate_secret(),
         entity_name: str = "Silent Auction App",
-        entity_logo: str = "app/frontend/assets/default/logo.png",
+        entity_logo: str = "/static/assets/img/logo.png",
         primary_color: str = "#21362C", # dark green
         secondary_color: str = "#F6F6F6", # off white
         stripe_api_key: str = "",
