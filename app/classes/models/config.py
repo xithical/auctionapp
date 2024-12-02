@@ -90,7 +90,12 @@ class Config_Methods:
             primary_color = primary_color,
             secondary_color = secondary_color,
             stripe_api_key = stripe_api_key,
-            tax_id=tax_id
+            tax_id=tax_id,
+            smtp_user=smtp_user,
+            smtp_email=smtp_email,
+            smtp_server=smtp_server,
+            smtp_port=smtp_port,
+            smtp_password=smtp_password
         ).entry_id
     
     @staticmethod
