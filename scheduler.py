@@ -40,9 +40,9 @@ def end_event(event_id: int):
         total = 0
         for item in donor_items:
             item_out = {}
-            item_out["item_title"] = round(item["item_title"], ndigits=2)
-            item_out["item_price"] = item["item_price"]
-            total += round(item["item_price"], ndigits=2)
+            item_out["item_title"] = item["item_title"]
+            item_out["item_price"] = round(Decimal(item["item_price"]), ndigits=2)
+            total += round(Decimal(item["item_price"]), ndigits=2)
             items.append(item_out)
         if len(items) > 0:
             Email_Helpers.Senders.item_donor_receipt(
