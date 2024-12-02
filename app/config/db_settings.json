@@ -1,7 +1,0 @@
-{
-    "mysql_host": "auctionapp-db",
-    "mysql_port": 3306,
-    "mysql_user": "auctionapp",
-    "mysql_pass": "changeme",
-    "mysql_db": "auctionapp"
-}
