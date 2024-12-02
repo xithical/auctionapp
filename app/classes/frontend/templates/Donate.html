@@ -22,7 +22,7 @@
   
   <div class="wrapper-main">
   
-    <img src="/assets/img/webpageLogo.png" alt="Company logo" class="companyLogo2">
+    <img src="/static/assets/img/webpageLogo.png" alt="Company logo" class="companyLogo2">
     <h1 class="pageTitle">Donate</h1>
 
     <!--Cart Card Format-->
@@ -30,11 +30,12 @@
       <div class="card2" style="width: 100%; height: 350px;">
 
     
-        <div class="col-sm-7"">
+        <div class="col-sm-7">
           <div class="card-body" style="margin-right:20px">
             <div class="auctionItemTitle">
              <p class="card-text" style="font-weight: bold;">Donation Information</p>
-             <p class="card-text" style="margin-bottom:50px;">Thank you for supporting the Be Kind for Ollie Foundation. If you would like to contribute a monetary donation, please place your donation below.</p>
+             <p class="card-text">Thank you for supporting {{ org_name }}. If you would like to contribute a monetary donation, please place your donation below.</p>
+             <p class="card-text" style="margin-bottom:50px;">Please note that, upon hitting "Place Donation", your card will automatically be charged. Please do not hit this button if you do not wish to place a donation.</p>
                
              <!--Enter donation amount form-->
               <div class="form-floating mb-3">
@@ -58,14 +59,14 @@
         <ul class="nav__list">
 
           <li class="nav__item">
-            <a href="Auctions.html" class="nav__link">        
+            <a href="/event/items" class="nav__link">        
               <i class='fa fa-legal nav__icon'></i>
                 <span class="nav__name">Auctions</span>
             </a>
           </li>
               
           <li class="nav__item">
-            <a href="Merchandise.html" class="nav__link">
+            <a href="/merch" class="nav__link">
              
               <i class='bx bx-store nav__icon'></i>
                 <span class="nav__name">Merchandise</span>
@@ -73,14 +74,14 @@
           </li>
 
           <li class="nav__item">
-            <a href="Donate.html" class="nav__link active-link">
+            <a href="/donate" class="nav__link active-link">
               <i class='bx bx-plus-circle nav__icon' ></i>
                 <span class="nav__name">Donate</span>
             </a>
           </li>
 
           <li class="nav__item">
-            <a href="Cart.html" class="nav__link" data-toggle="card" data-target="#cart">
+            <a href="/cart" class="nav__link" data-toggle="card" data-target="#cart">
               <i class='bx bx-cart nav__icon'></i>
                 <span class="nav__name">Cart</span>
             </a>
