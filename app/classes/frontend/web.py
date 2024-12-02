@@ -298,7 +298,7 @@ def donations():
                 event_id,
                 Decimal(request.form["donation_amount"])
             )
-            return redirect("/donate")
+            return redirect("/event/items")
         
 @app.route('/account', methods=['GET','POST'])
 @login_required
