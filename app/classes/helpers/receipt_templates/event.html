@@ -457,7 +457,7 @@
                     <td class="content-cell">
                       <div class="f-fallback">
                         <h1>Hi {{name}},</h1>
-                        <p>Thank you for joining us at our event {{ event_name }} that ended on {{ event.end_time }}. This email is the receipt for your purchase. No payment is due.</p>
+                        <p>Thank you for joining us at our event {{ event_name }} that ended on {{ end_time }}. This email is the receipt for your purchase. No payment is due.</p>
                         <table class="purchase" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                           <tr>
                             <td>
@@ -479,8 +479,8 @@
                                 </tr>
                                 {% for item in auction_items %}
                                 <tr>
-                                  <td width="80%" class="purchase_item"><span class="f-fallback">{{item.item_title}}</span></td>
-                                  <td class="align-right" width="20%" class="purchase_item"><span class="f-fallback">${{item.price}}</span></td>
+                                  <td width="80%" class="purchase_item"><span class="f-fallback">{{item.value.item_title}}</span></td>
+                                  <td class="align-right" width="20%" class="purchase_item"><span class="f-fallback">${{item.value.price}}</span></td>
                                 </tr>
                                 {% endfor %}
                                 <tr>
@@ -508,8 +508,8 @@
                                 </tr>
                                 {% for item in merch_items %}
                                 <tr>
-                                  <td width="80%" class="purchase_item"><span class="f-fallback">{{item.item_title}}</span></td>
-                                  <td class="align-right" width="20%" class="purchase_item"><span class="f-fallback">{{item.price}}</span></td>
+                                  <td width="80%" class="purchase_item"><span class="f-fallback">{{item.value.item_title}}</span></td>
+                                  <td class="align-right" width="20%" class="purchase_item"><span class="f-fallback">{{item.value.price}}</span></td>
                                 </tr>
                                 {% endfor %}
                                 <tr>
