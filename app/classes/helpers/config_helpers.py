@@ -46,6 +46,26 @@ class Config_Helpers:
         return Config_Helpers.get_latest_config().tax_id
     
     @staticmethod
+    def get_smtp_user():
+        return Config_Helpers.get_latest_config().smtp_user
+    
+    @staticmethod
+    def get_smtp_email():
+        return Config_Helpers.get_latest_config().smtp_email
+    
+    @staticmethod
+    def get_smtp_server():
+        return Config_Helpers.get_latest_config().smtp_server
+    
+    @staticmethod
+    def get_smtp_port():
+        return Config_Helpers.get_latest_config().smtp_port
+    
+    @staticmethod
+    def get_smtp_password():
+        return Config_Helpers.get_latest_config().smtp_password
+    
+    @staticmethod
     def update_secret():
         latest_config = Config_Helpers.get_latest_config()
         latest_config.secret_value = Helpers.generate_secret()

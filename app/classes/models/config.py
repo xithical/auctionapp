@@ -2,7 +2,8 @@ from peewee import (
     AutoField,
     BooleanField,
     DecimalField,
-    CharField
+    CharField,
+    IntegerField
 )
 
 # Models import
@@ -24,6 +25,11 @@ class Config(BaseModel):
     secondary_color = CharField(max_length=7)
     stripe_api_key = CharField(max_length=255)
     tax_id = CharField(max_length=20)
+    smtp_user = CharField(max_length=255)
+    smtp_email = CharField(max_length=255)
+    smtp_server = CharField(max_length=255)
+    smtp_port = IntegerField()
+    smtp_password = CharField(max_length=255)
 
     class Meta:
         table_name="Config"
@@ -43,7 +49,12 @@ class Config_Methods:
         primary_color: str = "#21362C", # dark green
         secondary_color: str = "#F6F6F6", # off white
         stripe_api_key: str = "",
-        tax_id: str = ""
+        tax_id: str = "",
+        smtp_user: str = "",
+        smtp_email: str = "",
+        smtp_server: str = "",
+        smtp_port: int = 0,
+        smtp_password: str = ""
     ) -> int:
         """
         Creates a config record in the database
@@ -57,6 +68,12 @@ class Config_Methods:
             primary_color: The hex color code of the primary UI color
             secondary_color: The hex color code of the secondary UI color
             stripe_api_key: The string of the API key used for Stripe
+            tax_id: The Tax ID of the organization
+            smtp_user: The SMTP username
+            smtp_email: The SMTP email
+            smtp_server: The SMTP server
+            smtp_port: The SMTP port
+            smtp_password: The SMTP password
 
         Returns:
             int: The numeric ID of the config record

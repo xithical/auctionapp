@@ -346,6 +346,10 @@ class Admin_Controllers:
             config_out["primary_color"] = config.primary_color
             config_out["secondary_color"] = config.secondary_color
             config_out["tax_id"] = config.tax_id
+            config_out["smtp_user"] = config.smtp_user
+            config_out["smtp_email"] = config.smtp_email
+            config_out["smtp_server"] = config.smtp_server
+            config_out["smtp_port"] = config.smtp_port
 
             return config_out
         
@@ -358,7 +362,12 @@ class Admin_Controllers:
             primary_color: str,
             secondary_color: str,
             tax_id: str,
-            stripe_api_key: str = ""
+            smtp_user: str,
+            smtp_email: str,
+            smtp_server: str,
+            smtp_port: str,
+            stripe_api_key: str = "",
+            smtp_password: str = ""
         ):
             config = Config_Helpers.get_latest_config()
 
@@ -371,6 +380,12 @@ class Admin_Controllers:
             config.tax_id = tax_id
             if stripe_api_key != "":
                 config.stripe_api_key = stripe_api_key
+            config.smtp_user = smtp_user
+            config.smtp_email = smtp_email
+            config.smtp_server = smtp_server
+            config.smtp_port = smtp_port
+            if smtp_password != "":
+                config.smtp_password = smtp_password
 
             return Config_Methods.update_config(config)
         

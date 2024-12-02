@@ -618,7 +618,12 @@ def admin_config():
                     primary_color = request.form["primary_color"],
                     secondary_color = request.form["secondary_color"],
                     tax_id = request.form["tax_id"],
-                    stripe_api_key = request.form["stripe_api_key"]
+                    stripe_api_key = request.form["stripe_api_key"],
+                    smtp_user=request.form["smtp_user"],
+                    smtp_email=request.form["smtp_email"],
+                    smtp_server=request.form["smtp_server"],
+                    smtp_port=int(request.form["smtp_port"]),
+                    smtp_password=request.form["smtp_password"]
                 )
                 return redirect("/admin/config")
     else:
