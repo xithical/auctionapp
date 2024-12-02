@@ -64,7 +64,7 @@ class BidderDonation_Methods:
     
     @staticmethod
     def get_donations_by_id(donation_id: int):
-        return BidderDonations.select().where(BidderDonations.donation_id_id == donation_id)
+        return BidderDonations.select().where(BidderDonations.donation_id == donation_id).get()
     
     @staticmethod
     def update_donations(item_obj: object):

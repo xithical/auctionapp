@@ -11,6 +11,7 @@ from app.classes.controllers.checkout import Checkout_Controller
 
 from app.classes.helpers.config_helpers import Config_Helpers
 from app.classes.helpers.donations_helpers import Donations_Helpers
+from app.classes.helpers.email_helpers import Email_Helpers
 
 class Payments_Helpers:
     @staticmethod
@@ -91,6 +92,7 @@ class Payments_Helpers:
                 event_id=event_id,
                 donation_amount=amount
             )
+            Email_Helpers.Senders.donation_receipt(user_id, event_id, donation)
             transaction = CardTransactions_Methods.create_transaction(
                 auth_id = payment_intent["latest_charge"],
                 amount = amount,
