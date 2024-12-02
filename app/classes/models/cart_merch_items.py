@@ -54,7 +54,7 @@ class CartMerchItems_Methods:
     
     @staticmethod
     def get_entry_by_id(entry_id: int):
-        return CartMerchItems.select().where(CartMerchItems.entry_id == entry_id)
+        return CartMerchItems.select().where(CartMerchItems.entry_id == entry_id).get()
     
     @staticmethod
     def update_entry(item_obj: object):

@@ -57,7 +57,7 @@ class Cart_AuctionItems_Methods:
     
     @staticmethod
     def get_entry_by_id(entry_id: int):
-        return Cart_AuctionItems.select().where(Cart_AuctionItems.entry_id == entry_id)
+        return Cart_AuctionItems.select().where(Cart_AuctionItems.entry_id == entry_id).get()
     
     @staticmethod
     def update_entry(entry_obj: object):

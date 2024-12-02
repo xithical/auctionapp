@@ -2,13 +2,16 @@ from datetime import datetime
 
 from app.classes.models.auction_items import AuctionItems_Methods
 from app.classes.models.bids import Bids_Methods
+from app.classes.models.cart_auctionitems import Cart_AuctionItems_Methods
 from app.classes.models.config import Config_Methods
 from app.classes.models.events import Events_Methods
 from app.classes.models.item_donors import ItemDonors_Methods
+from app.classes.models.main_cart import MainCart_Methods
 from app.classes.models.merchandise_items import MerchandiseItems_Methods
 from app.classes.models.user_types import UserTypes_Methods
 from app.classes.models.users import Users_Methods
 
+from app.classes.helpers.auction_item_helpers import Auction_Items_Helpers
 from app.classes.helpers.config_helpers import Config_Helpers
 from app.classes.helpers.reports_helpers import Reports_Helpers
 from app.classes.helpers.users_helpers import Users_Helpers
@@ -125,7 +128,18 @@ class Admin_Controllers:
         
         @staticmethod
         def delete_bid(bid_id: int):
-            return Bids_Methods.remove_bid(bid_id)
+            bid = Bids_Methods.get_bid_by_id(bid_id)
+            item = bid.item_id.item_id
+            Cart_AuctionItems_Methods.remove_entries_for_item(item)
+            bid_remove = Bids_Methods.remove_bid(bid_id)
+            new_current_bid = Auction_Items_Helpers.get_highest_bid(item)
+            new_current_bid_user = new_current_bid["user_id"]["user_id"]
+            new_cart = MainCart_Methods.get_event_cart_for_user(new_current_bid_user, bid.item_id.event_id)
+            Cart_AuctionItems_Methods.create_entry(
+                new_cart,
+                new_current_bid["bid_id"]
+            )
+            return bid_remove
         
     class DonorAdmin_Controller:
         @staticmethod
@@ -213,7 +227,7 @@ class Admin_Controllers:
             return MerchandiseItems_Methods.create_item(
                 merch_title=merch_title,
                 merch_description=merch_description,
-                merch_price=merch_price,
+                merch_price=round(merch_price, ndigits=2),
                 merch_image=merch_image
             )
         
@@ -229,7 +243,7 @@ class Admin_Controllers:
             item = MerchandiseItems_Methods.get_item_by_id(merch_id)
             item.merch_title = merch_title
             item.merch_description = merch_description
-            item.merch_price = merch_price
+            item.merch_price = round(merch_price, ndigits=2)
             item.merch_image = merch_image
             item.is_active = is_active
             return MerchandiseItems_Methods.update_item(item)

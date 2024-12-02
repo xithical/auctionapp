@@ -24,7 +24,7 @@
   
   <div class="wrapper-main">
   
-    <img src="/assets/img/webpageLogo.png" alt="Company logo" class="companyLogo2">
+    <img src="/static/assets/img/webpageLogo.png" alt="Company logo" class="companyLogo2">
     <h1 class="pageTitle";>Merchandise</h1>
 
     <!--Sort by Dropdown menu-->
@@ -41,20 +41,20 @@
   
 
     <!--Auction item tile-->
+    {% for item in merch_items %}
       <div class="shadow p-3 mb-5 bg-body rounded">
-        <a href="MerchandiseItemInfo.html" class="tileLink">
+        <a href="/merch/{{ item.item_id }}" class="tileLink">
         <div class="card2" style="width: 100%; height:178px;">
 
           <div class="col-sm-3">
-            <img src="assets/img/placeholder1.png" alt="placeholder" class="imgplaceholder">
+            <img src="{{ item.item_image }}" style="max-width: 150px; max-height: 150px;" alt="placeholder" class="imgplaceholder">
           </div>
 
           <div class="col-sm-7">
             <div class="card-body">
               <div class="auctionItemTitle">
-                <p class="card-text" style="font-weight: bolder; font-size: 14px;">Item Title</p>
-                <p class="card-text" style="font-size: 14px; color: #ACA9A9; margin-top: -15px;">Donated by: John Doe</p>
-                <p class="card-text" style="font-size: 14px; color: #ACA9A9; margin-right: 45px;">Price: <span style="color: black; font-weight: bolder;">1 </span> <b>USD</b></p>
+                <p class="card-text" style="font-weight: bolder; font-size: 14px;">{{ item.item_title }}</p>
+                <p class="card-text" style="font-size: 14px; color: #ACA9A9; margin-right: 45px;">Price: <span style="color: black; font-weight: bolder;">${{ item.price }} </span> <b>USD</b></p>
               </div>
 
             </div>
@@ -62,6 +62,7 @@
         </div>
         </a>
       </div>
+    {% endfor %}
         
       
 
@@ -72,14 +73,14 @@
         <ul class="nav__list">
 
           <li class="nav__item">
-            <a href="Auctions.html" class="nav__link">        
+            <a href="/event/items" class="nav__link">        
               <i class='fa fa-legal nav__icon'></i>
                 <span class="nav__name">Auctions</span>
             </a>
           </li>
               
           <li class="nav__item">
-            <a href="Merchandise.html" class="nav__link active-link">
+            <a href="/merch" class="nav__link active-link">
               <i class='bx bx-store nav__icon'></i>
                 <span class="nav__name">Merchandise</span>
             </a>
@@ -93,7 +94,7 @@
           </li>
 
           <li class="nav__item">
-            <a href="Cart.html" class="nav__link">
+            <a href="/cart" class="nav__link">
               <i class='bx bx-cart nav__icon'></i>
                 <span class="nav__name">Cart</span>
             </a>

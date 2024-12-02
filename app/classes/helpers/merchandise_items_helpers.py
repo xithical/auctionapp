@@ -10,10 +10,11 @@ class Merchandise_Item_Helpers():
     ):
         item_out = {}
         item = MerchandiseItems_Methods.get_item_by_id(item_id)
-        item_out["item_id"] = item["item_id"]
-        item_out["item_image"] = item["item_image"]
-        item_out["item_title"] = item["item_title"]
-        item_out["price"] = item["price"]
+        item_out["item_id"] = item.merch_id
+        item_out["item_image"] = item.merch_image
+        item_out["item_title"] = item.merch_title
+        item_out["item_description"] = item.merch_description
+        item_out["price"] = round(item.merch_price, ndigits=2)
         return item_out
         
     @staticmethod
@@ -35,4 +36,4 @@ class Merchandise_Item_Helpers():
     
     @staticmethod
     def get_item_id(item: dict):
-        return item["merch_id"]
+        return item["merch_id"]["merch_id"]

@@ -68,7 +68,7 @@ class Bids_Methods:
     
     @staticmethod
     def get_bid_by_id(bid_id: int):
-        return Bids.select().where(Bids.bid_id == bid_id)
+        return Bids.select().where(Bids.bid_id == bid_id).get()
     
     @staticmethod
     def update_bid(bid_obj: object):

@@ -13,12 +13,10 @@ from app.classes.helpers.donations_helpers import Donations_Helpers
 class Checkout_Controller:
     @staticmethod
     def list_items(
-        user_id: str,
-        event_id: int,
+        cart,
         cart_model,
         helper
     ):
-        cart = MainCart_Methods.get_event_cart_for_user(user_id, event_id)
         cart_entries = cart_model.get_entries_by_cart(cart)
 
         cart_value = Decimal(0.00)
@@ -42,22 +40,22 @@ class Checkout_Controller:
         user_id: str,
         event_id: int
     ):
+        cart = MainCart_Methods.get_event_cart_for_user(user_id, event_id)
         output = {
+            "cart_id": cart,
             "auction_items": [],
             "merch_items": []
         }
 
         output["auction_items"] = Checkout_Controller.list_items(
-            user_id=user_id,
-            event_id=event_id,
             cart_model=Cart_AuctionItems_Methods,
-            helper=Auction_Items_Helpers
+            helper=Auction_Items_Helpers,
+            cart=cart
         )
         output["merch_items"] = Checkout_Controller.list_items(
-            user_id=user_id,
-            event_id=event_id,
             cart_model=CartMerchItems_Methods,
-            helper=Merchandise_Item_Helpers
+            helper=Merchandise_Item_Helpers,
+            cart=cart
         )
 
         return output

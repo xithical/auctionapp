@@ -24,28 +24,28 @@
   
   <div class="wrapper-main">
   
-    <img src="/assets/img/webpageLogo.png" alt="Company logo" class="companyLogo2">
+    <img src="/static/assets/img/webpageLogo.png" alt="Company logo" class="companyLogo2">
     <h1 class="pageTitle";>Item information</h1>
 
       <!--Item information card-->
       <div class="card" style="width: 100%; margin-bottom: 75px; box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.074);">
         
         <!--back button-->
-        <a href="Merchandise.html" button type="button" class="btn-close" aria-label="close"></a>
+        <a href="/merch" button type="button" class="btn-close" aria-label="close"></a>
         
-        <img src="assets/img/placeholder1.png" class="imgplaceholder1" alt="placeholder">
+        <img src="{{ item.item_image }}" class="imgplaceholder1" alt="placeholder">
 
         <div class="card-body">
-          <h5 class="card-title" style="font-weight: bolder;">Item Title</h5>
-          <p class="card-text">Donated by:</p>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <h5 class="card-title" style="font-weight: bolder;">{{ item.item_title }}</h5>
+          <p class="card-text">{{ item.item_description }}</p>
           
           <!--Current real time bid(s)-->
           <p class="card-text" style="font-size: 12px; color: #ACA9A9;">Price</p>
-          <p class="card-text" style="margin-top: -15px;"><span style="color: #06D75A;">1 </span>USD</p>
+          <p class="card-text" style="margin-top: -15px;"><span style="color: #06D75A;">${{ item.price }} </span>USD</p>
           
-        
-          <a href="Cart.html" button type="placebid" class="btn placebid btn-primary" data-name="ItemTitle" data-price="1.00"><b>Add to cart</b></a>
+          <form action="/merch/{{ item.item_id }}" method="post">
+          <input type="submit" class="btn placebid btn-primary" value="Add to cart">
+          </form>
         </div>
       </div> 
     
@@ -57,14 +57,14 @@
         <ul class="nav__list">
 
           <li class="nav__item">
-            <a href="Auctions.html" class="nav__link">        
+            <a href="/event/items" class="nav__link">        
               <i class='fa fa-legal nav__icon'></i>
                 <span class="nav__name">Auctions</span>
             </a>
           </li>
               
           <li class="nav__item">
-            <a href="Merchandise.html" class="nav__link active-link">
+            <a href="/merch" class="nav__link active-link">
               <i class='bx bx-store nav__icon'></i>
                 <span class="nav__name">Merchandise</span>
             </a>
@@ -78,7 +78,7 @@
           </li>
 
           <li class="nav__item">
-            <a href="Cart.html" class="nav__link">
+            <a href="/cart" class="nav__link">
               <i class='bx bx-cart nav__icon'></i>
                 <span class="nav__name">Cart</span>
             </a>

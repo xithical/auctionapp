@@ -10,7 +10,7 @@ class Merchandise_Item_Controller:
         output = []
         merch_items = MerchandiseItems_Methods.get_all_items()
         for item in merch_items:
-            item_out = Merchandise_Item_Helpers.get_item_details(item)
+            item_out = Merchandise_Item_Helpers.get_item_details(item["merch_id"])
             output.append(item_out)
         return output
     

@@ -22,6 +22,7 @@ from app.classes.controllers.admin import Admin_Controllers
 from app.classes.controllers.login import User_Login_Controller, User_Registration_Controller
 from app.classes.controllers.auction_items import Auction_Items_Controller
 from app.classes.controllers.checkout import Checkout_Controller
+from app.classes.controllers.merchandise import Merchandise_Item_Controller
 
 from app.classes.helpers.auction_item_helpers import Auction_Items_Helpers
 from app.classes.helpers.auth_helpers import Auth_Helpers
@@ -209,7 +210,7 @@ def user_cart():
         total=total
     )
 
-@app.route('/cart/remove', methods=['GET'])
+@app.route('/cart/remove', methods=['POST'])
 @login_required
 def cart_remove():
     validate_session = Auth_Helpers.validate_session(
@@ -222,10 +223,51 @@ def cart_remove():
         elif validate_session == "cart":
             return redirect("/card_setup")
     event_id = session["event_id"]
-    entry_id = request.args.get('entry_id')
-    cart_id = Checkout_Controller.get_cart(current_user.user_id, event_id)
+    entry_id = request.args.get("entry_id")
+    cart_id = Checkout_Controller.get_cart(current_user.user_id, event_id)["cart_id"]
     Checkout_Controller.remove_merchcart_entry(cart_id, entry_id)
     return redirect("/cart")
+
+@app.route('/merch', methods=['GET'])
+@login_required
+def merch_items():
+    validate_session = Auth_Helpers.validate_session(
+        current_user,
+        session
+    )
+    if validate_session is not True:
+        if validate_session == "event_id":
+            return redirect("/login")
+        elif validate_session == "cart":
+            return redirect("/card_setup")
+    event_id = session["event_id"]
+    merch_items = Merchandise_Item_Controller.list_items()
+    return render_template("Merchandise.html", merch_items=merch_items)
+
+@app.route('/merch/<int:item_id>', methods=['GET','POST'])
+@login_required
+def merch_item_details(item_id):
+    validate_session = Auth_Helpers.validate_session(
+        current_user,
+        session
+    )
+    if validate_session is not True:
+        if validate_session == "event_id":
+            return redirect("/login")
+        elif validate_session == "cart":
+            return redirect("/card_setup")
+    event_id = session["event_id"]
+    match request.method:
+        case 'GET':
+            item = Merchandise_Item_Controller.get_merch_item_details(item_id)
+            return render_template("MerchandiseItemInfo.html", item=item)
+        case 'POST':
+            Merchandise_Item_Controller.add_item_to_cart(
+                item_id = item_id,
+                user_id = current_user.user_id,
+                event_id = event_id
+            )
+            return redirect("/merch")
 
 ###################################
 #           Admin Views           #
@@ -388,7 +430,6 @@ def admin_item_bids(event_id, item_id):
                 return render_template("Admin-Item-Bids.html", event_id=event_id, bids=bids)
             case 'DELETE':
                 data = request.get_json()
-                print(data)
                 Admin_Controllers.EventAdmin_Controller.delete_bid(data["item_id"])
                 return redirect(f"/admin/events/{event_id}/items/{item_id}/bids")
     else:
