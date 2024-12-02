@@ -1,5 +1,6 @@
 import os
 
+from decimal import Decimal
 from flask import (
     Flask,
     render_template,
@@ -22,6 +23,7 @@ from app.classes.controllers.admin import Admin_Controllers
 from app.classes.controllers.login import User_Login_Controller, User_Registration_Controller
 from app.classes.controllers.auction_items import Auction_Items_Controller
 from app.classes.controllers.checkout import Checkout_Controller
+from app.classes.controllers.donations import Donations_Controller
 from app.classes.controllers.merchandise import Merchandise_Item_Controller
 
 from app.classes.helpers.auction_item_helpers import Auction_Items_Helpers
@@ -268,6 +270,31 @@ def merch_item_details(item_id):
                 event_id = event_id
             )
             return redirect("/merch")
+        
+@app.route('/donate', methods=['GET','POST'])
+@login_required
+def donations():
+    validate_session = Auth_Helpers.validate_session(
+        current_user,
+        session
+    )
+    if validate_session is not True:
+        if validate_session == "event_id":
+            return redirect("/login")
+        elif validate_session == "cart":
+            return redirect("/card_setup")
+    event_id = session["event_id"]
+    match request.method:
+        case 'GET':
+            org_name = Config_Helpers.get_entity_name()
+            return render_template("Donate.html", org_name=org_name)
+        case 'POST':
+            Donations_Controller.place_donation(
+                current_user.user_id,
+                event_id,
+                Decimal(request.form["donation_amount"])
+            )
+            return redirect("/donate")
 
 ###################################
 #           Admin Views           #

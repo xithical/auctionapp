@@ -3,6 +3,7 @@ from datetime import datetime
 from app.classes.models.bidder_donations import BidderDonation_Methods
 
 from app.classes.helpers.donations_helpers import Donations_Helpers
+from app.classes.helpers.payments_helpers import Payments_Helpers
 
 class Donations_Controller():
     @staticmethod
@@ -12,11 +13,10 @@ class Donations_Controller():
         donation_amount: float,
         donation_time: datetime = datetime.now()
     ):
-        return Donations_Helpers.place_bid(
-            user_id=user_id,
-            event_id=event_id,
-            donation_amount=donation_amount,
-            donation_time=donation_time
+        return Payments_Helpers.charge_donation(
+            user_id,
+            event_id,
+            donation_amount
         )
     
     @staticmethod

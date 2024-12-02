@@ -1,19 +1,32 @@
 import math
 import stripe
 
+from decimal import Decimal
+
+from app.classes.models.card_transactions import CardTransactions_Methods
+from app.classes.models.main_cart import MainCart_Methods
 from app.classes.models.users import Users_Methods
 
 from app.classes.helpers.config_helpers import Config_Helpers
+from app.classes.helpers.donations_helpers import Donations_Helpers
 
 class Payments_Helpers:
     @staticmethod
-    def create_payment_intent(amount: float):
+    def create_payment_intent(
+        amount: Decimal,
+        customer_id: str,
+        payment_method: str
+    ):
         stripe.api_key = Config_Helpers.get_stripe_api_key()
         amount_cents = math.floor(round(amount, ndigits=2) * 100)
 
         intent = stripe.PaymentIntent.create(
             amount=amount_cents,
-            currency='usd'
+            currency='usd',
+            customer=customer_id,
+            payment_method=payment_method,
+            confirm=True,
+            off_session=True
         )
 
         return intent
@@ -45,8 +58,45 @@ class Payments_Helpers:
     
     @staticmethod
     def verify_checkout_session(checkout_session: str):
+        stripe.api_key = Config_Helpers.get_stripe_api_key()
         try:
             stripe.checkout.Session.retrieve(checkout_session)
             return True
         except:
             return False
+        
+    @staticmethod
+    def charge_donation(user_id: str, event_id: int, amount: Decimal):
+        stripe.api_key = Config_Helpers.get_stripe_api_key()
+        cart = MainCart_Methods.get_event_cart_for_user(
+            user_id=user_id,
+            event_id=event_id
+        )
+        checkout_session_id = MainCart_Methods.get_cart_by_id(cart).checkout_session
+        checkout_session = stripe.checkout.Session.retrieve(checkout_session_id)
+        setup_intent = stripe.SetupIntent.retrieve(checkout_session["setup_intent"])
+        payment_method = setup_intent["payment_method"]
+        payment_intent = Payments_Helpers.create_payment_intent(
+            amount = amount,
+            customer_id=setup_intent["customer"],
+            payment_method=payment_method
+        )
+        if payment_intent["status"] == "succeeded":
+            print(f"{__name__} - Payment succeeded for user {user_id}, amount ${amount}")
+            donation = Donations_Helpers.place_donation(
+                user_id=user_id,
+                event_id=event_id,
+                donation_amount=amount
+            )
+            transaction = CardTransactions_Methods.create_transaction(
+                auth_id = payment_intent["latest_charge"],
+                amount = amount,
+                user_id = user_id,
+                event_id = event_id
+            )
+            return {
+                "donation": donation,
+                "transaction": transaction
+            }
+        else:
+            print(f"{__name__} - Payment failed for user {user_id}, amount ${amount}")
