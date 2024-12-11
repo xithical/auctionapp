@@ -40,7 +40,8 @@ class Email_Helpers:
                 merch_items=cart["merch_items"]["items"],
                 auction_total=cart["auction_items"]["price_total"],
                 merch_total=cart["merch_items"]["price_total"],
-                total=total
+                total=total,
+                tax_id=Config_Helpers.get_tax_id()
             )
         
         @staticmethod
@@ -59,7 +60,8 @@ class Email_Helpers:
                 event_name=event.event_name,
                 start_time=event.start_time,
                 donation_time=donation.donation_time,
-                amount=amount
+                amount=amount,
+                tax_id=Config_Helpers.get_tax_id()
             )
         
         @staticmethod
@@ -75,7 +77,8 @@ class Email_Helpers:
                 event_name=event.event_name,
                 end_time=event.end_time,
                 total=total,
-                items=items
+                items=items,
+                tax_id=Config_Helpers.get_tax_id()
             )
     
     class Senders:
