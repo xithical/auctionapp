@@ -124,18 +124,7 @@ class Init_Helpers:
     
     @staticmethod
     def connect_db():
-        counter=0
-        connected=False
-        while not connected:
-            try:
-                connected = db_proxy.connect()
-            except Exception as e:
-                print(f"{__name__} - Couldn't connect to database: {e}")
-            time.sleep(5)
-            counter += 1
-            if counter >= 5:
-                print(f"{__name__} - Unable to successfully initialize database, exiting")
-                exit()
+        db_proxy.connect(reuse_if_open=True)
     
     @staticmethod
     def close_db():
