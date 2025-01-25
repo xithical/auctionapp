@@ -33,6 +33,7 @@ from app.classes.helpers.auction_item_helpers import Auction_Items_Helpers
 from app.classes.helpers.auth_helpers import Auth_Helpers
 from app.classes.helpers.config_helpers import Config_Helpers
 from app.classes.helpers.event_helpers import Event_Helpers
+from app.classes.helpers.init_helpers import Init_Helpers
 from app.classes.helpers.payments_helpers import Payments_Helpers
 
 app = Flask(__name__, template_folder=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates'))
@@ -46,6 +47,14 @@ ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif']
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.before_request
+def _db_connect():
+    Init_Helpers.connect_db()
+
+@app.teardown_request
+def _db_close(exc):
+    Init_Helpers.close_db()
 
 @login_manager.user_loader
 def load_user(user_id: str):

@@ -18,6 +18,8 @@ RUN python3 -m venv venv \
     && . venv/bin/activate \
     && pip3 install -r requirements.txt
 
+RUN chmod +x ./start.sh
+
 EXPOSE 8000
 
 ENTRYPOINT ["./start.sh"]

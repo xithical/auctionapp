@@ -121,3 +121,12 @@ class Init_Helpers:
             Init_Helpers.init_admin()
 
         return database
+    
+    @staticmethod
+    def connect_db():
+        db_proxy.connect(reuse_if_open=True)
+    
+    @staticmethod
+    def close_db():
+        if not db_proxy.is_closed():
+            db_proxy.close()
