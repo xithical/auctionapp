@@ -1,5 +1,6 @@
 from datetime import datetime
-from peewee import fn, Case, JOIN
+from decimal import Decimal
+from peewee import fn, JOIN
 
 from app.classes.models.bids import Bids, Bids_Methods
 from app.classes.models.cart_auctionitems import Cart_AuctionItems_Methods
@@ -119,8 +120,8 @@ class Auction_Items_Helpers:
                     AuctionItems.item_id,
                     AuctionItems.event_id,
                     AuctionItems.item_price,
-                    round((AuctionItems.item_price * min_bid_amount), 2).alias("starting_bid"),
-                    round(fn.COALESCE(fn.MAX(Bids.bid_amount), (AuctionItems.item_price * min_bid_amount)), 2).alias("highest_bid"),
+                    round(Decimal((AuctionItems.item_price * min_bid_amount)), 2).alias("starting_bid"),
+                    round(Decimal(fn.COALESCE(fn.MAX(Bids.bid_amount), (AuctionItems.item_price * min_bid_amount))), 2).alias("highest_bid"),
                     fn.COUNT(Bids.bid_id).alias("num_bids"),
                     fn.COALESCE(ItemDonors.company_name, ItemDonors.donor_firstname + " " + ItemDonors.donor_lastname).alias("donor_name"),
                     AuctionItems.item_image,
@@ -139,8 +140,8 @@ class Auction_Items_Helpers:
                     AuctionItems.item_id,
                     AuctionItems.event_id,
                     AuctionItems.item_price,
-                    round((min_bid_amount), 2).alias("starting_bid"),
-                    round(fn.COALESCE(fn.MAX(Bids.bid_amount), (min_bid_amount)), 2).alias("highest_bid"),
+                    round(Decimal(min_bid_amount), 2).alias("starting_bid"),
+                    round(Decimal(fn.COALESCE(fn.MAX(Bids.bid_amount), (min_bid_amount))), 2).alias("highest_bid"),
                     fn.COUNT(Bids.bid_id).alias("num_bids"),
                     fn.COALESCE(ItemDonors.company_name, ItemDonors.donor_firstname + " " + ItemDonors.donor_lastname).alias("donor_name"),
                     AuctionItems.item_image,
