@@ -1,6 +1,7 @@
 from datetime import datetime
 from decimal import Decimal
 from peewee import fn, JOIN
+from playhouse.shortcuts import model_to_dict
 
 from app.classes.models.bids import Bids, Bids_Methods
 from app.classes.models.cart_auctionitems import Cart_AuctionItems_Methods
@@ -119,7 +120,7 @@ class Auction_Items_Helpers:
                 .select(
                     AuctionItems.item_id,
                     AuctionItems.event_id,
-                    fn.ROUND(AuctionItems.item_price, 2),
+                    fn.ROUND(AuctionItems.item_price, 2).alias("item_price"),
                     fn.ROUND((AuctionItems.item_price * min_bid_amount), 2).alias("starting_bid"),
                     fn.ROUND(fn.COALESCE(fn.MAX(Bids.bid_amount), (AuctionItems.item_price * min_bid_amount)), 2).alias("highest_bid"),
                     fn.COUNT(Bids.bid_id).alias("num_bids"),
@@ -139,7 +140,7 @@ class Auction_Items_Helpers:
                 .select(
                     AuctionItems.item_id,
                     AuctionItems.event_id,
-                    fn.ROUND(AuctionItems.item_price, 2),
+                    fn.ROUND(AuctionItems.item_price, 2).alias("item_price"),
                     fn.ROUND(min_bid_amount, 2).alias("starting_bid"),
                     fn.ROUND(fn.COALESCE(fn.MAX(Bids.bid_amount), (min_bid_amount)), 2).alias("highest_bid"),
                     fn.COUNT(Bids.bid_id).alias("num_bids"),
@@ -154,4 +155,4 @@ class Auction_Items_Helpers:
                 .group_by(AuctionItems.item_id)
             )
 
-        return DatabaseHelpers.get_rows(query)
+        return query.dicts()
