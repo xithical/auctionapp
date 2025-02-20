@@ -119,18 +119,17 @@ class Auction_Items_Helpers:
                     AuctionItems.item_id,
                     AuctionItems.event_id,
                     AuctionItems.item_price,
-                    (AuctionItems.item_price * min_bid_amount).alias("starting_bid"),
-                    fn.COALESCE(fn.MAX(Bids.bid_amount), (AuctionItems.item_price * min_bid_amount)).alias("highest_bid"),
+                    round((AuctionItems.item_price * min_bid_amount), 2).alias("starting_bid"),
+                    round(fn.COALESCE(fn.MAX(Bids.bid_amount), (AuctionItems.item_price * min_bid_amount)), 2).alias("highest_bid"),
                     fn.COUNT(Bids.bid_id).alias("num_bids"),
-                    Case(None, [(ItemDonors.company_name != "", ItemDonors.company_name)],
-                         ItemDonors.donor_firstname + " " + ItemDonors.donor_lastname),
+                    fn.COALESCE(ItemDonors.company_name, ItemDonors.donor_firstname + " " + ItemDonors.donor_lastname).alias("donor_name"),
                     AuctionItems.item_image,
                     AuctionItems.item_title,
                     AuctionItems.item_description
                 )
-                .where(AuctionItems.event_id == event_id)
                 .join(ItemDonors, JOIN.LEFT_OUTER, on=(AuctionItems.donor_id == ItemDonors.donor_id))
                 .join(Bids, JOIN.LEFT_OUTER, on=(AuctionItems.item_id == Bids.item_id))
+                .where(AuctionItems.event_id == event_id)
                 .group_by(AuctionItems.item_id)
             )
         else:
@@ -140,18 +139,17 @@ class Auction_Items_Helpers:
                     AuctionItems.item_id,
                     AuctionItems.event_id,
                     AuctionItems.item_price,
-                    (min_bid_amount).alias("starting_bid"),
-                    fn.COALESCE(fn.MAX(Bids.bid_amount), (min_bid_amount)).alias("highest_bid"),
+                    round((min_bid_amount), 2).alias("starting_bid"),
+                    round(fn.COALESCE(fn.MAX(Bids.bid_amount), (min_bid_amount)), 2).alias("highest_bid"),
                     fn.COUNT(Bids.bid_id).alias("num_bids"),
-                    Case(None, [(ItemDonors.company_name != "", ItemDonors.company_name)],
-                         ItemDonors.donor_firstname + " " + ItemDonors.donor_lastname),
+                    fn.COALESCE(ItemDonors.company_name, ItemDonors.donor_firstname + " " + ItemDonors.donor_lastname).alias("donor_name"),
                     AuctionItems.item_image,
                     AuctionItems.item_title,
                     AuctionItems.item_description
                 )
-                .where(AuctionItems.event_id == event_id)
                 .join(ItemDonors, JOIN.LEFT_OUTER, on=(AuctionItems.donor_id == ItemDonors.donor_id))
                 .join(Bids, JOIN.LEFT_OUTER, on=(AuctionItems.item_id == Bids.item_id))
+                .where(AuctionItems.event_id == event_id)
                 .group_by(AuctionItems.item_id)
             )
 
