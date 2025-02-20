@@ -1,11 +1,14 @@
 from datetime import datetime
+from peewee import fn, Case, JOIN
 
-from app.classes.models.bids import Bids_Methods
+from app.classes.models.bids import Bids, Bids_Methods
 from app.classes.models.cart_auctionitems import Cart_AuctionItems_Methods
 from app.classes.models.main_cart import MainCart_Methods
+from app.classes.models.auction_items import AuctionItems, AuctionItems_Methods
+from app.classes.models.item_donors import ItemDonors, ItemDonors_Methods
+
 from app.classes.helpers.config_helpers import Config_Helpers
-from app.classes.models.auction_items import AuctionItems_Methods
-from app.classes.models.item_donors import ItemDonors_Methods
+from app.classes.helpers.db_helpers import DatabaseHelpers
 
 class Auction_Items_Helpers:
     @staticmethod
@@ -55,6 +58,7 @@ class Auction_Items_Helpers:
             donor_name = f"{donor.donor_firstname} {donor.donor_lastname}"
 
         return donor_name
+    
     @staticmethod
     def get_item_details(
         item_id: int
@@ -102,3 +106,53 @@ class Auction_Items_Helpers:
     @staticmethod
     def get_item_id(item: dict):
         return item["bid_id"]["item_id"]["item_id"]
+    
+    @staticmethod
+    def list_items(event_id: int):
+        min_bid_percent = Config_Helpers.is_min_bid_percent()
+        min_bid_amount = Config_Helpers.get_min_bid_amount()/100
+
+        if min_bid_percent:
+            query = (
+                AuctionItems
+                .select(
+                    AuctionItems.item_id,
+                    AuctionItems.event_id,
+                    AuctionItems.item_price,
+                    (AuctionItems.item_price * min_bid_amount).alias("starting_bid"),
+                    fn.COALESCE(fn.MAX(Bids.bid_amount), (AuctionItems.item_price * min_bid_amount)).alias("highest_bid"),
+                    fn.COUNT(Bids.bid_id).alias("num_bids"),
+                    Case(None, [(ItemDonors.company_name != "", ItemDonors.company_name)],
+                         ItemDonors.donor_firstname + " " + ItemDonors.donor_lastname),
+                    AuctionItems.item_image,
+                    AuctionItems.item_title,
+                    AuctionItems.item_description
+                )
+                .where(AuctionItems.event_id == event_id)
+                .join(ItemDonors, JOIN.LEFT_OUTER, on=(AuctionItems.donor_id == ItemDonors.donor_id))
+                .join(Bids, JOIN.LEFT_OUTER, on=(AuctionItems.item_id == Bids.item_id))
+                .group_by(AuctionItems.item_id)
+            )
+        else:
+            query = (
+                AuctionItems
+                .select(
+                    AuctionItems.item_id,
+                    AuctionItems.event_id,
+                    AuctionItems.item_price,
+                    (min_bid_amount).alias("starting_bid"),
+                    fn.COALESCE(fn.MAX(Bids.bid_amount), (min_bid_amount)).alias("highest_bid"),
+                    fn.COUNT(Bids.bid_id).alias("num_bids"),
+                    Case(None, [(ItemDonors.company_name != "", ItemDonors.company_name)],
+                         ItemDonors.donor_firstname + " " + ItemDonors.donor_lastname),
+                    AuctionItems.item_image,
+                    AuctionItems.item_title,
+                    AuctionItems.item_description
+                )
+                .where(AuctionItems.event_id == event_id)
+                .join(ItemDonors, JOIN.LEFT_OUTER, on=(AuctionItems.donor_id == ItemDonors.donor_id))
+                .join(Bids, JOIN.LEFT_OUTER, on=(AuctionItems.item_id == Bids.item_id))
+                .group_by(AuctionItems.item_id)
+            )
+
+        return DatabaseHelpers.get_rows(query)
