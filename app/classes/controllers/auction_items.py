@@ -17,13 +17,8 @@ class Auction_Items_Controller:
     def get_items(
         auction_id: int, 
     ):
-        output = []
-        auctionItems = AuctionItems_Methods.get_items_by_event_id(auction_id)
-        for item in auctionItems:
-            item_out = Auction_Items_Helpers.get_item_details(item["item_id"])
-            output.append(item_out)
-        
-        return output
+        return Auction_Items_Helpers.list_items(auction_id)
+    
     @staticmethod
     def get_item_details(
         item_id: int
