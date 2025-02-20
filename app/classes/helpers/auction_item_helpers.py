@@ -119,11 +119,11 @@ class Auction_Items_Helpers:
                 .select(
                     AuctionItems.item_id,
                     AuctionItems.event_id,
-                    AuctionItems.item_price,
+                    fn.ROUND(AuctionItems.item_price, 2),
                     fn.ROUND((AuctionItems.item_price * min_bid_amount), 2).alias("starting_bid"),
                     fn.ROUND(fn.COALESCE(fn.MAX(Bids.bid_amount), (AuctionItems.item_price * min_bid_amount)), 2).alias("highest_bid"),
                     fn.COUNT(Bids.bid_id).alias("num_bids"),
-                    fn.COALESCE(ItemDonors.company_name, ItemDonors.donor_firstname + " " + ItemDonors.donor_lastname).alias("donor_name"),
+                    fn.COALESCE(ItemDonors.company_name, fn.CONCAT(ItemDonors.donor_firstname, ' ', ItemDonors.donor_lastname)).alias("donor_name"),
                     AuctionItems.item_image,
                     AuctionItems.item_title,
                     AuctionItems.item_description
@@ -139,11 +139,11 @@ class Auction_Items_Helpers:
                 .select(
                     AuctionItems.item_id,
                     AuctionItems.event_id,
-                    AuctionItems.item_price,
+                    fn.ROUND(AuctionItems.item_price, 2),
                     fn.ROUND(min_bid_amount, 2).alias("starting_bid"),
                     fn.ROUND(fn.COALESCE(fn.MAX(Bids.bid_amount), (min_bid_amount)), 2).alias("highest_bid"),
                     fn.COUNT(Bids.bid_id).alias("num_bids"),
-                    fn.COALESCE(ItemDonors.company_name, ItemDonors.donor_firstname + " " + ItemDonors.donor_lastname).alias("donor_name"),
+                    fn.COALESCE(ItemDonors.company_name, fn.CONCAT(ItemDonors.donor_firstname, ' ', ItemDonors.donor_lastname)).alias("donor_name"),
                     AuctionItems.item_image,
                     AuctionItems.item_title,
                     AuctionItems.item_description
