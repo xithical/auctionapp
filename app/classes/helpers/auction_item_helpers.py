@@ -1,5 +1,7 @@
 from datetime import datetime
-from peewee import fn, Case, JOIN
+from decimal import Decimal
+from peewee import fn, JOIN
+from playhouse.shortcuts import model_to_dict
 
 from app.classes.models.bids import Bids, Bids_Methods
 from app.classes.models.cart_auctionitems import Cart_AuctionItems_Methods
@@ -118,19 +120,18 @@ class Auction_Items_Helpers:
                 .select(
                     AuctionItems.item_id,
                     AuctionItems.event_id,
-                    AuctionItems.item_price,
-                    (AuctionItems.item_price * min_bid_amount).alias("starting_bid"),
-                    fn.COALESCE(fn.MAX(Bids.bid_amount), (AuctionItems.item_price * min_bid_amount)).alias("highest_bid"),
+                    fn.ROUND(AuctionItems.item_price, 2).alias("item_price"),
+                    fn.ROUND((AuctionItems.item_price * min_bid_amount), 2).alias("starting_bid"),
+                    fn.ROUND(fn.COALESCE(fn.MAX(Bids.bid_amount), (AuctionItems.item_price * min_bid_amount)), 2).alias("highest_bid"),
                     fn.COUNT(Bids.bid_id).alias("num_bids"),
-                    Case(None, [(ItemDonors.company_name != "", ItemDonors.company_name)],
-                         ItemDonors.donor_firstname + " " + ItemDonors.donor_lastname),
+                    fn.COALESCE(ItemDonors.company_name, fn.CONCAT(ItemDonors.donor_firstname, ' ', ItemDonors.donor_lastname)).alias("donor_name"),
                     AuctionItems.item_image,
                     AuctionItems.item_title,
                     AuctionItems.item_description
                 )
-                .where(AuctionItems.event_id == event_id)
                 .join(ItemDonors, JOIN.LEFT_OUTER, on=(AuctionItems.donor_id == ItemDonors.donor_id))
                 .join(Bids, JOIN.LEFT_OUTER, on=(AuctionItems.item_id == Bids.item_id))
+                .where(AuctionItems.event_id == event_id)
                 .group_by(AuctionItems.item_id)
             )
         else:
@@ -139,20 +140,19 @@ class Auction_Items_Helpers:
                 .select(
                     AuctionItems.item_id,
                     AuctionItems.event_id,
-                    AuctionItems.item_price,
-                    (min_bid_amount).alias("starting_bid"),
-                    fn.COALESCE(fn.MAX(Bids.bid_amount), (min_bid_amount)).alias("highest_bid"),
+                    fn.ROUND(AuctionItems.item_price, 2).alias("item_price"),
+                    fn.ROUND(min_bid_amount, 2).alias("starting_bid"),
+                    fn.ROUND(fn.COALESCE(fn.MAX(Bids.bid_amount), (min_bid_amount)), 2).alias("highest_bid"),
                     fn.COUNT(Bids.bid_id).alias("num_bids"),
-                    Case(None, [(ItemDonors.company_name != "", ItemDonors.company_name)],
-                         ItemDonors.donor_firstname + " " + ItemDonors.donor_lastname),
+                    fn.COALESCE(ItemDonors.company_name, fn.CONCAT(ItemDonors.donor_firstname, ' ', ItemDonors.donor_lastname)).alias("donor_name"),
                     AuctionItems.item_image,
                     AuctionItems.item_title,
                     AuctionItems.item_description
                 )
-                .where(AuctionItems.event_id == event_id)
                 .join(ItemDonors, JOIN.LEFT_OUTER, on=(AuctionItems.donor_id == ItemDonors.donor_id))
                 .join(Bids, JOIN.LEFT_OUTER, on=(AuctionItems.item_id == Bids.item_id))
+                .where(AuctionItems.event_id == event_id)
                 .group_by(AuctionItems.item_id)
             )
 
-        return DatabaseHelpers.get_rows(query)
+        return query.dicts()
